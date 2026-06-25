@@ -1,0 +1,18 @@
+# 本机工具链接与运行缓存
+.agents/skills/
+__pycache__/
+*.py[cod]
+
+# 实验运行产物
+results/raw/
+results/summary/
+runs/
+outputs/
+checkpoints/
+wandb/
+
+# 临时文件
+*.log
+*.tmp
+*.swp
+.DS_Store
