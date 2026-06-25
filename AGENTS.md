@@ -101,3 +101,4 @@ SOTA 不是预设事实，只能由严格、公平、可追溯的正式实验支
 
 - 2026-06-25T17:57:43Z：已启用 `research-wiki/` 项目知识库。后续论文、idea、实验、claim 与阶段决策应同步写入对应页面，并通过 `research-wiki/log.md` 保留追加式审计记录。
 - 2026-06-25T18:02:35Z：准备将项目初始化为 Git 仓库并公开上传至 GitHub `coinrainy/GCL_IDEA`；新增 `README.md` 和 `.gitignore`，公开仓库排除本机 `.agents/skills/` 绝对路径符号链接。
+- 2026-06-25T18:03:22Z：已创建公开 GitHub 仓库并推送 `main` 分支，地址为 `https://github.com/coinrainy/GCL_IDEA`。
