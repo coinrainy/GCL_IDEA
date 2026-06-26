@@ -1,8 +1,6 @@
 # Experiment Tracker: BEACON-GCL
 
-Fixed entry for latest experiment tracker.
-
-- Timestamped source: `refine-logs/EXPERIMENT_TRACKER_20260626_153556.md`
+- Updated: 2026-06-26T15:35:56Z
 - Current gate: `BE_M0_COMPLETED_NO_GO`
 - Decision: `KILL_CURRENT_BEACON_GATE_NO_BE_M1`
 

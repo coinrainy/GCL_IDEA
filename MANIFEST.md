@@ -279,3 +279,9 @@
 | 2026-06-26 15:33 | /experiment-bridge | scripts/run_beacon_smoke.py | smoke | BEACON-GCL BE-M0 smoke runner |
 | 2026-06-26 15:33 | /experiment-bridge | logs/beacon_smoke/be_m0_dryrun_Cora_seed0_20260626T153303Z/ | smoke | BEACON dryrun logs, 1+1 epoch chain check |
 | 2026-06-26 15:33 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_153338.md | experiment-bridge | local BEACON code review and dryrun record |
+| 2026-06-26 15:35 | /experiment-bridge | logs/beacon_smoke/be_m0_001_Cora_seed0_20260626T153505Z/ | smoke | BE-M0-001 full Cora seed0 logs |
+| 2026-06-26 15:35 | /experiment-bridge | results/summary/be_m0_001_Cora_seed0_20260626T153505Z_summary.md | smoke | BE-M0-001 summary table |
+| 2026-06-26 15:35 | /experiment-bridge | results/summary/be_m0_001_Cora_seed0_20260626T153505Z_summary.json | smoke | BE-M0-001 parseable summary JSON |
+| 2026-06-26 15:35 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS_20260626_153556.md | experiment-bridge | BE-M0-001 no-go result report |
+| 2026-06-26 15:35 | /experiment-bridge | refine-logs/EXPERIMENT_TRACKER_20260626_153556.md | experiment-bridge | BE-M0-001 no-go tracker |
+| 2026-06-26 15:35 | /research-wiki | research-wiki/ideas/beacon_gcl.md | wiki | BEACON-GCL marked smoke_negative |

@@ -23,3 +23,4 @@
 {"from": "idea:beacon_gcl", "to": "gap:FN-G3", "type": "addresses_gap", "evidence": "idea beacon_gcl addresses gap", "added": "2026-06-26T15:07:06Z"}
 {"from": "idea:beacon_gcl", "to": "gap:FN-G4", "type": "addresses_gap", "evidence": "idea beacon_gcl addresses gap", "added": "2026-06-26T15:07:06Z"}
 {"from": "idea:beacon_gcl", "to": "gap:FN-G8", "type": "addresses_gap", "evidence": "idea beacon_gcl addresses gap", "added": "2026-06-26T15:07:06Z"}
+{"from": "idea:beacon_gcl", "to": "exp:beacon_be_m0_001", "type": "tested_by", "evidence": "exp beacon_be_m0_001 tests idea", "added": "2026-06-26T15:36:27Z"}

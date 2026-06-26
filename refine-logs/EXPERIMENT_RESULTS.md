@@ -1,11 +1,11 @@
-# Experiment Results: CAST Certificate Pilot-A
+# Experiment Results: BEACON-GCL BE-M0-001
 
-Fixed entry for the latest experiment result.
+Fixed entry for latest experiment result.
 
-- Timestamped source: `refine-logs/EXPERIMENT_RESULTS_20260626_144910.md`
-- Stage: Pilot-A / diagnostic, not formal.
-- Decision: `REVISE_OR_PIVOT_BEFORE_ANY_MORE_PILOT`
+- Timestamped source: `refine-logs/EXPERIMENT_RESULTS_20260626_153556.md`
+- Stage: smoke, not pilot/formal
+- Decision: `KILL_CURRENT_BEACON_GATE_NO_BE_M1`
 
-Pilot-A checked Cora seeds 0-2, CiteSeer seeds 0-2, and PubMed seed 0. C4 latent certificate shows low overlap with kNN/PPR/CAST, so it is not simply the same mining rule, but C4/C5 do not produce stable accuracy gains over kNN or CAST proxy. PubMed seeds 1-2 were stopped by the no-go signal.
+B5 BEACON full gate selected high-agreement and geometry-safer pairs, but did not improve accuracy over kNN, CAST proxy, all-candidate neutralization, or shuffled/no-boundary/no-geometry controls. Stop before BE-M1.
 
-No formal, SOTA, robust, comprehensive, or final performance claim is supported.
+No formal or performance claim is supported.
