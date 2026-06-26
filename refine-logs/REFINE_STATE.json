@@ -1,11 +1,11 @@
 {
-  "phase": "pre_review",
+  "phase": "revised_pre_smoke",
   "round": 3,
-  "agent_id": null,
-  "last_score": null,
-  "last_verdict": "PRE_REVIEW",
+  "agent_id": "019f03c2-0ebb-7171-b6fd-8ce6aa611c12",
+  "last_score": 6.8,
+  "last_verdict": "REVISE",
   "status": "completed",
-  "timestamp": "2026-06-26T12:15:00Z",
+  "timestamp": "2026-06-26T12:35:00Z",
   "active_idea": "CAST-GCL",
-  "decision": "REVISE_TO_CAST_PRE_REVIEW"
+  "decision": "REVISE_TO_CAST_REVISED_PRE_SMOKE"
 }

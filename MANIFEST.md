@@ -168,3 +168,12 @@
 | 2026-06-26 12:15 | /research-wiki | research-wiki/ideas/cast_gcl.md | wiki | proposed CAST active corrective candidate idea page |
 | 2026-06-26 12:15 | /research-wiki | research-wiki/ideas/willow_gcl.md | wiki | WILLOW demoted to CAST module/control |
 | 2026-06-26 12:16 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of CAST-GCL idea report |
+| 2026-06-26 12:35 | /novelty-check | idea-stage/CAST_GCL_NOVELTY_CHECK_20260626_123500.md | novelty-check | timestamped CAST fresh reviewer report, verdict REVISE, novelty 6.8 |
+| 2026-06-26 12:35 | /novelty-check | idea-stage/CAST_GCL_NOVELTY_CHECK.md | novelty-check | latest CAST fresh reviewer report |
+| 2026-06-26 12:35 | /research-refine | refine-logs/CAST_MECHANISM_SPEC_20260626_123500.md | refinement | timestamped revised CAST mechanism spec with legal interventions and controls |
+| 2026-06-26 12:35 | /research-refine | refine-logs/CAST_MECHANISM_SPEC.md | refinement | latest revised CAST mechanism spec |
+| 2026-06-26 12:35 | /research-refine-pipeline | refine-logs/FINAL_PROPOSAL_20260626_123500.md | refinement | timestamped revised CAST final proposal |
+| 2026-06-26 12:35 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260626_123500.md | experiment-planning | timestamped revised CAST smoke plan with mining/proximity controls |
+| 2026-06-26 12:35 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_123500.md | experiment-planning | timestamped revised CAST tracker |
+| 2026-06-26 12:35 | /research-wiki | research-wiki/ideas/cast_gcl.md | wiki | updated CAST idea page after fresh reviewer verdict |
+| 2026-06-26 12:36 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of revised CAST-GCL idea report |

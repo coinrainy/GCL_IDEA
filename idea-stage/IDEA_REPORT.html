@@ -7,8 +7,8 @@
 
 <meta name="generator" content="ARIS render-html (academic, v1)">
 <meta name="aris:source-path" content="idea-stage/IDEA_REPORT.md">
-<meta name="aris:source-sha256" content="43eb5887479290b3c5938f2a007b95b5109d844b4a6eada0fd0d18cc92d95f6b">
-<meta name="aris:generated-at" content="2026-06-26 11:46 UTC">
+<meta name="aris:source-sha256" content="eb847d096f7efa78578edd9f4ef8b17d0ac99285a03380130364a0cc45309165">
+<meta name="aris:generated-at" content="2026-06-26 11:54 UTC">
 
 <!-- offline mode: MathJax + highlight.js skipped; math and code blocks render as plain text -->
 
@@ -340,21 +340,21 @@ footer.aris-footer a { color: var(--ink-muted); border-bottom: 1px dotted var(--
   
   <div class="meta">
     <span><strong>Source:</strong> <code>idea-stage/IDEA_REPORT.md</code></span>
-    <span><strong>SHA256:</strong> <code>43eb58874792</code></span>
-    <span><strong>Rendered:</strong> 2026-06-26 11:46 UTC</span>
+    <span><strong>SHA256:</strong> <code>eb847d096f7e</code></span>
+    <span><strong>Rendered:</strong> 2026-06-26 11:54 UTC</span>
     
   </div>
 </header>
 
 <h1 id="idea-discovery-report-cast-gcl">Idea Discovery Report: CAST-GCL</h1>
-<p><strong>方向</strong>：图对比学习假负样本方向，面向普通节点分类，继续避开 loss-only trick，追求更有 2026 投稿潜力的机制创新 <strong>日期</strong>：2026-06-26 <strong>Pipeline</strong>：research-lit → idea-creator → novelty-check → research-review → research-refine-pipeline <strong>阶段结论</strong>：<code>REVISE_TO_CAST_PRE_REVIEW</code></p>
+<p><strong>方向</strong>：图对比学习假负样本方向，面向普通节点分类，继续避开 loss-only trick，追求更有 2026 投稿潜力的机制创新 <strong>日期</strong>：2026-06-26 <strong>Pipeline</strong>：research-lit → idea-creator → novelty-check → research-review → research-refine-pipeline <strong>阶段结论</strong>：<code>REVISE_TO_CAST_REVISED_PRE_SMOKE</code></p>
 <h2 id="executive-summary">Executive Summary</h2>
 <p>上一轮 WILLOW-GCL 已经把方向从 loss-side 修补推进到 latent certificate driven hard positive views，但它仍存在一个硬伤：容易被 reviewer 解释为 <strong>Graph-JEPA / Predict-Cluster-Refine + learned augmentation scorer</strong>。这比 BOND/SIVA 更好，但还没有完全满足“足够创新”的目标。</p>
 <p>本轮进一步把主线推进为 <strong>CAST-GCL / Certificate-guided Semantic Transport for Graph Contrastive Learning</strong>。CAST 不再只生成同一节点的 hard positive view，而是用 latent ego target-prediction certificate 构造 <strong>跨节点语义传输图</strong>：如果真实节点 <code>j</code> 可以通过低能量的 node-local intervention path 从 anchor <code>i</code> 到达，那么 <code>j</code> 就不应再作为 <code>i</code> 的 negative，而应进入 multi-positive / neutral relation closure。</p>
 <p>核心思想：</p>
 <pre><code class="language-text">false negatives are missing semantic transport relations,
 not merely over-weighted denominator terms.</code></pre>
-<p>CAST 目前是比 WILLOW 更激进、更直接对应 false-negative 问题的候选，但尚未获得 fresh reviewer verdict，也没有 smoke 结果。因此当前状态是 <code>REVISE_TO_CAST_PRE_REVIEW</code>，不是 <code>GO</code>。</p>
+<p>fresh <code>gcl_scientific_reviewer</code> 给 CAST 的 verdict 是 <code>REVISE</code>，novelty <code>6.8/10</code>，confidence <code>0.72</code>。结论很明确：CAST 是当前最值得保留的候选，因为它比 WILLOW 更直接处理 false negatives；但它还不能 <code>GO</code>，必须证明 transport energy 不是 kNN/PPR/BMM positive mining 的复杂重写。</p>
 <h2 id="why-cast-replaces-willow-as-the-active-candidate">Why CAST Replaces WILLOW As The Active Candidate</h2>
 <table><thead><tr><th>Aspect</th><th>WILLOW</th><th>CAST</th></tr></thead><tbody><tr><td>Main mechanism</td><td>same-anchor certified hard positive view</td><td>cross-node certified semantic transport</td></tr><tr><td>False-negative handling</td><td>indirect, by strengthening positive signal</td><td>direct, by identifying real nodes that should not be negatives</td></tr><tr><td>Main prior risk</td><td>Graph-JEPA + augmentation scorer</td><td>positive mining / transport heuristic</td></tr><tr><td>Required evidence</td><td>harder same-node positives help</td><td>transported nodes have high label agreement and reduce false-negative repulsion mass</td></tr></tbody></table>
 <p>WILLOW remains useful as a module/control. CAST uses WILLOW's latent certificate, but adds the missing cross-node relation construction step.</p>
@@ -363,22 +363,22 @@ not merely over-weighted denominator terms.</code></pre>
 <ul><li><strong>Graph-JEPA / Predict, Cluster, Refine</strong>：latent context-target prediction already exists; CAST uses it only as a certificate for cross-node relation construction.</li><li><strong>PMGCL / positive mining</strong>：pair probability estimation already exists; CAST requires low-energy intervention paths, not only similarity/BMM probability.</li><li><strong>BalanceGCL</strong>：semantic-aware positives and hard negatives already exist at graph level; CAST is node-level, does not use class-aware counterfactual gradients, and does not generate hard negatives as the main contribution.</li><li><strong>GCA/RGCL/AutoGCL</strong>：learned augmentation already exists; CAST builds a certified transport relation graph between real nodes.</li></ul>
 <h2 id="recommended-idea">Recommended Idea</h2>
 <h3 id="cast-gcl-certificate-guided-semantic-transport">CAST-GCL: Certificate-guided Semantic Transport</h3>
-<ul><li><strong>Method</strong>：train a latent ego target-prediction certificate; for each anchor, search candidate real nodes through short node-local intervention paths; score the path by certificate error, edit cost, and anchor drift; low-energy reachable nodes become semantic positives or neutral nodes in GCL.</li><li><strong>Hypothesis</strong>：false negatives can be reduced more directly by constructing a certified cross-node positive closure than by reweighting negatives or only making same-node positives harder.</li><li><strong>Minimum experiment</strong>：Cora seed=0 smoke; compare GRACE, WILLOW same-node certificate, kNN multi-positive, PMGCL-lite/BMM positive mining, certificate-shuffled CAST, CAST one-step transport, CAST two-step transport.</li><li><strong>Diagnostics</strong>：transported positive count, offline label agreement, transport energy vs label agreement correlation, false-negative repulsion mass, LogReg accuracy, search budget.</li><li><strong>Novelty status</strong>：PRE_REVIEW；desk audit suggests stronger differentiation than WILLOW, but no fresh reviewer score yet.</li><li><strong>Risk</strong>：HIGH；transport may collapse into expensive positive mining or kNN multi-positive.</li><li><strong>Pilot result</strong>：SKIPPED；本轮未实现代码、未跑新实验。</li></ul>
+<ul><li><strong>Method</strong>：train a latent ego target-prediction certificate; for each anchor, search candidate real nodes through short node-local intervention paths; score the path by certificate error, edit cost, and anchor drift; low-energy reachable nodes become semantic positives or neutral nodes in GCL.</li><li><strong>Hypothesis</strong>：false negatives can be reduced more directly by constructing a certified cross-node positive closure than by reweighting negatives or only making same-node positives harder.</li><li><strong>Minimum experiment</strong>：Cora seed=0 smoke; compare GRACE, WILLOW same-node certificate, kNN multi-positive, PMGCL-lite/BMM positive mining, PPR/diffusion positives, candidate-pool-only, similarity-only transport, edit-cost-only / anchor-drift-only, certificate-shuffled CAST, random budget-matched transport, CAST one-step transport, and CAST two-step transport.</li><li><strong>Diagnostics</strong>：transported positive count, offline label agreement, transport energy vs label agreement correlation, false-negative repulsion mass, LogReg accuracy, search budget.</li><li><strong>Novelty status</strong>：fresh reviewer <code>REVISE</code>，novelty <code>6.8/10</code>，confidence <code>0.72</code>。</li><li><strong>Risk</strong>：HIGH；transport may collapse into expensive positive mining or kNN multi-positive.</li><li><strong>Pilot result</strong>：SKIPPED；本轮未实现代码、未跑新实验。</li></ul>
 <h2 id="mandatory-kill-rules">Mandatory Kill Rules</h2>
-<table><thead><tr><th>Kill rule</th><th>解释</th></tr></thead><tbody><tr><td>kNN multi-positive matches CAST</td><td>transport certificate unnecessary</td></tr><tr><td>PMGCL-lite/BMM matches CAST</td><td>CAST reduces to positive mining</td></tr><tr><td>certificate-shuffled CAST matches CAST</td><td>certificate has no semantic content</td></tr><tr><td>transport energy does not correlate with offline label agreement</td><td>kill CAST</td></tr><tr><td>CAST only works by selecting many more positives</td><td>invalid unless budget-matched variant also works</td></tr><tr><td>WILLOW same-node matches CAST</td><td>cross-node closure unnecessary; downgrade to WILLOW</td></tr></tbody></table>
+<table><thead><tr><th>Kill rule</th><th>解释</th></tr></thead><tbody><tr><td>kNN multi-positive matches CAST</td><td>transport certificate unnecessary</td></tr><tr><td>PMGCL-lite/BMM matches CAST</td><td>CAST reduces to positive mining</td></tr><tr><td>certificate-shuffled CAST matches CAST</td><td>certificate has no semantic content</td></tr><tr><td>transport energy does not correlate with offline label agreement</td><td>kill CAST</td></tr><tr><td>CAST only works by selecting many more positives</td><td>invalid unless budget-matched variant also works</td></tr><tr><td>WILLOW same-node matches CAST</td><td>cross-node closure unnecessary; downgrade to WILLOW</td></tr><tr><td>candidate-pool-only / similarity-only matches CAST</td><td>transport certificate adds no value; kill or major pivot</td></tr></tbody></table>
 <h2 id="deprioritized--control-ideas">Deprioritized / Control Ideas</h2>
 <table><thead><tr><th>Idea</th><th>Current role</th></tr></thead><tbody><tr><td>WILLOW-GCL</td><td>module/control; provides latent certificate but not enough cross-node false-negative handling</td></tr><tr><td>SIVA-GCL-positive-core</td><td>reconstruction-critic control</td></tr><tr><td>BOND-GCL</td><td>archived loss-side baseline</td></tr><tr><td>DSR-GCL</td><td>archived/pivoted due weak Cora seed=0 audit-smoke</td></tr></tbody></table>
 <h2 id="refined-proposal">Refined Proposal</h2>
-<ul><li>Candidate brief: <code>idea-stage/CAST_GCL_CANDIDATE_20260626_121500.md</code></li><li>Prior boundary: <code>literature/CAST_PRIOR_BOUNDARY.md</code></li><li>Proposal: <code>refine-logs/FINAL_PROPOSAL.md</code></li><li>Experiment plan: <code>refine-logs/EXPERIMENT_PLAN.md</code></li><li>Tracker: <code>refine-logs/EXPERIMENT_TRACKER.md</code></li></ul>
+<ul><li>Candidate brief: <code>idea-stage/CAST_GCL_CANDIDATE_20260626_121500.md</code></li><li>Novelty check: <code>idea-stage/CAST_GCL_NOVELTY_CHECK.md</code></li><li>Mechanism spec: <code>refine-logs/CAST_MECHANISM_SPEC.md</code></li><li>Prior boundary: <code>literature/CAST_PRIOR_BOUNDARY.md</code></li><li>Proposal: <code>refine-logs/FINAL_PROPOSAL.md</code></li><li>Experiment plan: <code>refine-logs/EXPERIMENT_PLAN.md</code></li><li>Tracker: <code>refine-logs/EXPERIMENT_TRACKER.md</code></li></ul>
 <h2 id="decision">Decision</h2>
-<p><code>REVISE_TO_CAST_PRE_REVIEW</code>.</p>
-<p>当前只允许进入 fresh novelty review 或最小 smoke 设计，不允许 formal，不允许写 SOTA/robust/comprehensive，不允许产生性能 claim。</p>
+<p><code>REVISE_TO_CAST_REVISED_PRE_SMOKE</code>.</p>
+<p>当前只允许进入最小 Cora seed=0 smoke 设计/实现，不允许 formal，不允许写 SOTA/robust/comprehensive，不允许产生性能 claim。若 kNN/PPR/BMM/candidate-pool-only/shuffled-certificate controls 解释掉 CAST，应继续 pivot。</p>
 
 <footer class="aris-footer">
   Generated by <a href="https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep/blob/main/skills/render-html/SKILL.md">ARIS <code>/render-html</code></a> ·
   source path <code>idea-stage/IDEA_REPORT.md</code> ·
-  SHA256 <code>43eb58874792</code> ·
-  generated at 2026-06-26 11:46 UTC.
+  SHA256 <code>eb847d096f7e</code> ·
+  generated at 2026-06-26 11:54 UTC.
   This is a generated view — edit the source Markdown, then re-render.
 </footer>
 </main>

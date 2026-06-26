@@ -3,7 +3,7 @@
 **方向**：图对比学习假负样本方向，面向普通节点分类，继续避开 loss-only trick，追求更有 2026 投稿潜力的机制创新  
 **日期**：2026-06-26  
 **Pipeline**：research-lit → idea-creator → novelty-check → research-review → research-refine-pipeline  
-**阶段结论**：`REVISE_TO_CAST_PRE_REVIEW`
+**阶段结论**：`REVISE_TO_CAST_REVISED_PRE_SMOKE`
 
 ## Executive Summary
 
@@ -18,7 +18,7 @@ false negatives are missing semantic transport relations,
 not merely over-weighted denominator terms.
 ```
 
-CAST 目前是比 WILLOW 更激进、更直接对应 false-negative 问题的候选，但尚未获得 fresh reviewer verdict，也没有 smoke 结果。因此当前状态是 `REVISE_TO_CAST_PRE_REVIEW`，不是 `GO`。
+fresh `gcl_scientific_reviewer` 给 CAST 的 verdict 是 `REVISE`，novelty `6.8/10`，confidence `0.72`。结论很明确：CAST 是当前最值得保留的候选，因为它比 WILLOW 更直接处理 false negatives；但它还不能 `GO`，必须证明 transport energy 不是 kNN/PPR/BMM positive mining 的复杂重写。
 
 ## Why CAST Replaces WILLOW As The Active Candidate
 
@@ -46,9 +46,9 @@ CAST must avoid the following collisions:
 
 - **Method**：train a latent ego target-prediction certificate; for each anchor, search candidate real nodes through short node-local intervention paths; score the path by certificate error, edit cost, and anchor drift; low-energy reachable nodes become semantic positives or neutral nodes in GCL.
 - **Hypothesis**：false negatives can be reduced more directly by constructing a certified cross-node positive closure than by reweighting negatives or only making same-node positives harder.
-- **Minimum experiment**：Cora seed=0 smoke; compare GRACE, WILLOW same-node certificate, kNN multi-positive, PMGCL-lite/BMM positive mining, certificate-shuffled CAST, CAST one-step transport, CAST two-step transport.
+- **Minimum experiment**：Cora seed=0 smoke; compare GRACE, WILLOW same-node certificate, kNN multi-positive, PMGCL-lite/BMM positive mining, PPR/diffusion positives, candidate-pool-only, similarity-only transport, edit-cost-only / anchor-drift-only, certificate-shuffled CAST, random budget-matched transport, CAST one-step transport, and CAST two-step transport.
 - **Diagnostics**：transported positive count, offline label agreement, transport energy vs label agreement correlation, false-negative repulsion mass, LogReg accuracy, search budget.
-- **Novelty status**：PRE_REVIEW；desk audit suggests stronger differentiation than WILLOW, but no fresh reviewer score yet.
+- **Novelty status**：fresh reviewer `REVISE`，novelty `6.8/10`，confidence `0.72`。
 - **Risk**：HIGH；transport may collapse into expensive positive mining or kNN multi-positive.
 - **Pilot result**：SKIPPED；本轮未实现代码、未跑新实验。
 
@@ -62,6 +62,7 @@ CAST must avoid the following collisions:
 | transport energy does not correlate with offline label agreement | kill CAST |
 | CAST only works by selecting many more positives | invalid unless budget-matched variant also works |
 | WILLOW same-node matches CAST | cross-node closure unnecessary; downgrade to WILLOW |
+| candidate-pool-only / similarity-only matches CAST | transport certificate adds no value; kill or major pivot |
 
 ## Deprioritized / Control Ideas
 
@@ -75,6 +76,8 @@ CAST must avoid the following collisions:
 ## Refined Proposal
 
 - Candidate brief: `idea-stage/CAST_GCL_CANDIDATE_20260626_121500.md`
+- Novelty check: `idea-stage/CAST_GCL_NOVELTY_CHECK.md`
+- Mechanism spec: `refine-logs/CAST_MECHANISM_SPEC.md`
 - Prior boundary: `literature/CAST_PRIOR_BOUNDARY.md`
 - Proposal: `refine-logs/FINAL_PROPOSAL.md`
 - Experiment plan: `refine-logs/EXPERIMENT_PLAN.md`
@@ -82,6 +85,6 @@ CAST must avoid the following collisions:
 
 ## Decision
 
-`REVISE_TO_CAST_PRE_REVIEW`.
+`REVISE_TO_CAST_REVISED_PRE_SMOKE`.
 
-当前只允许进入 fresh novelty review 或最小 smoke 设计，不允许 formal，不允许写 SOTA/robust/comprehensive，不允许产生性能 claim。
+当前只允许进入最小 Cora seed=0 smoke 设计/实现，不允许 formal，不允许写 SOTA/robust/comprehensive，不允许产生性能 claim。若 kNN/PPR/BMM/candidate-pool-only/shuffled-certificate controls 解释掉 CAST，应继续 pivot。

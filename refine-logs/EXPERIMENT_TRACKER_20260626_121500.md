@@ -1,5 +1,5 @@
 # Experiment Tracker: CAST-GCL
 
-Decision：`REVISE_TO_CAST_PRE_REVIEW`
+Decision：`REVISE_TO_CAST_REVISED_PRE_SMOKE`
 
-No fresh reviewer, code, smoke, pilot, formal result, or claim support exists yet.
+Fresh reviewer completed with `REVISE`, novelty `6.8/10`, confidence `0.72`。No code, smoke, pilot, formal result, or claim support exists yet.

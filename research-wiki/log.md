@@ -49,7 +49,10 @@ _Append-only timeline._
 - `2026-06-26T12:15:00Z` upsert_idea: added idea:cast_gcl [stage=proposed outcome=pending]
 - `2026-06-26T12:15:00Z` 继续按用户要求提升 idea 创新性。WILLOW 虽非 loss trick，但仍存在 Graph-JEPA/PCR + augmentation scorer 风险；已将当前活跃候选推进为 CAST-GCL / Certificate-guided Semantic Transport。CAST 使用 latent ego target-prediction certificate 构造跨节点 semantic transport energy，把低能量可达的真实节点纳入 multi-positive / neutral closure，直接处理 false negatives。WILLOW 降为 module/control。当前尚未运行 fresh reviewer、代码实现或 smoke 实验，decision：REVISE_TO_CAST_PRE_REVIEW；不支持 formal 或性能 claim。
 - `2026-06-26T12:16:00Z` Rendered `idea-stage/IDEA_REPORT.html` from the CAST-GCL Markdown report. HTML is a generated reading view only; Markdown remains canonical and no claim status changed.
+- `2026-06-26T12:35:00Z` Fresh `gcl_scientific_reviewer` reviewed CAST-GCL and returned `REVISE`, novelty `6.8/10`, confidence `0.72`. Reviewer recommended keeping CAST active as the current best candidate rather than downgrading to WILLOW, but only after tightening transport definitions and proving the method is not kNN/PPR/BMM/candidate-pool positive mining. Added `idea-stage/CAST_GCL_NOVELTY_CHECK.md` and `refine-logs/CAST_MECHANISM_SPEC.md`; updated proposal, smoke controls, tracker, wiki, and decision to `REVISE_TO_CAST_REVISED_PRE_SMOKE`. No code, smoke, pilot, formal result, or performance claim was produced.
+- `2026-06-26T12:36:00Z` Rendered `idea-stage/IDEA_REPORT.html` from the revised CAST-GCL Markdown report. HTML is a generated reading view only; Markdown remains canonical and no claim status changed.
 - `2026-06-26T11:36:56Z` upsert_idea: added idea:willow_gcl [stage=proposed outcome=pending]
 - `2026-06-26T11:36:56Z` upsert_idea: updated idea:siva_gcl [stage=archived outcome=unknown]
 - `2026-06-26T11:45:03Z` upsert_idea: updated idea:willow_gcl [stage=archived outcome=unknown]
 - `2026-06-26T11:45:03Z` upsert_idea: added idea:cast_gcl [stage=proposed outcome=pending]
+- `2026-06-26T11:52:40Z` upsert_idea: updated idea:cast_gcl [stage=proposed outcome=pending]

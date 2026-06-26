@@ -19,6 +19,6 @@
 
 ## Decision
 
-`REVISE_TO_CAST_PRE_REVIEW`
+`REVISE_TO_CAST_REVISED_PRE_SMOKE`
 
-No fresh reviewer, code implementation, smoke, pilot, GPU run, formal run, or performance claim was produced.
+Fresh reviewer completed for CAST: `REVISE`, novelty `6.8/10`, confidence `0.72`. CAST remains the current best active candidate, but only after tightening transport definitions and controls. No code implementation, smoke, pilot, GPU run, formal run, or performance claim was produced.

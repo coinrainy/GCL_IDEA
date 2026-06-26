@@ -13,4 +13,6 @@ WILLOW-GCL was demoted from active mainline to module/control because same-ancho
 
 ## Current State
 
-Ready only for fresh review or Cora seed=0 smoke planning. No code or experiment was run.
+Fresh reviewer returned `REVISE`, novelty `6.8/10`, confidence `0.72`, and recommended keeping CAST active as a revised pre-smoke candidate. The refined version now freezes the certificate, defines legal mixed-ego transport operators, and requires candidate-pool-only / similarity-only / component-only controls before any smoke can be interpreted.
+
+Ready only for Cora seed=0 smoke planning/implementation. No code or experiment was run in this refinement.
