@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PACER-GCL Idea Discovery</title>
+<title>MEGA-GCL Idea Discovery</title>
 
 <meta name="generator" content="ARIS render-html (academic, v1)">
 <meta name="aris:source-path" content="idea-stage/IDEA_REPORT.md">
-<meta name="aris:source-sha256" content="a29be6e5b4462cafee13e114e73712e2a9f6016b39bcd9871cb1272ddac85298">
-<meta name="aris:generated-at" content="2026-06-26 16:13 UTC">
+<meta name="aris:source-sha256" content="ad468dbda3bfbfa49af676c79255bcfaf20535767a987b2d410c4e90cd601d5f">
+<meta name="aris:generated-at" content="2026-06-26 16:48 UTC">
 
 <!-- offline mode: MathJax + highlight.js skipped; math and code blocks render as plain text -->
 
@@ -310,109 +310,116 @@ footer.aris-footer a { color: var(--ink-muted); border-bottom: 1px dotted var(--
 <nav class="toc">
   <h3>Contents</h3>
   <ol>
-<li><a href="#hard-constraints-applied">Hard Constraints Applied</a>
+<li><a href="#executive-summary">Executive Summary</a>
 </li>
-<li><a href="#fresh-reviewer-reading">Fresh Reviewer Reading</a>
+<li><a href="#failure-evidence-absorbed">Failure Evidence Absorbed</a>
 </li>
-<li><a href="#why-previous-fixes-failed">Why Previous Fixes Failed</a>
-<ul>
-<li><a href="#cast">CAST</a></li>
-<li><a href="#beacon">BEACON</a></li>
-<li><a href="#spectra">SPECTRA</a></li>
-</ul>
-</li>
-<li><a href="#new-problem-statement">New Problem Statement</a>
+<li><a href="#literature-landscape-snapshot">Literature Landscape Snapshot</a>
 </li>
 <li><a href="#ranked-ideas">Ranked Ideas</a>
-</li>
-<li><a href="#selected-top1-pacer-gcl">Selected Top1: PACER-GCL</a>
 <ul>
-<li><a href="#core-mechanism">Core Mechanism</a></li>
-<li><a href="#why-it-addresses-false-negatives">Why It Addresses False Negatives</a></li>
-<li><a href="#novelty-boundary">Novelty Boundary</a></li>
+<li><a href="#1-mega-gcl--masked-evidence-group-assignment--top1">1. MEGA-GCL / Masked Evidence Group Assignment — Top1</a></li>
+<li><a href="#2-granite-gcl--granularity-preserving-prototype-bottleneck">2. GRANITE-GCL / Granularity-Preserving Prototype Bottleneck</a></li>
+<li><a href="#3-mint-gcl--masked-neighborhood-token-contrast">3. MINT-GCL / Masked Neighborhood Token Contrast</a></li>
+<li><a href="#4-focus-gcl--fold-consistent-objective-selection">4. FOCUS-GCL / Fold-Consistent Objective Selection</a></li>
+<li><a href="#5-edgecase-gcl--evidence-preserving-boundary-case-augmentation">5. EDGECASE-GCL / Evidence-Preserving Boundary Case Augmentation</a></li>
+<li><a href="#6-classic-gcl--class-granularity-invariance-by-compression">6. CLASSIC-GCL / Class-Granularity Invariance by Compression</a></li>
+<li><a href="#7-split-mae-cl--split-stable-masked-contrastive-hybrid">7. SPLIT-MAE-CL / Split-Stable Masked Contrastive Hybrid</a></li>
 </ul>
 </li>
-<li><a href="#minimal-smoke">Minimal Smoke</a>
-<ul>
-<li><a href="#variants">Variants</a></li>
-<li><a href="#required-diagnostics">Required Diagnostics</a></li>
-</ul>
+<li><a href="#top1-rationale">Top1 Rationale</a>
 </li>
-<li><a href="#decision">Decision</a>
+<li><a href="#fresh-reviewer-summary">Fresh Reviewer Summary</a>
+</li>
+<li><a href="#top1-decision">Top1 Decision</a>
 </li>
 </ol>
 </nav>
 
 <main>
 <header class="hero">
-  <div class="eyebrow">Post Triple No-go</div>
-  <h1>PACER-GCL Idea Discovery</h1>
-  
+  <div class="eyebrow">Idea Discovery</div>
+  <h1>MEGA-GCL Idea Discovery</h1>
+  <p class="subtitle">Post PACER no-go false-negative GCL pivot</p>
   
   <div class="meta">
     <span><strong>Source:</strong> <code>idea-stage/IDEA_REPORT.md</code></span>
-    <span><strong>SHA256:</strong> <code>a29be6e5b446</code></span>
-    <span><strong>Rendered:</strong> 2026-06-26 16:13 UTC</span>
+    <span><strong>SHA256:</strong> <code>ad468dbda3bf</code></span>
+    <span><strong>Rendered:</strong> 2026-06-26 16:48 UTC</span>
     
   </div>
 </header>
 
-<h1 id="idea-discovery-report-pacer-gcl">Idea Discovery Report: PACER-GCL</h1>
-<ul><li>时间：2026-06-26T16:06:34Z</li><li>Skill：<code>/idea-discovery</code></li><li>触发原因：CAST / BEACON / SPECTRA 三连 no-go 后，重新做 false-negative GCL 机制级 idea discovery。</li><li>状态：fresh reviewer informed；未实现代码、未跑新实验、未产生性能 claim。</li><li>Fresh scientific reviewer verdict：<code>PIVOT</code>，置信度 <code>0.78</code>。</li><li>Fresh experiment auditor verdict：<code>WARN</code>，允许机制级 pivot，但下一轮 smoke 前必须预注册 controls/kill rules、保存完整 run command，并避免 dirty-run provenance 风险。</li></ul>
-<h2 id="hard-constraints-applied">Hard Constraints Applied</h2>
-<ol><li>不继续 CAST C4/C5。</li><li>不继续 BEACON gate 或 threshold/weight 小调。</li><li>不继续 SPECTRA boundary-energy / rank-guard 权重小调。</li><li>新 idea 不能是 kNN/PPR/CAST mining、positive mining、score fusion、loss-only reweighting、post-hoc relation smoothing、单纯 negative-free + diagnostic regularizer。</li><li>必须解释为什么 pair-level 和 representation-diagnostic-level 修正都无法转化为节点分类 accuracy。</li><li>从“训练目标是否和少标签 Logistic Regression 下游匹配”重新定义问题。</li></ol>
-<h2 id="fresh-reviewer-reading">Fresh Reviewer Reading</h2>
-<p>Fresh <code>gcl_scientific_reviewer</code> 的核心意见：</p>
-<ul><li>CAST、BEACON、SPECTRA 都在优化代理变量，而不是 frozen Logistic Regression 真实需要的全局线性可分结构。</li><li>pair overlap、label agreement、margin/rank、effective-rank、boundary-retention 以后只能作为 diagnostics，不能作为 GO 条件。</li><li>下一轮应优先考虑“少标签校准的 evaluator-aligned GCL”，但必须诚实标注为 semi-supervised / train-label-calibrated，不得伪装成无监督。</li><li>推荐方向是 probe-aligned mechanism：把 false-negative 处理从 pair purity 改成“是否改善 train/val linear probe margin 与泛化稳定性”。</li></ul>
-<p>Fresh <code>gcl_experiment_auditor</code> 的核心约束：</p>
-<ul><li>新 idea 的 GO 条件必须是 frozen encoder + LogReg test@best-val 超过强 controls，不能是 overlap、agreement、margin/rank、effective-rank 或 boundary-retention。</li><li>Cora seed0 smoke 未过 kill rules 前，不允许 Cora seeds 0-2、PubMed、Pilot-B、formal 或 GPU 长跑。</li><li>下一轮 runner 必须保存完整 run command，并尽量在 clean commit 下运行；raw JSON 中若 <code>project_dirty=true</code>，不得进入 formal/provenance claim。</li></ul>
-<h2 id="why-previous-fixes-failed">Why Previous Fixes Failed</h2>
-<h3 id="cast">CAST</h3>
-<p>CAST 的 C4 latent certificate 与 kNN/PPR/CAST overlap 低，但 C4/C5 没有稳定超过 mining controls。低 overlap 只能证明“不是同一批 pair”，不能证明这些 pair 会改善少标签 linear decision boundary。</p>
-<h3 id="beacon">BEACON</h3>
-<p>BEACON full gate 的 label agreement 和 margin/rank diagnostics 更好，但 accuracy 低于 shuffled/no-boundary/no-geometry controls。这说明“更像同类”或“局部几何更安全”的 pair edit 未必帮助真正的边界节点。</p>
-<h3 id="spectra">SPECTRA</h3>
-<p>SPECTRA full 的 effective rank 和 boundary retention 高于 negative-free baseline，但 accuracy 更低。这说明 representation diagnostics 也可能只是在改善几何外观，而不是改善 Logistic Regression 可读出性。</p>
-<h2 id="new-problem-statement">New Problem Statement</h2>
-<p>不再问：</p>
-<blockquote><p>Which false-negative pairs should be repaired?</p></blockquote>
-<p>也不再问：</p>
-<blockquote><p>Which representation diagnostic should be regularized?</p></blockquote>
-<p>改问：</p>
-<blockquote><p>Can pretraining be calibrated so that the frozen representation is easier for a small train-label Logistic Regression probe to read out, without using test labels and without converting unlabeled nodes into pseudo-positive pairs?</p></blockquote>
+<h1 id="idea-discovery-report-post-pacer-false-negative-gcl-pivot">Idea Discovery Report: Post PACER False-Negative GCL Pivot</h1>
+<ul><li>时间：2026-06-26T16:40:00Z</li><li>方向：false-negative GCL / ordinary node classification</li><li>阶段：idea discovery after four no-go runs</li><li>Pipeline：local literature/context synthesis -&gt; idea generation -&gt; fresh <code>gcl_scientific_reviewer</code> check -&gt; proposal + smoke plan</li><li>Claim status：proposal only；未实现、未跑 smoke/pilot/formal；不支持性能 claim。</li></ul>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>CAST、BEACON、SPECTRA、PACER 的共同失败说明：把问题继续定义为“识别或修正假负样本”已经不够。低 overlap pair、高 label agreement pair、更好 rank/boundary diagnostics、甚至 train-label probe margin 改善，都没有稳定转化为 frozen Logistic Regression 的节点分类 accuracy。</p>
+<p>新的问题定义应改成：</p>
+<blockquote><p>Node-node contrastive denominator 本身在少标签节点分类协议下可能是错误训练任务；与其修补 false negatives，不如把 SSL 目标改成不依赖其他真实节点作为负样本、但仍保留类别可读出的 masked discriminative evidence。</p></blockquote>
+<p>Top1 选择：<strong>MEGA-GCL / Masked Evidence Group Assignment for Graph Contrastive Learning</strong>。Fresh reviewer verdict 是 <code>REVISE</code>，不是直接 <code>GO</code>：MEGA 是当前列表里最像机制级 pivot 的方向，但必须先进入 Cora seed0 <strong>kill-smoke</strong>，证明它不是 GraphMAE / GraphMAE2 / GCMAE / VQ-codebook / SwAV-prototype / token corruption 的旧路线。</p>
+<h2 id="failure-evidence-absorbed">Failure Evidence Absorbed</h2>
+<table><thead><tr><th>Prior line</th><th style="text-align:right">Intended proxy improved?</th><th style="text-align:right">Accuracy converted?</th><th>Lesson</th></tr></thead><tbody><tr><td>CAST Certificate</td><td style="text-align:right">C4 低 kNN/PPR/CAST overlap</td><td style="text-align:right">no</td><td>新 pair 不等于有用分类证据</td></tr><tr><td>BEACON</td><td style="text-align:right">label agreement / margin diagnostics 更好</td><td style="text-align:right">no</td><td>pair purity/安全性不是 causal objective</td></tr><tr><td>SPECTRA</td><td style="text-align:right">effective-rank / boundary-retention 更好</td><td style="text-align:right">no</td><td>representation diagnostic 不是 task guarantee</td></tr><tr><td>PACER</td><td style="text-align:right">train/val probe margin delta 更好</td><td style="text-align:right">no</td><td>浅层 evaluator-alignment 也可被 random route / SupCon 超过</td></tr></tbody></table>
+<p>机制解释：这些方法都在优化“代理局部性质”：pair 选择、pair gate、embedding spectrum、probe margin。节点分类 accuracy 则由少量 train labels 能否稳定读出 class-granularity evidence 决定。若 SSL 目标改变的是全局几何或局部 margin，但没有让表示保留“哪些 ego evidence 对类别可判别”，就可能提升诊断而不提升 accuracy。</p>
+<h2 id="literature-landscape-snapshot">Literature Landscape Snapshot</h2>
+<p>本轮只做 proposal-level idea discovery，未下载新 PDF。当前本地文献和近期方向显示：</p>
+<ul><li>GRACE 类 node-node contrastive learning 仍是本项目 backbone，但其 all-node denominator 天然包含 false-negative 风险。</li><li>GraphMAE / masked graph autoencoding 说明 masked reconstruction 是强图 SSL 路线，但 reconstruction 很容易学习低层属性统计，不一定 class-discriminative。</li><li>近期 graph SSL 趋势包含 generative-contrastive hybrid、masked token/pretext、prototype/cluster granularity、label-efficient protocol selection。</li><li>本项目四个 no-go 迫使新 idea 不再修 node-node pairs，而应改变 SSL supervision object。</li></ul>
+<p>参考锚点与近邻风险：</p>
+<ul><li>GRACE: Deep Graph Contrastive Representation Learning, arXiv:2006.04131.</li><li>GraphMAE: Self-Supervised Masked Graph Autoencoders, arXiv:2205.10803.</li><li>GraphMAE2 / latent remask prediction、GCMAE / masked autoencoding + contrastive hybrid、SwAV / online clustering、prototype contrastive learning、LR-GCL 等都构成强近邻。</li><li>本项目实验页：CAST Pilot-A、BEACON BE-M0、SPECTRA SP-M0、PACER PA-CER-M0。</li></ul>
 <h2 id="ranked-ideas">Ranked Ideas</h2>
-<p>完整候选见 <code>idea-stage/IDEA_CANDIDATES_20260626_160634.md</code>。本轮生成 7 个候选：</p>
-<ol><li><strong>PACER-GCL / Probe-Aligned Calibration for Evaluator-Ready GCL</strong></li><li><strong>MARS-GCL / Masked Readout-Sufficient Pretraining</strong></li><li><strong>VALOR-GCL / Validation-Oriented Objective Selection</strong></li><li><strong>CLASSIC-GCL / Class-Basis SSL without Pair Mining</strong></li><li><strong>GRAIL-GCL / Granularity-Regularized Linear Readout Alignment</strong></li><li><strong>AUGUR-GCL / Readout-Calibrated Augmentation Risk</strong></li><li><strong>FALCON-GCL / Fold-Consistent SSL Objective Routing</strong></li></ol>
-<h2 id="selected-top1-pacer-gcl">Selected Top1: PACER-GCL</h2>
-<p><strong>One-sentence thesis</strong>：PACER-GCL uses train-label logistic probes to estimate which anchors are fragile for the downstream linear readout, then changes their SSL objective type from instance discrimination to masked logit-preserving consistency, avoiding pair mining while aligning pretraining with the actual node-classification evaluator.</p>
-<h3 id="core-mechanism">Core Mechanism</h3>
-<p>PACER has three stages:</p>
-<ol><li><strong>Warmup</strong>：train a normal GRACE encoder for a short fixed budget。</li><li><strong>Probe calibration</strong>：freeze warmup embeddings and train a Logistic Regression probe using train labels only。Validation labels can select fixed hyperparameters or early stopping, but cannot train the probe objective or thresholds used on test。</li><li><p><strong>Objective routing</strong>：</p>
-<ul><li>readout-stable anchors：continue normal GRACE objective；</li><li>readout-fragile anchors：switch to masked logit-preserving consistency。Two masked views must preserve the train-probe logit direction/margin instead of being pushed through all-node instance discrimination。</li></ul></li></ol>
-<p>Important：PACER does <strong>not</strong> select cross-node positives, does <strong>not</strong> smooth relations, and does <strong>not</strong> score unlabeled node pairs as same-class.</p>
-<h3 id="why-it-addresses-false-negatives">Why It Addresses False Negatives</h3>
-<p>False negatives hurt because instance discrimination may optimize away information that a small linear classifier needs. PACER does not try to identify false-negative pairs. It detects anchors for which the current representation is fragile under the downstream readout and changes the pretraining treatment for those anchors. This reframes false negatives as an <strong>objective-treatment mismatch</strong> problem rather than a pair-classification problem.</p>
-<h3 id="novelty-boundary">Novelty Boundary</h3>
-<p>PACER must not claim novelty for:</p>
-<ul><li>supervised contrastive learning；</li><li>semi-supervised GCL；</li><li>simple probe loss；</li><li>validation-based model selection；</li><li>sample reweighting。</li></ul>
-<p>The defensible boundary is narrower:</p>
-<blockquote><p>evaluator-aligned SSL objective routing for node-level GCL, where train-label probes decide objective type rather than pair labels, thresholds, relation smoothing, or scalar weights.</p></blockquote>
-<h2 id="minimal-smoke">Minimal Smoke</h2>
-<p><code>PA-CER-M0-001</code>：</p>
-<ul><li>Dataset：Cora seed0</li><li>Split：stratified random <code>1:1:8</code></li><li>Evaluator：frozen encoder + Logistic Regression train/val <code>C</code> selection</li><li>Status：smoke only</li></ul>
-<h3 id="variants">Variants</h3>
-<table><thead><tr><th>ID</th><th>Variant</th><th>Purpose</th></tr></thead><tbody><tr><td>P0</td><td>GRACE</td><td>baseline</td></tr><tr><td>P1</td><td>probe-only diagnostic</td><td>train probe on warmup, no encoder update</td></tr><tr><td>P2</td><td>mask-only consistency</td><td>masked consistency without probe routing</td></tr><tr><td>P3</td><td>PACER full</td><td>train-probe objective routing + masked logit-preserving consistency</td></tr><tr><td>P4</td><td>shuffled-label probe</td><td>leakage/story control</td></tr><tr><td>P5</td><td>random-probe route</td><td>route control</td></tr><tr><td>P6</td><td>scalar reweight control</td><td>prove not loss-only reweighting</td></tr><tr><td>P7</td><td>train-only CV probe</td><td>avoid val leakage and check stability</td></tr><tr><td>P8</td><td>supervised-contrastive small-label control</td><td>check whether PACER is merely SupCon/semi-supervised contrastive</td></tr></tbody></table>
-<h3 id="required-diagnostics">Required Diagnostics</h3>
-<ul><li>accuracy / val accuracy / selected <code>C</code></li><li>exact run command and clean/dirty provenance</li><li>train-probe margin delta</li><li>validation-probe margin delta</li><li>fragile-anchor fraction</li><li>route distribution by degree bucket</li><li>shuffled-label and random-route gaps</li><li>train-vs-val overfit gap</li></ul>
-<h2 id="decision">Decision</h2>
-<p><code>GO_TO_PACER_SMOKE_PLANNING_WITH_CAUTION</code></p>
-<p>This decision is not a performance claim. It only means PACER is the best next smoke candidate after CAST/BEACON/SPECTRA no-go. The method must be described as train-label-calibrated / semi-supervised GCL, not unsupervised GCL.</p>
+<h3 id="1-mega-gcl--masked-evidence-group-assignment--top1">1. MEGA-GCL / Masked Evidence Group Assignment — Top1</h3>
+<p><strong>Core mechanism</strong>：构建 label-free evidence tokenizer，把每个节点 ego graph 的证据分为 feature groups、structural role groups、local residual groups。训练时 mask 掉一部分 ego evidence，encoder 需要从剩余上下文预测 masked evidence 所属 group。InfoNCE 的 negatives 是 evidence groups/token corruptions，不是真实节点，因此绕开 node-node false negatives。</p>
+<p><strong>Why it addresses no-go evidence</strong>：MEGA 不再问“哪个节点是假负样本”，也不再优化 rank/margin proxy；它直接训练表示保留可被下游线性读出的 ego evidence。若 false-negative 修正失败是因为 node-node denominator 与少标签分类错配，MEGA 是 objective-level 替换。</p>
+<p><strong>Novelty risk</strong>：高。Reviewer 明确指出最近邻包括 GraphMAE、GraphMAE2、GCMAE、VQ/codebook autoencoder、SwAV/PCL/PGCL/LR-GCL。必须强调不是 reconstruction，不是 latent remask prediction，不是 MAE+CL stacking，不是 prototype assignment；MEGA 的 claim 只能是“masked ego evidence group discrimination 是否比这些强 control 更适合 label-scarce node classification”。</p>
+<p><strong>Feasibility</strong>：高。Cora seed0 smoke 可复用 GRACE encoder、split、LogReg evaluator。Evidence groups 可由无标签 feature quantization + degree/ego residual buckets 生成。</p>
+<p><strong>Minimum kill-smoke</strong>：</p>
+<ul><li>M0 Cora seed0 only。</li><li>Compare GRACE、GraphMAE-style reconstruction、GraphMAE2-lite latent/remask prediction、GCMAE-style MAE+CL hybrid、VQ/codebook autoencoder、SwAV/prototype assignment、MINT token-corruption contrast、MEGA feature-only、structure-only、degree-only、full、random/permuted groups、matched-parameter GRACE。</li><li>Output accuracy、evidence prediction accuracy train/val/test-free、effective rank、alignment/uniformity、class evidence separation diagnostic after training。</li><li>No test labels for threshold/pretext/evidence groups。</li></ul>
+<h3 id="2-granite-gcl--granularity-preserving-prototype-bottleneck">2. GRANITE-GCL / Granularity-Preserving Prototype Bottleneck</h3>
+<p><strong>Core mechanism</strong>：学习 balanced prototypes 作为 representation compression bottleneck，但不把同 prototype 节点当 positive。训练目标是 same-node view consistency + prototype usage balance + local evidence preservation，避免大簇吞掉少数类。</p>
+<p><strong>Novelty risk</strong>：中高。容易撞 PCL/cluster contrast/prototype SSL。差异点必须是 prototype 只作 bottleneck/augmentation constraint，不作 pseudo-positive mining。</p>
+<p><strong>Feasibility</strong>：中高。需要实现 prototype assignment、entropy balance、collapse guard。</p>
+<p><strong>Smoke</strong>：Cora seed0，GRACE / negative-free RR / prototype-as-positive control / GRANITE full / random prototypes / no-balance。</p>
+<h3 id="3-mint-gcl--masked-neighborhood-token-contrast">3. MINT-GCL / Masked Neighborhood Token Contrast</h3>
+<p><strong>Core mechanism</strong>：把 ego neighborhood 分成匿名 token 序列，如 degree bucket、feature hash、edge-drop residual、hop role；mask 后预测 token type/order。负样本是 token corruption，不是节点。</p>
+<p><strong>Novelty risk</strong>：中。与 masked token prediction、Graph-BERT/GraphMAE 类似。</p>
+<p><strong>Feasibility</strong>：高。比 MEGA 更简单，但可能创新性略弱。</p>
+<p><strong>Smoke</strong>：Cora seed0，feature-token only / structure-token only / combined / shuffled tokens。</p>
+<h3 id="4-focus-gcl--fold-consistent-objective-selection">4. FOCUS-GCL / Fold-Consistent Objective Selection</h3>
+<p><strong>Core mechanism</strong>：预注册多个 SSL objectives，用 train-only internal CV 或 validation 选择 objective / early stopping，不做 per-anchor routing，不把选择结果写回节点训练目标。</p>
+<p><strong>Novelty risk</strong>：高。可能只是 model selection / AutoML protocol。</p>
+<p><strong>Feasibility</strong>：高。工程上直接复用现有 runners。</p>
+<p><strong>Smoke</strong>：Cora seed0，比较 GRACE、GraphMAE-like、negative-free RR、MEGA；只允许 train/val 选 objective，然后报告 test。</p>
+<h3 id="5-edgecase-gcl--evidence-preserving-boundary-case-augmentation">5. EDGECASE-GCL / Evidence-Preserving Boundary Case Augmentation</h3>
+<p><strong>Core mechanism</strong>：不使用标签 probe，而用无标签 evidence dropout sensitivity 找到低度、属性稀疏、结构歧义节点；对这些节点构造 evidence-preserving views，让表示保持局部可判别证据。</p>
+<p><strong>Novelty risk</strong>：中高。可能被说成 augmentation policy tuning。</p>
+<p><strong>Feasibility</strong>：中。需要预注册 evidence sensitivity，避免变成 PACER 的无标签版本。</p>
+<p><strong>Smoke</strong>：Cora seed0，random augmentation / sensitivity augmentation / no-edge sensitivity / no-feature sensitivity。</p>
+<h3 id="6-classic-gcl--class-granularity-invariance-by-compression">6. CLASSIC-GCL / Class-Granularity Invariance by Compression</h3>
+<p><strong>Core mechanism</strong>：通过 multi-resolution compression 让 representation 不被单一大簇或过度 uniformity 主导；不使用 prototypes 作为 positives，只约束不同 resolution 下的信息保留。</p>
+<p><strong>Novelty risk</strong>：中。与 redundancy reduction / clustering / information bottleneck 接近。</p>
+<p><strong>Feasibility</strong>：中。需要 careful collapse diagnostics。</p>
+<p><strong>Smoke</strong>：Cora seed0，negative-free baseline / compression-only / multi-resolution full / random resolution。</p>
+<h3 id="7-split-mae-cl--split-stable-masked-contrastive-hybrid">7. SPLIT-MAE-CL / Split-Stable Masked Contrastive Hybrid</h3>
+<p><strong>Core mechanism</strong>：训练 masked objective 与 contrastive consistency 的 hybrid，但只保留在 train/val split-stability 上一致的 pretext。不是 per-anchor routing，而是 dataset-level objective selection。</p>
+<p><strong>Novelty risk</strong>：高。可能像 protocol engineering。</p>
+<p><strong>Feasibility</strong>：高。适合做 backup 或 meta-baseline，不建议 Top1。</p>
+<p><strong>Smoke</strong>：Cora seed0，fixed hybrid / selected hybrid / random selected hybrid / GraphMAE-like。</p>
+<h2 id="top1-rationale">Top1 Rationale</h2>
+<p>选择 MEGA-GCL 的原因：</p>
+<ol><li>它最大幅度避开四个 no-go 的共同失败结构：不再把真实节点作为 denominator negatives。</li><li>它仍然保持 GCL 风格：有 masked views、有 discriminative contrastive prediction、有 frozen encoder + LogReg 下游。</li><li>它比普通 GraphMAE 更贴近节点分类：目标不是重建原始属性，而是预测可压缩、可判别的 evidence group。</li><li>最小 smoke 很清楚：如果 MEGA full 不超过 GraphMAE-like reconstruction、random evidence、shuffled evidence target 和 GRACE，就直接 kill。</li></ol>
+<h2 id="fresh-reviewer-summary">Fresh Reviewer Summary</h2>
+<p>Fresh <code>gcl_scientific_reviewer</code> verdict：<code>REVISE</code>，confidence <code>0.74</code>。</p>
+<p>Reviewer 排名：</p>
+<ol><li>MEGA-GCL：Top1，值得 smoke，但 novelty risk 高。</li><li>EDGECASE-GCL：备选，但容易回到 GCA/RGCL augmentation。</li><li>MINT-GCL：更适合作 MEGA control。</li><li>GRANITE-GCL：prototype 近邻风险太高。</li><li>CLASSIC-GCL：弱备选。</li><li>SPLIT-MAE-CL：不建议主线。</li><li>FOCUS-GCL：只适合作 protocol baseline。</li></ol>
+<p>Reviewer 要求的关键 kill condition：MEGA full 必须超过 GRACE、GraphMAE-style、GCMAE-style、VQ/prototype control、MINT control 中的最强者；random/permuted group 不能接近 full；codebook usage 不能 collapse；degree-only/feature-only group 不能解释主要收益。否则直接 <code>KILL_MEGA_AS_GRAPHMAE_OR_PROTOTYPE_VARIANT</code>。</p>
+<h2 id="top1-decision">Top1 Decision</h2>
+<p><code>REVISE_TO_MEGA_CORA_KILL_SMOKE</code></p>
+<p>只允许 Cora seed0 kill-smoke。不得跳到 Pilot-A/B 或 formal。若 MEGA full 不能超过强 MAE/prototype/token controls，则 kill，不做小调。</p>
 
 <footer class="aris-footer">
   Generated by <a href="https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep/blob/main/skills/render-html/SKILL.md">ARIS <code>/render-html</code></a> ·
   source path <code>idea-stage/IDEA_REPORT.md</code> ·
-  SHA256 <code>a29be6e5b446</code> ·
-  generated at 2026-06-26 16:13 UTC.
+  SHA256 <code>ad468dbda3bf</code> ·
+  generated at 2026-06-26 16:48 UTC.
   This is a generated view — edit the source Markdown, then re-render.
 </footer>
 </main>

@@ -336,3 +336,15 @@
 | 2026-06-26 16:32 | /experiment-bridge | refine-logs/EXPERIMENT_TRACKER.md | experiment-bridge | fixed latest PACER no-go tracker |
 | 2026-06-26 16:32 | /research-wiki | research-wiki/ideas/pacer_gcl.md | wiki | PACER-GCL marked smoke_negative |
 | 2026-06-26 16:32 | /research-wiki | research-wiki/experiments/pacer_pa_cer_m0_001.md | wiki | PACER PA-CER-M0-001 experiment page |
+| 2026-06-26 16:40 | /idea-discovery | idea-stage/IDEA_REPORT_20260626_164000.md | idea-discovery | timestamped post-PACER MEGA-GCL idea report |
+| 2026-06-26 16:40 | /idea-discovery | idea-stage/IDEA_REPORT.md | idea-discovery | fixed latest idea report selecting MEGA-GCL kill-smoke |
+| 2026-06-26 16:40 | /idea-creator | idea-stage/IDEA_CANDIDATES_20260626_164000.md | idea-discovery | ranked seven post-PACER candidates |
+| 2026-06-26 16:40 | /idea-creator | idea-stage/IDEA_CANDIDATES.md | idea-discovery | fixed latest candidate list |
+| 2026-06-26 16:40 | /research-refine | refine-logs/FINAL_PROPOSAL_20260626_164000.md | refinement | timestamped MEGA-GCL proposal |
+| 2026-06-26 16:40 | /research-refine | refine-logs/FINAL_PROPOSAL.md | refinement | fixed latest MEGA-GCL proposal |
+| 2026-06-26 16:40 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260626_164000.md | experiment-planning | MEGA-GCL ME-M0-001 kill-smoke plan |
+| 2026-06-26 16:40 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | experiment-planning | fixed latest MEGA-GCL kill-smoke plan |
+| 2026-06-26 16:40 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_164000.md | experiment-planning | MEGA-GCL tracker |
+| 2026-06-26 16:40 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | fixed latest MEGA-GCL tracker |
+| 2026-06-26 16:40 | /research-wiki | research-wiki/ideas/mega_gcl.md | wiki | new MEGA-GCL idea page |
+| 2026-06-26 16:40 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of MEGA-GCL idea report |
