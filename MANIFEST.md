@@ -218,6 +218,18 @@
 | 2026-06-26 12:38 | manual-revise | results/summary/cpr_weight_smoke_Cora_seed0_20260626T123736Z_summary.md | smoke | CPR-IRIS weight smoke summary table |
 | 2026-06-26 12:38 | manual-revise | results/summary/cpr_weight_smoke_Cora_seed0_20260626T123736Z_summary.json | smoke | parseable CPR-IRIS smoke summary JSON |
 | 2026-06-26 12:38 | manual-revise | refine-logs/EXPERIMENT_RESULTS_20260626_123827.md | smoke | timestamped CPR-IRIS smoke result summary |
+| 2026-06-26 15:40 | /idea-discovery | idea-stage/IDEA_CANDIDATES_20260626_154039.md | idea-discovery | post CAST/BEACON no-go candidate ranking, selecting SPECTRA-GCL |
+| 2026-06-26 15:40 | /idea-discovery | idea-stage/IDEA_CANDIDATES.md | idea-discovery | fixed entry for latest post-pair-mining candidate ranking |
+| 2026-06-26 15:40 | /idea-discovery | idea-stage/IDEA_REPORT_20260626_154039.md | idea-discovery | timestamped SPECTRA-GCL idea discovery report |
+| 2026-06-26 15:40 | /idea-discovery | idea-stage/IDEA_REPORT.md | idea-discovery | fixed entry for latest SPECTRA-GCL idea report |
+| 2026-06-26 15:40 | /research-refine | refine-logs/FINAL_PROPOSAL_20260626_154039.md | refinement | timestamped SPECTRA-GCL final proposal |
+| 2026-06-26 15:40 | /research-refine | refine-logs/FINAL_PROPOSAL.md | refinement | fixed entry for latest SPECTRA-GCL final proposal |
+| 2026-06-26 15:40 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260626_154039.md | experiment-planning | timestamped SPECTRA-GCL SP-M0 smoke plan |
+| 2026-06-26 15:40 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | experiment-planning | fixed entry for latest SPECTRA-GCL smoke plan |
+| 2026-06-26 15:40 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_154039.md | experiment-planning | timestamped SPECTRA-GCL experiment tracker |
+| 2026-06-26 15:40 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | fixed entry for latest SPECTRA-GCL tracker |
+| 2026-06-26 15:40 | /research-wiki | research-wiki/ideas/spectra_gcl.md | wiki | proposed SPECTRA-GCL idea page after CAST/BEACON no-go |
+| 2026-06-26 15:40 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of SPECTRA-GCL idea report |
 | 2026-06-26 12:38 | manual-revise | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_123827.md | smoke | timestamped CPR-IRIS local code review |
 | 2026-06-26 12:47 | manual-revise | configs/iris_smoke.yaml | smoke | certified CAST closure variant I22 |
 | 2026-06-26 12:47 | manual-revise | scripts/run_iris_smoke.py | smoke | updated IRIS runner with positive/neutral closure diagnostics |
