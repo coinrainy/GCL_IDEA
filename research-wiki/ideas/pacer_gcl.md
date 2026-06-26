@@ -2,11 +2,11 @@
 
 - ID：`pacer_gcl`
 - 全称：Probe-Aligned Calibration for Evaluator-Ready Graph Contrastive Learning
-- 阶段：`proposed`
-- 当前决策：`GO_TO_PACER_SMOKE_PLANNING_WITH_CAUTION`
+- 阶段：`smoke_negative`
+- 当前决策：`KILL_OR_PIVOT_REQUIRED`
 - 创建时间：2026-06-26T16:06:34Z
 - 类型：train-label-calibrated / semi-supervised GCL for ordinary node classification
-- Claim status：proposal only；未实现、未跑 smoke/pilot/formal；不支持性能 claim。
+- Claim status：Cora seed0 smoke negative；不支持性能 claim。
 - Fresh review status：scientific reviewer `PIVOT`; experiment auditor `WARN`。
 
 ## Origin
@@ -50,8 +50,25 @@ PACER 不做 cross-node positive mining，不做 pair score，不做 relation sm
 - 额外 P8 supervised-contrastive small-label control。
 - 必须输出 accuracy、train/val probe margin delta、fragile-anchor fraction、route distribution、control gaps、exact run command、commit 与 dirty flag。
 
+## Smoke Result
+
+`PA-CER-M0-001` 已完成，Cora seed0 only。
+
+| ID | System | Test@best-val |
+|---|---|---:|
+| P0 | GRACE | 84.69 |
+| P3 | PACER full | 83.63 |
+| P4 | shuffled-label probe | 83.63 |
+| P5 | random-probe route | 84.92 |
+| P6 | scalar reweight control | 83.76 |
+| P8 | supervised-contrastive small-label control | 85.15 |
+
+P3 的 train/val probe margin delta 为正，但没有转化为 accuracy；P4 持平、P5/P8 反超，说明当前 train-label calibrated routing 叙事不成立。
+
 ## Decision
 
-`GO_TO_PACER_SMOKE_PLANNING_WITH_CAUTION`
+`KILL_OR_PIVOT_REQUIRED`
 
-Next allowed action：实现 Cora seed0 smoke。不得进入 Pilot-A/B 或 formal，直到 P3 PACER full 明确超过 GRACE、mask-only、shuffled/random/scalar controls。
+Triggered rules：`KILL_PACER`、`KILL_LABEL_CALIBRATION_STORY`、`KILL_ROUTING_STORY`、`KILL_OBJECTIVE_ROUTING_STORY`、`KILL_PACER_AS_UNNECESSARY`。
+
+Next allowed action：不要继续 PACER threshold/weight/routing 小调；若继续 false-negative GCL，应重新做 idea discovery，并显式吸收 PACER 失败证据。

@@ -322,3 +322,17 @@
 | 2026-06-26 16:06 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | fixed entry for latest PACER tracker |
 | 2026-06-26 16:06 | /research-wiki | research-wiki/ideas/pacer_gcl.md | wiki | proposed PACER-GCL idea page after fresh reviews |
 | 2026-06-26 16:06 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of PACER-GCL idea report |
+| 2026-06-26 16:32 | /experiment-bridge | configs/pacer_smoke.yaml | smoke | PACER-GCL PA-CER-M0-001 smoke config |
+| 2026-06-26 16:32 | /experiment-bridge | scripts/run_pacer_smoke.py | smoke | PACER-GCL PA-CER-M0-001 smoke runner |
+| 2026-06-26 16:32 | /experiment-bridge | scripts/run_grace_1_1_8.py | integrity | LogReg evaluator now reads test labels only after train/val C selection |
+| 2026-06-26 16:32 | /experiment-bridge | logs/pacer_smoke/pacer_smoke_Cora_seed0_20260626T163236Z/ | smoke | PA-CER-M0-001 full smoke training logs |
+| 2026-06-26 16:32 | /experiment-bridge | results/summary/pacer_smoke_Cora_seed0_20260626T163236Z_summary.md | smoke | PA-CER-M0-001 summary table |
+| 2026-06-26 16:32 | /experiment-bridge | results/summary/pacer_smoke_Cora_seed0_20260626T163236Z_summary.json | smoke | PA-CER-M0-001 parseable summary JSON |
+| 2026-06-26 16:32 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS_20260626_163236.md | experiment-bridge | PACER smoke negative result report |
+| 2026-06-26 16:32 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS.md | experiment-bridge | fixed latest PACER negative result report |
+| 2026-06-26 16:32 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_163236.md | experiment-bridge | fresh auditor review and fixes for PACER smoke |
+| 2026-06-26 16:32 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW.md | experiment-bridge | fixed latest PACER code review |
+| 2026-06-26 16:32 | /experiment-bridge | refine-logs/EXPERIMENT_TRACKER_20260626_163236.md | experiment-bridge | PACER tracker blocking PA-CER-M1 after no-go |
+| 2026-06-26 16:32 | /experiment-bridge | refine-logs/EXPERIMENT_TRACKER.md | experiment-bridge | fixed latest PACER no-go tracker |
+| 2026-06-26 16:32 | /research-wiki | research-wiki/ideas/pacer_gcl.md | wiki | PACER-GCL marked smoke_negative |
+| 2026-06-26 16:32 | /research-wiki | research-wiki/experiments/pacer_pa_cer_m0_001.md | wiki | PACER PA-CER-M0-001 experiment page |
