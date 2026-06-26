@@ -28,6 +28,11 @@ certificate:
   positive_budget: 10
   relation_smoothing_weight: 1.0
 
+diagnostics:
+  partial_corr_max_pairs: 250000
+  graph_diffusion_steps: 3
+  graph_diffusion_decay: 0.6
+
 variants:
   - id: C0
     name: GRACE
@@ -41,6 +46,9 @@ variants:
   - id: C3
     name: cast_candidate_pool_only
     family: cast_pool_only
+  - id: C6
+    name: ppr_diffusion_positive
+    family: graph_diffusion
   - id: C4
     name: latent_target_certificate
     family: latent_certificate

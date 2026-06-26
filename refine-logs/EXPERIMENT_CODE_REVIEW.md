@@ -1,10 +1,9 @@
-# Experiment Code Review: CAST Certificate Smoke
+# Experiment Code Review: CAST Certificate Pilot-A Diagnostics
 
-Fixed entry for the latest code and integrity review.
+Fixed entry for the latest experiment-bridge code review.
 
-- Timestamped source: `refine-logs/EXPERIMENT_CODE_REVIEW_20260626_135504.md`
-- Verdict: `PASS_AS_SMOKE_IMPLEMENTATION_WITH_POSITIVE_SIGNAL`
-- Method decision: `GO_TO_PILOT_PLANNING_WITH_CAUTION`
+- Timestamped source: `refine-logs/EXPERIMENT_CODE_REVIEW_20260626_141946.md`
+- Review type: executor-local integrity review
+- Decision: `GO_TO_PA_M1_WITH_RESOURCE_CAUTION`
 
-The implementation is adequate for Cora seed=0 smoke and produced a positive signal. Do not treat it as formal evidence.
-
+本轮完成 C6 graph diffusion / PPR-style control、PPR overlap、sampled partial-correlation diagnostics 的实现与 PA-M0-001b sanity 验证。该 sanity 不是 Pilot-A 主结果，不支持 formal 或性能 claim。

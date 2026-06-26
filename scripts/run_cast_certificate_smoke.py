@@ -15,6 +15,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 import yaml
+from sklearn.linear_model import LinearRegression
 from torch import nn
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -30,7 +31,6 @@ from run_grace_1_1_8 import (  # noqa: E402
 )
 from run_iris_smoke import (  # noqa: E402
     cosine_matrix,
-    dense_diffusion,
     false_negative_mass,
     label_agreement,
     node_degree,
@@ -143,6 +143,98 @@ def train_certificate(
     return model, last_loss
 
 
+def local_graph_diffusion_score(
+    edge_index: torch.Tensor,
+    num_nodes: int,
+    steps: int,
+    decay: float,
+) -> np.ndarray:
+    edges = edge_index.detach().cpu().numpy()
+    neighbors: list[set[int]] = [set() for _ in range(num_nodes)]
+    for src, dst in zip(edges[0].tolist(), edges[1].tolist()):
+        if src != dst:
+            neighbors[src].add(dst)
+            neighbors[dst].add(src)
+
+    score = np.full((num_nodes, num_nodes), -np.inf, dtype=np.float32)
+    for root in range(num_nodes):
+        visited = {root}
+        frontier = {root}
+        for hop in range(1, steps + 1):
+            nxt: set[int] = set()
+            for node in frontier:
+                nxt.update(neighbors[node])
+            nxt.difference_update(visited)
+            if not nxt:
+                break
+            value = decay ** (hop - 1)
+            for node in nxt:
+                score[root, node] = max(score[root, node], value)
+            visited.update(nxt)
+            frontier = nxt
+    np.fill_diagonal(score, -np.inf)
+    return score
+
+
+def sampled_partial_corr(
+    score: np.ndarray,
+    labels: np.ndarray,
+    controls: list[np.ndarray],
+    degree: np.ndarray,
+    max_pairs: int,
+    seed: int,
+) -> float:
+    """Estimate label-score partial correlation from finite certificate pairs only."""
+    rng = np.random.default_rng(seed + 9100)
+    rows = np.flatnonzero(np.isfinite(score).any(axis=1))
+    if rows.size == 0:
+        return float("nan")
+
+    src: list[int] = []
+    dst: list[int] = []
+    per_anchor = max(1, max_pairs // max(1, rows.size))
+    shuffled_rows = rng.permutation(rows)
+    for row in shuffled_rows:
+        finite = np.flatnonzero(np.isfinite(score[row]))
+        finite = finite[finite != row]
+        if finite.size == 0:
+            continue
+        take = min(per_anchor, finite.size, max_pairs - len(src))
+        picked = rng.choice(finite, size=take, replace=False)
+        src.extend([int(row)] * take)
+        dst.extend([int(x) for x in picked])
+        if len(src) >= max_pairs:
+            break
+
+    if len(src) < 3:
+        return float("nan")
+    src_arr = np.asarray(src, dtype=np.int64)
+    dst_arr = np.asarray(dst, dtype=np.int64)
+    y = (labels[src_arr] == labels[dst_arr]).astype(np.float32)
+    x = score[src_arr, dst_arr].astype(np.float32)
+    finite_mask = np.isfinite(x) & np.isfinite(y)
+    if finite_mask.sum() < 3:
+        return float("nan")
+
+    design_parts = []
+    for control in controls:
+        design_parts.append(control[src_arr, dst_arr].astype(np.float32))
+    design_parts.append(np.abs(degree[src_arr] - degree[dst_arr]).astype(np.float32))
+    design = np.stack(design_parts, axis=1)
+    finite_mask &= np.isfinite(design).all(axis=1)
+    if finite_mask.sum() < design.shape[1] + 3:
+        return float("nan")
+
+    x_fit = x[finite_mask]
+    y_fit = y[finite_mask]
+    design_fit = design[finite_mask]
+    x_res = x_fit - LinearRegression().fit(design_fit, x_fit).predict(design_fit)
+    y_res = y_fit - LinearRegression().fit(design_fit, y_fit).predict(design_fit)
+    if np.std(x_res) < 1e-8 or np.std(y_res) < 1e-8:
+        return float("nan")
+    return float(np.corrcoef(x_res, y_res)[0, 1])
+
+
 @torch.no_grad()
 def certificate_energy(
     model: EgoPredictor,
@@ -179,8 +271,8 @@ def summarize_markdown(results: list[dict[str, Any]], path: Path, dataset_name: 
         "",
         f"本文件为 {dataset_name} seed={seed} smoke/diagnostic 汇总，不支持 formal、SOTA 或 robust claim。",
         "",
-        "| ID | Variant | Test@best-val | Label agreement | FN mass after | kNN overlap | CAST overlap |",
-        "|---|---|---:|---:|---:|---:|---:|",
+        "| ID | Variant | Test@best-val | Label agreement | FN mass after | kNN overlap | PPR overlap | CAST overlap | Cert pcorr |",
+        "|---|---|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for result in results:
         diag = result["diagnostics"]
@@ -191,7 +283,9 @@ def summarize_markdown(results: list[dict[str, Any]], path: Path, dataset_name: 
             f"{diag['pair_label_agreement']:.4f} | "
             f"{diag['false_negative_mass']['same_label_negative_mass_after_closure']:.4f} | "
             f"{diag['overlap_with_knn_C1']:.4f} | "
-            f"{diag['overlap_with_cast_C2']:.4f} |"
+            f"{diag['overlap_with_ppr_C6']:.4f} | "
+            f"{diag['overlap_with_cast_C2']:.4f} | "
+            f"{diag['certificate_partial_corr_label_after_controls']:.4f} |"
         )
     path.write_text("\n".join(lines) + "\n")
 
@@ -219,6 +313,7 @@ def main() -> None:
     if args.epochs is not None:
         pretrain_cfg["num_epochs"] = int(args.epochs)
     cert_cfg = dict(config["certificate"])
+    diag_cfg = dict(config.get("diagnostics", {}))
     if args.cert_epochs is not None:
         cert_cfg["train_epochs"] = int(args.cert_epochs)
     eval_cfg = dict(base_config["logreg_eval"])
@@ -250,9 +345,14 @@ def main() -> None:
 
     labels = as_numpy(data.y).astype(int)
     features = as_numpy(data.x).astype(np.float32)
-    diffusion = dense_diffusion(data.edge_index, int(data.num_nodes), alpha=0.2, steps=3)
+    graph_sim = local_graph_diffusion_score(
+        data.edge_index,
+        int(data.num_nodes),
+        int(diag_cfg.get("graph_diffusion_steps", 3)),
+        float(diag_cfg.get("graph_diffusion_decay", 0.6)),
+    )
     degree = as_numpy(node_degree(data.edge_index, int(data.num_nodes))).astype(np.float32)
-    struct = structural_signature(features, degree, diffusion)
+    struct = structural_signature(features, degree, graph_sim)
     emb_sim = cosine_matrix(z)
     feat_sim = cosine_matrix(features)
     struct_sim = cosine_matrix(struct)
@@ -275,9 +375,18 @@ def main() -> None:
         "C1": topk_relations(emb_sim, budget),
         "C2": topk_relations(cast_score, budget),
         "C3": topk_relations(cast_score, budget, pool_mask),
+        "C6": topk_relations(graph_sim, budget),
         "C4": topk_relations(cert_score, budget, pool_mask),
         "C5": topk_relations(cert_plus_cast, budget, pool_mask),
     }
+    certificate_partial_corr = sampled_partial_corr(
+        cert_score,
+        labels,
+        [feat_sim, emb_sim, graph_sim],
+        degree,
+        int(diag_cfg.get("partial_corr_max_pairs", 250000)),
+        seed,
+    )
 
     results: list[dict[str, Any]] = []
     for variant in config["variants"]:
@@ -290,7 +399,9 @@ def main() -> None:
             **label_agreement(rel, labels),
             "false_negative_mass": false_negative_mass(z, labels, rel, tau=0.4),
             "overlap_with_knn_C1": relation_overlap(rel, relations["C1"]),
+            "overlap_with_ppr_C6": relation_overlap(rel, relations["C6"]),
             "overlap_with_cast_C2": relation_overlap(rel, relations["C2"]),
+            "certificate_partial_corr_label_after_controls": certificate_partial_corr,
             "label_diagnostics_are_offline_only": True,
         }
         if variant["id"] in {"C4", "C5"}:
@@ -319,6 +430,7 @@ def main() -> None:
             "dataset_num_classes": int(dataset.num_classes),
             "pretrain_config": pretrain_cfg,
             "certificate_config": cert_cfg,
+            "diagnostics_config": diag_cfg,
             "last_grace_loss": last_grace_loss,
             "last_certificate_loss": last_cert_loss,
             "evaluator_type": "logreg_val",
@@ -350,6 +462,7 @@ def main() -> None:
         "results": results,
         "bridge_decision_inputs": {
             "smoke_only": True,
+            "certificate_partial_corr_label_after_controls": certificate_partial_corr,
             "elapsed_sec": time.time() - start_all,
         },
     }

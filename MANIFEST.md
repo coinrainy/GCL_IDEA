@@ -247,3 +247,9 @@
 | 2026-06-26 14:10 | sanity-run | logs/cast_certificate/pa_m0_001_sanity_CiteSeer_seed0_20260626T140957Z/ | smoke | PA-M0-001 CiteSeer seed 0 sanity logs |
 | 2026-06-26 14:10 | sanity-run | results/summary/pa_m0_001_sanity_CiteSeer_seed0_20260626T140957Z_summary.md | smoke | PA-M0-001 sanity summary table |
 | 2026-06-26 14:10 | sanity-run | results/summary/pa_m0_001_sanity_CiteSeer_seed0_20260626T140957Z_summary.json | smoke | PA-M0-001 parseable sanity summary |
+| 2026-06-26 14:19 | /experiment-bridge | configs/cast_certificate_smoke.yaml | implementation | added C6 graph diffusion/PPR-style control and diagnostic config |
+| 2026-06-26 14:19 | /experiment-bridge | scripts/run_cast_certificate_smoke.py | implementation | added PPR overlap and sampled partial-correlation diagnostics for Pilot-A |
+| 2026-06-26 14:19 | /experiment-bridge | logs/cast_certificate/pa_m0_001_sanity_v3_CiteSeer_seed0_20260626T141904Z/ | smoke | PA-M0-001b diagnostic sanity logs |
+| 2026-06-26 14:19 | /experiment-bridge | results/summary/pa_m0_001_sanity_v3_CiteSeer_seed0_20260626T141904Z_summary.md | smoke | PA-M0-001b diagnostic sanity summary table |
+| 2026-06-26 14:19 | /experiment-bridge | results/summary/pa_m0_001_sanity_v3_CiteSeer_seed0_20260626T141904Z_summary.json | smoke | PA-M0-001b parseable diagnostic sanity summary |
+| 2026-06-26 14:19 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_141946.md | experiment-bridge | local code/integrity review for Pilot-A diagnostics |
