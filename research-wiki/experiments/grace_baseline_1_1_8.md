@@ -50,6 +50,41 @@
 | Amazon-Computers | `logreg_val` | development-partial | 6 | 84.06±0.96 | 86.8±0.32 | -2.74 |
 | Amazon-Photo | `logreg_val` | smoke | 1 | 92.35，2 epoch smoke only | 91.8±0.15 | 不可比 |
 
+## Amazon Candidate Search
+
+`2026-06-26T04:57:04Z` 按用户要求停止使用 GCA 参数，改为围绕 GRACE-like 配置进行受控小搜索。所有候选均只跑 seed0/seed1，不直接进入 10 seeds 主表。
+
+### Computers
+
+| Candidate | 变化 | Seeds | Accuracy / % | Verdict |
+| --- | --- | ---: | ---: | --- |
+| current_500 | 初始配置，`lr=0.001,tau=0.4,epochs=500` | 6 | 84.06±0.96 | 低于目标 |
+| tau02_500 | 仅 `tau=0.2` | 2 | 85.08±0.50 | 有效提升 |
+| tau02_lr0005_500 | `tau=0.2, lr=0.0005` | 2 | 85.83±0.22 | 最佳 500 epoch |
+| tau02_lr0005_1000 | `tau=0.2, lr=0.0005, epochs=1000` | 2 | 87.04±0.43 | 当前最佳，覆盖目标 |
+| tau02_lr002_500 | `tau=0.2, lr=0.002` | 2 | 84.58±0.43 | 淘汰 |
+| tau02_edge03_04_500 | `tau=0.2, drop_edge=(0.3,0.4)` | 2 | 85.43±0.35 | 不如最佳 |
+| aug_balanced_500 | `drop_edge=(0.3,0.4), drop_feature=(0.1,0.1)` | 2 | 82.59±0.16 | 淘汰 |
+| dim128_500 | `hidden=128, proj=128` | 2 | 81.95±0.57 | 淘汰 |
+| relu_500 | `activation=relu` | 2 | 82.42±0.33 | 淘汰 |
+| gca_500 | GCA 参数迁移 | 2 | 81.63±1.95 | 淘汰，不再使用 |
+
+当前 Computers 主配置已更新为 `lr=0.0005, hidden=256, proj=256, activation=prelu, drop_edge=(0.2,0.4), drop_feature=(0.1,0.0), tau=0.2, epochs=1000`。
+
+### Photo
+
+| Candidate | 变化 | Seeds | Accuracy / % | Verdict |
+| --- | --- | ---: | ---: | --- |
+| current_500 | 初始配置，`epochs=500` | 2 | 91.20±0.29 | 接近但低于目标 |
+| current_1000 | 初始配置延长到 `epochs=1000` | 2 | 91.95±0.32 | 当前最佳，覆盖目标 |
+| tau02_500 | 仅 `tau=0.2` | 2 | 91.08±0.16 | 无提升 |
+| aug_balanced_500 | `drop_edge=(0.3,0.4), drop_feature=(0.1,0.1)` | 2 | 91.00±0.12 | 无提升 |
+| dim128_500 | `hidden=128, proj=128` | 2 | 90.88±0.15 | 淘汰 |
+| relu_500 | `activation=relu` | 2 | 90.69±0.03 | 淘汰 |
+| gca_500 | GCA 参数迁移，仅 seed0 后中断 | 1 | 90.95 | 淘汰，不再使用 |
+
+当前 Photo 主配置已更新为 `lr=0.001, hidden=256, proj=256, activation=prelu, drop_edge=(0.2,0.4), drop_feature=(0.1,0.0), tau=0.4, epochs=1000`。
+
 ## 历史 PyTorch Linear 诊断结果
 
 | Dataset | Evaluator | Status | Seeds | 本地结果 / % | 截图目标 / % | Gap |
@@ -118,5 +153,6 @@ CUDA_VISIBLE_DEVICES=0 python scripts/run_grace_1_1_8.py --datasets Computers,Ph
 
 1. 增加对照协议 `official_grace_logreg_cv`，核对截图目标是否来自 GRACE 官方 10% label + sklearn CV 口径。
 2. 为 Amazon-Computers/Photo 建立明确的配置候选表，至少包括当前初始配置、GCA 官方 Amazon 参数迁移版、UGCL/近年论文若公开代码中的 GRACE baseline 参数。
-3. 对 PubMed/DBLP/Amazon 启动全量长跑前，先确认 evaluator 协议和 Amazon hyperparameters，否则会消耗数小时 GPU 但仍可能与目标不可比。
-4. 若目标必须严格复现截图数值，则将 `strict_project_1_1_8` 和 `paper_target_protocol` 分成两张表，禁止混用。
+3. 使用更新后的 Amazon 主配置启动 10 seeds development 验证；若 seed0/1 的优势不能保持，则回退到候选搜索阶段。
+4. 对 PubMed/DBLP 启动全量长跑前，先确认 evaluator 协议和 epoch/loss-batch-size 设置，否则会消耗数小时 GPU 但仍可能与目标不可比。
+5. 若目标必须严格复现截图数值，则将 `strict_project_1_1_8` 和 `paper_target_protocol` 分成两张表，禁止混用。

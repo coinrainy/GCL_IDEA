@@ -125,6 +125,96 @@ candidates:
       num_epochs: 500
       weight_decay: 0.00001
       loss_batch_size: 4096
+  - name: computers_tau02_1000
+    dataset: Computers
+    source: controlled_search_epoch_after_tau
+    hypothesis: "Best first-round direction was tau=0.2; test if longer pretraining closes the gap."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.2
+      num_epochs: 1000
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: computers_tau02_lr0005_500
+    dataset: Computers
+    source: controlled_search_lr_after_tau
+    hypothesis: "Lower LR may stabilize the improved tau=0.2 objective."
+    overrides:
+      learning_rate: 0.0005
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.2
+      num_epochs: 500
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: computers_tau02_lr0005_1000
+    dataset: Computers
+    source: controlled_search_epoch_lr_after_tau
+    hypothesis: "Best second-round 500-epoch candidate extended to 1000 epochs."
+    overrides:
+      learning_rate: 0.0005
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.2
+      num_epochs: 1000
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: computers_tau02_lr002_500
+    dataset: Computers
+    source: controlled_search_lr_after_tau
+    hypothesis: "Higher LR may converge faster for tau=0.2."
+    overrides:
+      learning_rate: 0.002
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.2
+      num_epochs: 500
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: computers_tau02_edge03_04_500
+    dataset: Computers
+    source: controlled_search_aug_after_tau
+    hypothesis: "Slightly stronger first-view edge drop with tau=0.2, without extra feature drop."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.3
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.2
+      num_epochs: 500
+      weight_decay: 0.00001
+      loss_batch_size: 4096
 
   # Photo: run a matching controlled set because Photo can saturate early and may prefer different tau/drop.
   - name: photo_current_500

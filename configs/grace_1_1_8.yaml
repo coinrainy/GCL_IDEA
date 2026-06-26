@@ -97,7 +97,7 @@ pretrain:
     loss_batch_size: 4096
   Computers:
     seed: 39788
-    learning_rate: 0.001
+    learning_rate: 0.0005
     num_hidden: 256
     num_proj_hidden: 256
     activation: prelu
@@ -106,8 +106,8 @@ pretrain:
     drop_edge_rate_2: 0.4
     drop_feature_rate_1: 0.1
     drop_feature_rate_2: 0.0
-    tau: 0.4
-    num_epochs: 500
+    tau: 0.2
+    num_epochs: 1000
     weight_decay: 0.00001
     loss_batch_size: 4096
   Photo:
@@ -122,7 +122,7 @@ pretrain:
     drop_feature_rate_1: 0.1
     drop_feature_rate_2: 0.0
     tau: 0.4
-    num_epochs: 500
+    num_epochs: 1000
     weight_decay: 0.00001
     loss_batch_size: 4096
 
