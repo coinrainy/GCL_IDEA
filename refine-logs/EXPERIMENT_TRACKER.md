@@ -11,6 +11,7 @@
 | DSR-A0 | smoke | Cora | `1:1:8` | 0 | A0,A2,A3,A4,A5,A9 | DONE_REVISE | no NaN, leakage diagnostic recorded, but DSR-full lacks mechanism advantage |
 | DSR-A1 | audit-smoke | Cora | `1:1:8` | 0 | A0,A2,A3,A4,A4b,A5,A5a,A5b,A5c,A9 | DONE_PIVOT_REQUIRED | residual branch ineffective; fair no-firewall and param-matched single-head beat A9 |
 | DSR-A2 | fix-audit-smoke | Cora | `1:1:8` | 0 | A0,A2,A3,A4,A4b,A5,A5a,A5b,A5c,A9 | DONE_REVISE_IMPLEMENTATION | fixed VICReg raw-p loss and h-level evaluation; still no formal support |
+| DSR-A3 | experiment-bridge | Cora | `1:1:8` | 0 | collected DSR-A2 results | DONE_BLOCKED | bridge collected sanity/fix-audit results; full deployment blocked |
 | DSR-B1 | pilot | Cora | `1:1:8` | 0,1,2 | A0,A1,A2,A3,A4,A5,A6,A7,A9,A11 | TODO | mechanism screening |
 | DSR-B2 | pilot | CiteSeer | `1:1:8` | 0,1,2 | A0,A1,A2,A3,A4,A5,A6,A7,A9,A11 | TODO | mechanism screening |
 | DSR-B3 | pilot | PubMed | `1:1:8` | 0,1,2 | A0,A1,A2,A3,A4,A5,A6,A7,A9,A11 | TODO | mechanism screening |
@@ -56,4 +57,10 @@
   - logs: `logs/dsr_smoke/dsr_fix_audit_smoke_Cora_seed0_20260626T102655Z/`
 - Implementation fixes: VICReg now uses raw projected `p_sem`; InfoNCE normalizes internally; DSR evaluation logs `h_sem/h_res/h_concat` and `z_sem/z_res/z_concat`; main DSR audit evaluation uses `h_concat`; DSR low-pass/residual input can symmetrize dropped edges via `make_undirected_after_dropout` and this run enabled it.
 - Because these formula/evaluation mismatches were found, the previous `PIVOT_REQUIRED` is temporarily downgraded to `REVISE_IMPLEMENTATION_BEFORE_PIVOT`. The fixed Cora seed=0 result still does not justify formal: A9 `h_concat=69.05`, A3 `h_res=29.94`, A5b `76.57`, A5c `78.09`, A4b `81.96`, A0 GRACE `84.78`.
+- Experiment-bridge collection result exists:
+  - results: `refine-logs/EXPERIMENT_RESULTS.md`
+  - timestamped results: `refine-logs/EXPERIMENT_RESULTS_20260626_104230.md`
+  - code review: `refine-logs/EXPERIMENT_CODE_REVIEW.md`
+  - timestamped code review: `refine-logs/EXPERIMENT_CODE_REVIEW_20260626_104230.md`
+  - bridge decision: `DONE_BLOCKED`; no new GPU run, no Pilot-A/B, no formal.
 - Formal remains blocked until reviewer and experiment-audit gates pass.

@@ -88,3 +88,7 @@
 | 2026-06-26 10:26 | fix-audit-smoke | results/raw/Cora/DSR_GCL_SMOKE/dsr_fix_audit_smoke_Cora_seed0_20260626T102655Z/ | fix-audit-smoke | raw JSON for corrected DSR Cora seed 0 audit-smoke |
 | 2026-06-26 10:26 | fix-audit-smoke | logs/dsr_smoke/dsr_fix_audit_smoke_Cora_seed0_20260626T102655Z/ | fix-audit-smoke | JSONL logs for corrected DSR Cora seed 0 audit-smoke |
 | 2026-06-26 10:26 | fix-audit-smoke | results/summary/dsr_fix_audit_smoke_Cora_seed0_20260626T102655Z_summary.md | fix-audit-smoke | corrected DSR audit-smoke summary with h/z embedding-level table |
+| 2026-06-26 10:42 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_104230.md | experiment-bridge | local-only bridge code review for DSR fix-audit-smoke |
+| 2026-06-26 10:42 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW.md | experiment-bridge | fixed entry for latest DSR experiment bridge code review |
+| 2026-06-26 10:42 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS_20260626_104230.md | experiment-bridge | timestamped bridge result summary collecting DSR fix-audit-smoke |
+| 2026-06-26 10:42 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS.md | experiment-bridge | fixed entry for latest DSR experiment bridge results |
