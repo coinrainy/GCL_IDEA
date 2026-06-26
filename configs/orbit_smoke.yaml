@@ -1,0 +1,118 @@
+meta:
+  method: ORBIT-GCL
+  smoke_id: OR-M0-001
+  status_default: smoke
+  split_type: stratified_random_1_1_8
+  evaluator: frozen_encoder_logistic_regression
+  method_status: operator-response graph SSL
+  note: >
+    Cora seed0 kill-smoke only. Operator-response targets are generated without
+    labels. Test labels are used only once by the frozen Logistic Regression
+    evaluator after train/val C selection.
+
+dataset: Cora
+seed: 0
+
+pretrain_overrides:
+  Cora:
+    num_epochs: 200
+
+orbit:
+  learning_rate: 0.0005
+  weight_decay: 0.00001
+  edge_drop_rate: 0.2
+  feature_drop_rate: 0.25
+  projector_hidden_dim: 128
+  basis_dim: 64
+  raw_response_dim: 512
+  decoder_hidden_dim: 128
+  matched_grace_proj_hidden: 1024
+  lambda_recon: 1.0
+  lambda_contrast: 0.25
+  lambda_target: 1.0
+  lambda_aux: 0.25
+  max_grad_norm: 5.0
+  diagnostics_max_pairs: 200000
+  operator_bank:
+    feature_frequency_mask_rate: 0.25
+    edge_rewire_rate: 0.15
+    diffusion_alpha: 0.35
+    ego_crop_drop_rate: 0.25
+    positional_scale: 0.05
+
+variants:
+  - id: O0
+    name: GRACE
+    type: grace
+  - id: O1
+    name: matched-parameter GRACE
+    type: grace_matched
+  - id: O2
+    name: GraphMAE2-lite latent target
+    type: graphmae2_lite
+  - id: O3
+    name: GCMAE-style MAE+CL hybrid
+    type: gcmae_hybrid
+  - id: O4
+    name: Graph-JEPA latent target
+    type: graph_jepa
+  - id: O5
+    name: TTER-style operator-id prediction
+    type: operator_id
+  - id: O6
+    name: D-SLA-style discrepancy regression
+    type: discrepancy_regression
+  - id: O7
+    name: same-node response control
+    type: same_node_response
+  - id: O8
+    name: ORBIT response-magnitude-only
+    type: response_magnitude
+  - id: O9
+    name: ORBIT degree/feature-only response
+    type: degree_feature_shortcut
+  - id: O10
+    name: random operator labels
+    type: random_operator_labels
+  - id: O11
+    name: shuffled response basis
+    type: shuffled_response_basis
+  - id: O12
+    name: random teacher response basis
+    type: random_teacher_basis
+  - id: O13
+    name: no-SVD raw response
+    type: raw_response
+  - id: O14
+    name: ORBIT full minimal
+    type: orbit_full
+
+logreg_eval:
+  solver: liblinear
+  penalty: l2
+  tol: 0.0001
+  max_iter: 5000
+  fit_intercept: true
+  class_weight:
+  normalize_embeddings: true
+  c_values:
+    - 0.0009765625
+    - 0.001953125
+    - 0.00390625
+    - 0.0078125
+    - 0.015625
+    - 0.03125
+    - 0.0625
+    - 0.125
+    - 0.25
+    - 0.5
+    - 1.0
+    - 2.0
+    - 4.0
+    - 8.0
+    - 16.0
+    - 32.0
+    - 64.0
+    - 128.0
+    - 256.0
+    - 512.0
