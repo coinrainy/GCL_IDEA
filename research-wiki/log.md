@@ -51,8 +51,12 @@ _Append-only timeline._
 - `2026-06-26T12:16:00Z` Rendered `idea-stage/IDEA_REPORT.html` from the CAST-GCL Markdown report. HTML is a generated reading view only; Markdown remains canonical and no claim status changed.
 - `2026-06-26T12:35:00Z` Fresh `gcl_scientific_reviewer` reviewed CAST-GCL and returned `REVISE`, novelty `6.8/10`, confidence `0.72`. Reviewer recommended keeping CAST active as the current best candidate rather than downgrading to WILLOW, but only after tightening transport definitions and proving the method is not kNN/PPR/BMM/candidate-pool positive mining. Added `idea-stage/CAST_GCL_NOVELTY_CHECK.md` and `refine-logs/CAST_MECHANISM_SPEC.md`; updated proposal, smoke controls, tracker, wiki, and decision to `REVISE_TO_CAST_REVISED_PRE_SMOKE`. No code, smoke, pilot, formal result, or performance claim was produced.
 - `2026-06-26T12:36:00Z` Rendered `idea-stage/IDEA_REPORT.html` from the revised CAST-GCL Markdown report. HTML is a generated reading view only; Markdown remains canonical and no claim status changed.
+- `2026-06-26T13:05:00Z` Fresh `gcl_scientific_reviewer` compared CAST-GCL with IRIS-GCL. Verdict: `SWITCH_TO_IRIS`; CAST novelty `6.5/10`, IRIS novelty `7.2/10`, IRIS confidence `0.61`. Reviewer judged CAST more mature but too close to positive mining, while IRIS has a stronger novelty hook: cross-node interventional response-function equivalence under anti-proximity. Updated active best idea to IRIS-GCL and demoted CAST to mandatory control. Decision: `SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE`. No code, smoke, pilot, formal result, or performance claim was produced.
+- `2026-06-26T13:06:00Z` Rendered `idea-stage/IDEA_REPORT.html` from the IRIS-GCL Markdown report. HTML is a generated reading view only; Markdown remains canonical and no claim status changed.
 - `2026-06-26T11:36:56Z` upsert_idea: added idea:willow_gcl [stage=proposed outcome=pending]
 - `2026-06-26T11:36:56Z` upsert_idea: updated idea:siva_gcl [stage=archived outcome=unknown]
 - `2026-06-26T11:45:03Z` upsert_idea: updated idea:willow_gcl [stage=archived outcome=unknown]
 - `2026-06-26T11:45:03Z` upsert_idea: added idea:cast_gcl [stage=proposed outcome=pending]
 - `2026-06-26T11:52:40Z` upsert_idea: updated idea:cast_gcl [stage=proposed outcome=pending]
+- `2026-06-26T12:03:10Z` upsert_idea: updated idea:cast_gcl [stage=archived outcome=unknown]
+- `2026-06-26T12:03:10Z` upsert_idea: added idea:iris_gcl [stage=proposed outcome=pending]

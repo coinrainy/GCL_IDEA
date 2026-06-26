@@ -177,3 +177,19 @@
 | 2026-06-26 12:35 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_123500.md | experiment-planning | timestamped revised CAST tracker |
 | 2026-06-26 12:35 | /research-wiki | research-wiki/ideas/cast_gcl.md | wiki | updated CAST idea page after fresh reviewer verdict |
 | 2026-06-26 12:36 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of revised CAST-GCL idea report |
+| 2026-06-26 13:05 | /idea-discovery | idea-stage/IRIS_GCL_CHALLENGER_20260626_130500.md | idea-discovery | IRIS challenger beyond CAST for best-idea selection |
+| 2026-06-26 13:05 | /idea-discovery | literature/IRIS_PRIOR_BOUNDARY_20260626_130500.md | idea-discovery | timestamped IRIS prior boundary and collision map |
+| 2026-06-26 13:05 | /idea-discovery | literature/IRIS_PRIOR_BOUNDARY.md | idea-discovery | latest IRIS prior boundary |
+| 2026-06-26 13:05 | /novelty-check | idea-stage/IRIS_VS_CAST_REVIEW_20260626_130500.md | novelty-check | timestamped CAST-vs-IRIS fresh reviewer comparison |
+| 2026-06-26 13:05 | /novelty-check | idea-stage/IRIS_VS_CAST_REVIEW.md | novelty-check | latest CAST-vs-IRIS fresh reviewer comparison |
+| 2026-06-26 13:05 | /idea-discovery | idea-stage/IDEA_REPORT_20260626_130500.md | idea-discovery | timestamped IRIS idea discovery report |
+| 2026-06-26 13:05 | /idea-discovery | idea-stage/IDEA_REPORT.md | idea-discovery | latest IRIS idea discovery report |
+| 2026-06-26 13:05 | /research-refine-pipeline | refine-logs/FINAL_PROPOSAL_20260626_130500.md | refinement | timestamped IRIS final proposal |
+| 2026-06-26 13:05 | /research-refine-pipeline | refine-logs/FINAL_PROPOSAL.md | refinement | latest IRIS final proposal |
+| 2026-06-26 13:05 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260626_130500.md | experiment-planning | timestamped IRIS smoke plan |
+| 2026-06-26 13:05 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | experiment-planning | latest IRIS smoke plan |
+| 2026-06-26 13:05 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_130500.md | experiment-planning | timestamped IRIS tracker |
+| 2026-06-26 13:05 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | latest IRIS tracker |
+| 2026-06-26 13:05 | /research-wiki | research-wiki/ideas/iris_gcl.md | wiki | proposed IRIS active best idea page |
+| 2026-06-26 13:05 | /research-wiki | research-wiki/ideas/cast_gcl.md | wiki | CAST demoted to mandatory IRIS control |
+| 2026-06-26 13:06 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of IRIS-GCL idea report |

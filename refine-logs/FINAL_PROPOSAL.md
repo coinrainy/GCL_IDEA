@@ -1,138 +1,113 @@
-# Research Proposal: CAST-GCL
+# Research Proposal: IRIS-GCL
 
 ## Problem Anchor
 
-- **Bottom-line problem**：节点级 GCL 把大量真实节点作为 negatives，但其中一部分可能与 anchor 共享下游类别语义，形成 false negatives。
-- **Must-solve bottleneck**：不能只改 loss 权重，也不能只生成同一 anchor 的 harder positive view；需要构造可验证的跨节点 semantic relation。
-- **Core mechanism**：frozen latent ego target-prediction certificate + mixed-ego cross-node semantic transport + positive / neutral closure。
-- **Non-goals**：不使用 test labels；不使用 class-aware counterfactual gradients；不生成 hard negatives 作为主贡献；不把 smoke 写成性能 claim。
+- **Bottom-line problem**：节点级 GCL 会把潜在同类节点当 negatives；仅靠相似度、近邻或 loss weighting 容易把 false-negative 发现退化为 positive mining。
+- **Must-solve bottleneck**：需要一个不依赖 pair proximity 的 semantic relation criterion。
+- **Core mechanism**：interventional response fingerprint + anti-proximity response-invariant sibling discovery + multi-positive / neutral closure。
+- **Non-goals**：不改 InfoNCE denominator 作为主贡献；不使用 test labels；不使用 learned augmentation policy；不把 smoke 写成性能 claim。
 - **Constraints**：首轮只做 Cora seed=0 smoke，`1:1:8` split，frozen encoder + Logistic Regression evaluator。
 
 ## Method Thesis
 
-**One-sentence thesis**：CAST-GCL treats false negatives as missing semantic transport relations and constructs a certified cross-node positive closure before contrastive training.
+**One-sentence thesis**：IRIS-GCL discovers false negatives by identifying nodes with invariant response functions under a fixed intervention battery, while enforcing anti-proximity to avoid ordinary kNN/PPR/embedding positive mining.
 
 ## Proposed Method
 
-### 1. Latent Ego Target-Prediction Certificate
+### 1. Fixed Intervention Battery
 
-Train a WILLOW-style certificate, then freeze it before relation construction:
+Define a label-free intervention set `Omega` before training:
 
-```text
-h_c      = E_online(context_ego_i)
-h_t^k    = E_target(masked_target_ego_i^k)
-pred_t^k = P(h_c, pos_k)
-cert_error = sum_k || pred_t^k - stopgrad(h_t^k) ||_2^2
-```
+- spectral high-frequency perturbation；
+- low-pass / diffusion-scale perturbation；
+- ego edge drop / keep；
+- feature group mask；
+- neighbor role swap；
+- degree-bin preserving ego rewiring。
 
-The certificate is only used to score semantic stability of interventions and transport paths. During smoke, closure is precomputed offline and not updated with the contrastive encoder.
+These interventions simulate environmental shifts. They are fixed, not learned.
 
-### 2. Candidate Pool
+### 2. Frozen Warm-up Encoder
 
-For each anchor `i`, create a small candidate pool from label-free signals:
+Warm up a base encoder `E` with GRACE or another fixed GCL baseline. Freeze it for response signature construction.
 
-- feature kNN；
-- diffusion / personalized PageRank neighborhood；
-- current frozen-pretrain embedding kNN；
-- random budget-matched candidates。
+### 3. Minimal Response Fingerprint
 
-No label or test-set information is used. Candidate pools provide candidates only; they cannot decide positives without certificate scoring.
-
-### 3. Legal Intervention Operators
-
-All operators act inside a 1-hop or 2-hop ego context under a fixed budget:
-
-| Operator | Definition | Cost |
-|---|---|---:|
-| `feature_replace(i -> j, S)` | replace anchor-ego feature dimensions `S` with candidate-ego feature statistics | `|S| / d` |
-| `edge_keep(i -> j, R)` | keep anchor edges whose endpoint role also appears in candidate ego role set `R` | dropped edge ratio |
-| `neighbor_substitute(i -> j, q)` | substitute at most `q` anchor neighbors with candidate neighbors matched by degree bin and feature cosine bin | `q / deg(i)` |
-| `ego_mix(i, j, alpha)` | convex mix of normalized ego feature summaries for certificate query only | `alpha` |
-
-### 4. Semantic Transport Energy
-
-For candidate `j`, search a short path of legal local interventions:
+For node `i` and intervention `omega`:
 
 ```text
-i = u_0 -> u_1 -> ... -> u_L = j
-```
-
-For a step `u -> v`, compute certificate error on a mixed ego query:
-
-```text
-cert_error(u -> v, a)
-  = mean_k || P(E_context(ego_mix(u, v, a)), pos_k)
-              - stopgrad(E_target(target_ego(v)^k)) ||_2^2
-```
-
-Transport energy:
-
-```text
-E_transport(i, j)
-  = min_path sum_l [
-      cert_error(u_l -> u_{l+1})
-      + lambda_edit * edit_cost(u_l, u_{l+1})
-      + lambda_anchor * anchor_drift(u_l, i)
+r_i(omega)
+  = [
+      delta z_i(omega),
+      delta local_smoothness_i(omega),
+      delta ego_prediction_consistency_i(omega)
     ]
 ```
 
-Smoke uses `L=1` and `L=2` greedy paths only, candidate pool size `K=20`, and max transported positives per anchor `B=5`.
+The reviewer explicitly required removing `positive-gradient proxy` from the minimal fingerprint to avoid circular loss-dynamics mining.
 
-### 5. Positive Closure
-
-Define:
+Construct:
 
 ```text
-P_i = {j: E_transport(i, j) <= tau_transport}
+R_i = concat_{omega in Omega} whiten(r_i(omega))
 ```
 
-Training relation:
+### 4. Anti-proximity Response Siblings
 
-- same-node augmented views remain positives；
-- `j in P_i` becomes cross-node positive；
-- candidates within `tau_transport * [1.0, 1.15]` become neutral diagnostics；
-- remaining nodes are standard negatives。
+Node `j` becomes an IRIS sibling for anchor `i` if:
 
-The main contribution is the relation constructor, not a new contrastive loss.
+```text
+sim_response(R_i, R_j) >= tau_response
+and sim_embedding(z_i, z_j) <= tau_embed_near
+and graph_proximity(i, j) <= tau_graph_near
+```
+
+The anti-proximity constraints are mandatory. They force IRIS to search beyond ordinary feature/embedding/PPR neighbors.
+
+### 5. Contrastive Relation Closure
+
+- same-node augmentations remain positives；
+- IRIS siblings become cross-node positives；
+- high response uncertainty nodes become neutral/excluded；
+- all others remain ordinary negatives。
+
+The contribution is relation discovery, not a new contrastive objective.
 
 ## Required Controls
 
 | System | Purpose |
 |---|---|
-| GRACE | base GCL reference |
-| WILLOW same-node | certificate without cross-node closure |
-| kNN multi-positive | simple positive mining control |
-| PMGCL-lite/BMM | probabilistic positive mining control |
-| PPR/diffusion positives | graph-proximity positive control |
-| candidate-pool-only | candidate source without certificate |
-| similarity-only energy | removes certificate and edit path |
-| edit-cost-only / anchor-drift-only | energy component controls |
-| certificate-shuffled CAST | semantic certificate control |
-| random transport budget-matched | search budget control |
-| CAST one-step / two-step | main variants |
+| GRACE | base reference |
+| kNN multi-positive | proximity mining |
+| PPR/diffusion positives | graph proximity mining |
+| PMGCL-lite/BMM | probabilistic positive mining |
+| CAST one-step | strongest previous challenger/control |
+| IRIS full | main candidate |
+| IRIS response-shuffled | response semantic test |
+| IRIS no anti-proximity | collapse-to-proximity test |
+| IRIS structural-signature-only | role-equivalence test |
+| IRIS no gradient-proxy | circularity test |
 
-## Metrics
+## Diagnostics
 
-- Frozen Logistic Regression accuracy。
-- transported positives per anchor。
-- offline label agreement of transported positives。
-- transport energy vs label agreement correlation。
-- false-negative repulsion mass before/after closure。
-- positive gradient norm。
-- search time and candidate budget。
+- response sibling count per anchor。
+- anti-proximity retained coverage。
+- offline label agreement of response siblings。
+- partial correlation between response similarity and label agreement after controlling feature similarity, embedding similarity, PPR proximity, and degree。
+- false-negative repulsion mass。
+- LogReg accuracy。
+- runtime and candidate budget。
 
 ## Kill Rules
 
-- kNN multi-positive matches CAST：transport certificate unnecessary。
-- PMGCL-lite/BMM matches CAST：CAST reduces to ordinary positive mining。
-- PPR/diffusion positives match CAST：CAST reduces to graph-proximity positives。
-- candidate-pool-only or similarity-only matches CAST：certificate/path adds no value。
-- certificate-shuffled CAST matches CAST：certificate has no semantic content。
-- random transport matches CAST：path search is not meaningful。
-- transport energy is uncorrelated with offline label agreement：kill。
-- WILLOW same-node matches CAST：cross-node closure unnecessary。
+- response-shuffled matches IRIS：kill。
+- structural-signature-only matches IRIS：kill or major pivot。
+- no anti-proximity beats full IRIS：IRIS collapses to proximity mining。
+- response similarity has no partial correlation with label agreement after controlling feature/embedding/PPR/degree：kill。
+- CAST matches IRIS on label agreement, false-negative repulsion mass, and accuracy with lower cost：do not switch blindly; reconsider CAST or pivot。
+- gains only come from more positives, more compute, or broader candidate budget：invalid。
 
 ## Current Verdict
 
-`REVISE_TO_CAST_REVISED_PRE_SMOKE`。  
-这是 proposal evidence，不是实验结果。下一步只允许最小 smoke；不允许 formal 或性能 claim。
+`SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE`。  
+IRIS is the current best idea / best bet for sufficient innovation, but it has no smoke or formal evidence. Next step is minimal Cora seed=0 smoke only.

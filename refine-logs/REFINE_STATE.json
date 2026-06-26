@@ -1,11 +1,11 @@
 {
-  "phase": "revised_pre_smoke",
-  "round": 3,
-  "agent_id": "019f03c2-0ebb-7171-b6fd-8ce6aa611c12",
-  "last_score": 6.8,
-  "last_verdict": "REVISE",
+  "phase": "best_idea_selected_pre_smoke",
+  "round": 5,
+  "agent_id": "019f03cb-446c-7ff2-8660-d0dde77801f9",
+  "last_score": 7.2,
+  "last_verdict": "SWITCH_TO_IRIS",
   "status": "completed",
-  "timestamp": "2026-06-26T12:35:00Z",
-  "active_idea": "CAST-GCL",
-  "decision": "REVISE_TO_CAST_REVISED_PRE_SMOKE"
+  "timestamp": "2026-06-26T13:05:00Z",
+  "active_idea": "IRIS-GCL",
+  "decision": "SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE"
 }

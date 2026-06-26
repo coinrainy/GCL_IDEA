@@ -2,25 +2,25 @@
 type: idea
 node_id: idea:cast_gcl
 title: "CAST-GCL: Certificate-guided Semantic Transport"
-stage: proposed
-outcome: pending
-added: 2026-06-26T11:52:40Z
+stage: archived
+outcome: unknown
+added: 2026-06-26T12:03:10Z
 based_on: []
 target_gaps: ["gap:FN-G2", "gap:FN-G3", "gap:FN-G4", "gap:FN-G8"]
-tags: ["gcl", "false-negative", "node-classification", "cast", "semantic-transport", "positive-closure", "revised-pre-smoke"]
+tags: ["gcl", "false-negative", "node-classification", "cast", "semantic-transport", "control", "archived"]
 ---
 
 # CAST-GCL: Certificate-guided Semantic Transport
 
-**stage:** `proposed`  ·  **outcome:** `pending`
+**stage:** `archived`  ·  **outcome:** `unknown`
 
-Current best non-loss false-negative GCL candidate after fresh review; revised pre-smoke cross-node semantic transport closure.
+Demoted to mandatory IRIS control after fresh comparison review; mature but too close to positive mining.
 
 ## Thesis
-False negatives are missing semantic transport relations; a frozen latent certificate can identify real nodes reachable by low-energy mixed-ego interventions and move them into multi-positive or neutral closure.
+CAST treats false negatives as low-energy semantic transport positives, but is now retained as a mandatory control for IRIS.
 
 ## Key risks
-Fresh reviewer verdict REVISE, novelty 6.8/10. CAST must prove transport energy is not kNN/PPR/BMM/candidate-pool positive mining; full controls are mandatory before any pilot.
+Fresh comparison reviewer scored CAST novelty 6.5/10 and judged prior collision with kNN/PPR/BMM positive mining too high.
 
 ## Connections
 _Edges are recorded in `graph/edges.jsonl`; summarize here for human readers._

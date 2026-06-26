@@ -1,8 +1,8 @@
-# Experiment Plan: CAST-GCL Revised Smoke
+# Experiment Plan: IRIS-GCL Smoke
 
 ## Status
 
-`REVISE_TO_CAST_REVISED_PRE_SMOKE`
+`SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE`
 
 本计划只定义最小 smoke。不得把 smoke 结果写成 formal、SOTA、robust 或 comprehensive。
 
@@ -18,46 +18,45 @@
 
 | ID | System | Purpose |
 |---|---|---|
-| C0 | GRACE | base contrastive reference |
-| C1 | WILLOW same-node certificate | certificate without cross-node closure |
-| C2 | kNN multi-positive | simple positive mining control |
-| C3 | PMGCL-lite/BMM positive mining | probabilistic mining control |
-| C4 | PPR/diffusion positives | graph proximity control |
-| C5 | candidate-pool-only positives | candidate source control |
-| C6 | similarity-only transport | removes certificate/edit path |
-| C7 | edit-cost-only / anchor-drift-only | energy component controls |
-| C8 | certificate-shuffled CAST | certificate semantic control |
-| C9 | random transport budget-matched | search budget control |
-| C10 | CAST one-step transport | main minimal variant |
-| C11 | CAST two-step transport | main extended variant |
+| I0 | GRACE | base reference |
+| I1 | kNN multi-positive | proximity mining |
+| I2 | PPR/diffusion positives | graph proximity |
+| I3 | PMGCL-lite/BMM | probabilistic positive mining |
+| I4 | CAST one-step | strongest previous challenger/control |
+| I5 | IRIS full | main candidate |
+| I6 | IRIS response-shuffled | response semantic test |
+| I7 | IRIS no anti-proximity | collapse-to-proximity test |
+| I8 | IRIS structural-signature-only | role-equivalence test |
+| I9 | IRIS no gradient-proxy | circularity test |
 
 ## Smoke Metrics
 
 - LogReg test accuracy at best validation checkpoint。
-- transported positives per anchor。
-- offline label agreement of transported positives。
-- transport energy vs label agreement correlation。
-- false-negative repulsion mass before/after closure。
-- positive gradient norm。
-- search time and candidate budget。
+- response sibling count per anchor。
+- anti-proximity retained coverage。
+- offline label agreement of response siblings。
+- partial correlation between response similarity and label agreement after controlling feature similarity, embedding similarity, PPR proximity, and degree。
+- false-negative repulsion mass before/after relation closure。
+- runtime and candidate budget。
 
 ## Pass Conditions
 
-CAST can only move beyond pre-review if:
+IRIS only moves beyond smoke if:
 
-- C10/C11 have higher transported-positive label agreement than C2/C3/C4/C5/C6 diagnostics。
-- C10/C11 reduce false-negative repulsion mass without simply increasing positive count。
-- C10/C11 beat C8 and C9 under the same budget。
-- C1 cannot fully explain C10/C11。
+- I5 label agreement beats I1/I2/I3/I8 under the same positive budget。
+- I5 response similarity has positive partial correlation with label agreement after controls。
+- I5 beats I6 and I7 on diagnostics, proving response semantics and anti-proximity matter。
+- I5 is not dominated by I4 CAST on label agreement, false-negative repulsion mass, and runtime。
 
 ## Kill Rules
 
-- C2/C3/C4/C5/C6 matches C10/C11：ordinary positive mining/proximity is enough。
-- C8 matches C10/C11：certificate is not semantic。
-- C9 matches C10/C11：transport path is not meaningful。
-- transport energy does not correlate with offline label agreement：kill。
-- gains only come from more positives or more compute：invalid。
+- I6 response-shuffled matches I5：kill。
+- I8 structural-signature-only matches I5：kill or major pivot。
+- I7 no anti-proximity beats I5：IRIS collapses to proximity mining。
+- response similarity has no partial correlation with label agreement after controlling feature/embedding/PPR/degree：kill。
+- CAST matches IRIS on diagnostics with lower cost：reconsider CAST or pivot。
+- Any gain only comes from more positives, more compute, or broader candidate budget：invalid。
 
 ## Next Gate
 
-Fresh `gcl_scientific_reviewer` returned `REVISE`, novelty `6.8/10`. Next step can only be Cora seed=0 smoke with all controls above. No Pilot-A or formal run is allowed yet.
+Only Cora seed=0 smoke is allowed. No Pilot-A or formal run is allowed yet.

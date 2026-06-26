@@ -6,11 +6,12 @@
 | 2 | SIVA-GCL-positive-core | 8 | 7 | 6 | 8 | 6.7 | REVISE_TO_SMOKE |
 | 3 | WILLOW-GCL | 8 | 8 | 5 | 9 | 7.0 | REVISE_TO_WILLOW_SMOKE |
 | 4 | CAST-GCL | 9 | 8 | 4 | 9 | 6.8 | REVISE_TO_CAST_REVISED_PRE_SMOKE |
+| 5 | IRIS-GCL | 9 | 9 | 5 | 9 | 7.2 | SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE |
 
 ## Active Idea
 
-CAST-GCL / certificate-guided cross-node semantic transport for positive closure.
+IRIS-GCL / interventional response invariant signatures for false-negative discovery.
 
 ## Decision
 
-`REVISE_TO_CAST_REVISED_PRE_SMOKE`。当前只能进入 Cora seed=0 smoke planning/implementation，不能进入 formal 或性能 claim。
+`SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE`。当前只能进入 Cora seed=0 smoke planning/implementation，不能进入 formal 或性能 claim。

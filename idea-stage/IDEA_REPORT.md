@@ -1,90 +1,153 @@
-# Idea Discovery Report: CAST-GCL
+# Idea Discovery Report: IRIS-GCL
 
-**方向**：图对比学习假负样本方向，面向普通节点分类，继续避开 loss-only trick，追求更有 2026 投稿潜力的机制创新  
+**方向**：图对比学习假负样本方向，面向普通节点分类，寻找足够创新、适合 2026 投稿潜力的最佳 idea  
 **日期**：2026-06-26  
 **Pipeline**：research-lit → idea-creator → novelty-check → research-review → research-refine-pipeline  
-**阶段结论**：`REVISE_TO_CAST_REVISED_PRE_SMOKE`
+**阶段结论**：`SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE`
 
 ## Executive Summary
 
-上一轮 WILLOW-GCL 已经把方向从 loss-side 修补推进到 latent certificate driven hard positive views，但它仍存在一个硬伤：容易被 reviewer 解释为 **Graph-JEPA / Predict-Cluster-Refine + learned augmentation scorer**。这比 BOND/SIVA 更好，但还没有完全满足“足够创新”的目标。
+经过 BOND → SIVA → WILLOW → CAST 的连续筛选，当前最好的 idea 切换为 **IRIS-GCL / Interventional Response Invariant Signatures for Graph Contrastive Learning**。
 
-本轮进一步把主线推进为 **CAST-GCL / Certificate-guided Semantic Transport for Graph Contrastive Learning**。CAST 不再只生成同一节点的 hard positive view，而是用 latent ego target-prediction certificate 构造 **跨节点语义传输图**：如果真实节点 `j` 可以通过低能量的 node-local intervention path 从 anchor `i` 到达，那么 `j` 就不应再作为 `i` 的 negative，而应进入 multi-positive / neutral relation closure。
-
-核心思想：
+fresh `gcl_scientific_reviewer` 对 CAST 与 IRIS 做了直接比较，给出结论：
 
 ```text
-false negatives are missing semantic transport relations,
-not merely over-weighted denominator terms.
+SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE
 ```
 
-fresh `gcl_scientific_reviewer` 给 CAST 的 verdict 是 `REVISE`，novelty `6.8/10`，confidence `0.72`。结论很明确：CAST 是当前最值得保留的候选，因为它比 WILLOW 更直接处理 false negatives；但它还不能 `GO`，必须证明 transport energy 不是 kNN/PPR/BMM positive mining 的复杂重写。
+IRIS 的 novelty 为 `7.2/10`，confidence `0.61`；CAST 降为 `6.5/10`。Reviewer 判断：CAST 更成熟但太接近 positive mining；IRIS 更高风险，但更像一个“足够创新”的 2026 论文主线，因为它用 **跨节点 interventional response-function equivalence** 来发现 false negatives，并通过 **anti-proximity** 强制避开普通 kNN/PPR/embedding positive mining。
 
-## Why CAST Replaces WILLOW As The Active Candidate
+当前没有 smoke、pilot、development 或 formal 结果。IRIS 是当前 best bet，不是已验证方法。
 
-| Aspect | WILLOW | CAST |
+## Why IRIS Is Better Than CAST
+
+| Aspect | CAST | IRIS |
 |---|---|---|
-| Main mechanism | same-anchor certified hard positive view | cross-node certified semantic transport |
-| False-negative handling | indirect, by strengthening positive signal | direct, by identifying real nodes that should not be negatives |
-| Main prior risk | Graph-JEPA + augmentation scorer | positive mining / transport heuristic |
-| Required evidence | harder same-node positives help | transported nodes have high label agreement and reduce false-negative repulsion mass |
+| False-negative criterion | low-energy semantic transport path | invariant response-function sibling |
+| Main risk | positive mining with certificate wrapper | response invariance may reflect role/degree not class semantics |
+| How it avoids proximity mining | controls after candidate mining | anti-proximity built into sibling definition |
+| Reviewer novelty | 6.5/10 | 7.2/10 |
+| Current role | mandatory control | active best idea |
 
-WILLOW remains useful as a module/control. CAST uses WILLOW's latent certificate, but adds the missing cross-node relation construction step.
-
-## Prior Boundary
-
-CAST must avoid the following collisions:
-
-- **Graph-JEPA / Predict, Cluster, Refine**：latent context-target prediction already exists; CAST uses it only as a certificate for cross-node relation construction.
-- **PMGCL / positive mining**：pair probability estimation already exists; CAST requires low-energy intervention paths, not only similarity/BMM probability.
-- **BalanceGCL**：semantic-aware positives and hard negatives already exist at graph level; CAST is node-level, does not use class-aware counterfactual gradients, and does not generate hard negatives as the main contribution.
-- **GCA/RGCL/AutoGCL**：learned augmentation already exists; CAST builds a certified transport relation graph between real nodes.
+CAST 仍直接服务 false negatives，但它从 candidate pool 出发，再用 certificate 排序，容易被说成高级 positive mining。IRIS 的判据不同：两个节点即使 feature/graph/embedding 不近，只要在标准干预电池下呈现相似 response function，就不应被强行作为 negatives。
 
 ## Recommended Idea
 
-### CAST-GCL: Certificate-guided Semantic Transport
+### IRIS-GCL: Interventional Response Invariant Signatures
 
-- **Method**：train a latent ego target-prediction certificate; for each anchor, search candidate real nodes through short node-local intervention paths; score the path by certificate error, edit cost, and anchor drift; low-energy reachable nodes become semantic positives or neutral nodes in GCL.
-- **Hypothesis**：false negatives can be reduced more directly by constructing a certified cross-node positive closure than by reweighting negatives or only making same-node positives harder.
-- **Minimum experiment**：Cora seed=0 smoke; compare GRACE, WILLOW same-node certificate, kNN multi-positive, PMGCL-lite/BMM positive mining, PPR/diffusion positives, candidate-pool-only, similarity-only transport, edit-cost-only / anchor-drift-only, certificate-shuffled CAST, random budget-matched transport, CAST one-step transport, and CAST two-step transport.
-- **Diagnostics**：transported positive count, offline label agreement, transport energy vs label agreement correlation, false-negative repulsion mass, LogReg accuracy, search budget.
-- **Novelty status**：fresh reviewer `REVISE`，novelty `6.8/10`，confidence `0.72`。
-- **Risk**：HIGH；transport may collapse into expensive positive mining or kNN multi-positive.
-- **Pilot result**：SKIPPED；本轮未实现代码、未跑新实验。
+**Core thesis**：
 
-## Mandatory Kill Rules
+```text
+False negatives are cross-node response-invariant siblings under anti-proximity.
+```
 
-| Kill rule | 解释 |
+也就是说，节点语义相似不只体现在“近”，也可能体现在“对环境/结构/特征干预的响应函数相似”。IRIS 不直接用 pair similarity，也不重写 InfoNCE loss，而是先构造 response fingerprint，再发现 anti-proximity response siblings。
+
+## Method Sketch
+
+### 1. Fixed Intervention Battery
+
+定义一组 label-free graph interventions：
+
+- spectral high-frequency perturbation；
+- low-pass / diffusion-scale perturbation；
+- ego edge drop / keep；
+- feature group mask；
+- neighbor role swap；
+- degree-bin preserving ego rewiring。
+
+这些干预是固定环境扰动，不是 learned augmentation policy。
+
+### 2. Minimal Response Fingerprint
+
+先用 GRACE 或固定 SSL encoder warm up，然后冻结 encoder 构造 response signatures。
+
+最小 IRIS 版必须先移除 reviewer 认为可能循环的 `positive-gradient proxy`，只保留：
+
+```text
+r_i(omega)
+  = [
+      delta z_i(omega),
+      delta local smoothness_i(omega),
+      delta ego prediction consistency_i(omega)
+    ]
+```
+
+然后：
+
+```text
+R_i = concat_{omega in Omega} whiten(r_i(omega))
+```
+
+IRIS 使用 response fingerprint，而不是 raw embedding similarity。
+
+### 3. Anti-proximity Response Siblings
+
+节点 `j` 是 anchor `i` 的 response-invariant sibling 当且仅当：
+
+```text
+sim_response(R_i, R_j) >= tau_response
+and sim_embedding(z_i, z_j) <= tau_embed_near
+and graph_proximity(i, j) <= tau_graph_near
+```
+
+anti-proximity 不是装饰项；它是 IRIS 避开 kNN/PPR/embedding positive mining 的必要条件。必须报告被 anti-proximity 排除后的 coverage 与 label agreement。
+
+### 4. Contrastive Relation Update
+
+- same-node augmentations remain positives；
+- response-invariant siblings become multi-positives；
+- high response uncertainty nodes become neutral/excluded；
+- all others remain ordinary negatives。
+
+主贡献是 relation discovery，不是新 loss。
+
+## Required Controls
+
+| Control | Purpose |
 |---|---|
-| kNN multi-positive matches CAST | transport certificate unnecessary |
-| PMGCL-lite/BMM matches CAST | CAST reduces to positive mining |
-| certificate-shuffled CAST matches CAST | certificate has no semantic content |
-| transport energy does not correlate with offline label agreement | kill CAST |
-| CAST only works by selecting many more positives | invalid unless budget-matched variant also works |
-| WILLOW same-node matches CAST | cross-node closure unnecessary; downgrade to WILLOW |
-| candidate-pool-only / similarity-only matches CAST | transport certificate adds no value; kill or major pivot |
+| GRACE | base reference |
+| kNN multi-positive | proximity mining |
+| PPR/diffusion positives | graph proximity |
+| PMGCL-lite/BMM | probabilistic positive mining |
+| CAST one-step | strongest previous candidate/control |
+| IRIS full | main candidate |
+| IRIS response-shuffled | response semantic test |
+| IRIS no anti-proximity | collapse-to-proximity test |
+| IRIS structural-signature-only | role-equivalence test |
+| IRIS no gradient-proxy | circularity test |
+
+## Kill Rules
+
+| Kill rule | Meaning |
+|---|---|
+| response-shuffled matches IRIS | response signature has no semantic content |
+| structural-signature-only matches IRIS | IRIS is only role/degree equivalence |
+| no anti-proximity beats full IRIS | IRIS collapses to ordinary proximity mining |
+| response similarity has no partial correlation with label agreement after controlling feature/embedding/PPR/degree | kill IRIS |
+| CAST matches IRIS on label agreement, false-negative repulsion mass, and accuracy with lower cost | do not switch; reconsider CAST or pivot |
+| gains come only from more positives, compute, or broader candidate budget | invalid |
 
 ## Deprioritized / Control Ideas
 
 | Idea | Current role |
 |---|---|
-| WILLOW-GCL | module/control; provides latent certificate but not enough cross-node false-negative handling |
-| SIVA-GCL-positive-core | reconstruction-critic control |
+| CAST-GCL | mandatory control; previous best but too close to positive mining |
+| WILLOW-GCL | module/control; Graph-JEPA/PCR wrapper risk |
+| SIVA-GCL | reconstruction-critic control |
 | BOND-GCL | archived loss-side baseline |
-| DSR-GCL | archived/pivoted due weak Cora seed=0 audit-smoke |
 
 ## Refined Proposal
 
-- Candidate brief: `idea-stage/CAST_GCL_CANDIDATE_20260626_121500.md`
-- Novelty check: `idea-stage/CAST_GCL_NOVELTY_CHECK.md`
-- Mechanism spec: `refine-logs/CAST_MECHANISM_SPEC.md`
-- Prior boundary: `literature/CAST_PRIOR_BOUNDARY.md`
+- IRIS challenger: `idea-stage/IRIS_GCL_CHALLENGER_20260626_130500.md`
+- Prior boundary: `literature/IRIS_PRIOR_BOUNDARY.md`
+- Reviewer decision: `idea-stage/IRIS_VS_CAST_REVIEW.md`
 - Proposal: `refine-logs/FINAL_PROPOSAL.md`
 - Experiment plan: `refine-logs/EXPERIMENT_PLAN.md`
 - Tracker: `refine-logs/EXPERIMENT_TRACKER.md`
 
 ## Decision
 
-`REVISE_TO_CAST_REVISED_PRE_SMOKE`.
+`SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE`.
 
-当前只允许进入最小 Cora seed=0 smoke 设计/实现，不允许 formal，不允许写 SOTA/robust/comprehensive，不允许产生性能 claim。若 kNN/PPR/BMM/candidate-pool-only/shuffled-certificate controls 解释掉 CAST，应继续 pivot。
+IRIS 是当前“最好的 idea / best bet”，但仍是 high-risk pre-smoke。下一步只允许最小 Cora seed=0 smoke 或进一步机制压实；不允许 formal，不允许 SOTA/robust/comprehensive，不允许性能 claim。

@@ -1,18 +1,19 @@
-# Refinement Report: CAST-GCL
+# Refinement Report: IRIS-GCL
 
 ## What Changed
 
-WILLOW-GCL was demoted from active mainline to module/control because same-anchor certified view generation still risks being perceived as Graph-JEPA/PCR plus augmentation scoring. CAST keeps the latent certificate but moves the contribution to cross-node semantic transport and positive closure.
+CAST-GCL was demoted from active mainline to mandatory control because fresh reviewer judged its novelty too close to positive mining. IRIS-GCL is now the active best idea.
 
 ## Main Refinement
 
-- Move from same-node hard positive generation to cross-node false-negative relation construction。
-- Use transport energy rather than pair probability as the semantic relation criterion。
-- Require PMGCL-lite, kNN positive, WILLOW same-node, shuffled-certificate, and random-transport controls。
-- Keep all claims at pre-review/proposal level。
+- Reframe false negatives as cross-node interventional response-function siblings。
+- Enforce anti-proximity to avoid kNN/PPR/embedding mining。
+- Remove positive-gradient proxy from the minimal fingerprint。
+- Add structural-role and deconfounding controls before smoke。
+- Keep CAST as strongest previous challenger/control。
 
 ## Current State
 
-Fresh reviewer returned `REVISE`, novelty `6.8/10`, confidence `0.72`, and recommended keeping CAST active as a revised pre-smoke candidate. The refined version now freezes the certificate, defines legal mixed-ego transport operators, and requires candidate-pool-only / similarity-only / component-only controls before any smoke can be interpreted.
+`SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE`。
 
-Ready only for Cora seed=0 smoke planning/implementation. No code or experiment was run in this refinement.
+No code or experiment was run.
