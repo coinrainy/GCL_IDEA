@@ -297,3 +297,16 @@
 | 2026-06-26 15:35 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS_20260626_153556.md | experiment-bridge | BE-M0-001 no-go result report |
 | 2026-06-26 15:35 | /experiment-bridge | refine-logs/EXPERIMENT_TRACKER_20260626_153556.md | experiment-bridge | BE-M0-001 no-go tracker |
 | 2026-06-26 15:35 | /research-wiki | research-wiki/ideas/beacon_gcl.md | wiki | BEACON-GCL marked smoke_negative |
+| 2026-06-26 15:59 | /experiment-bridge | configs/spectra_smoke.yaml | smoke | SPECTRA-GCL SP-M0-001 smoke config |
+| 2026-06-26 15:59 | /experiment-bridge | scripts/run_spectra_smoke.py | smoke | SPECTRA-GCL SP-M0-001 smoke runner |
+| 2026-06-26 15:59 | /experiment-bridge | logs/spectra_smoke/sp_m0_001_Cora_seed0_20260626T155803Z/ | smoke | SPECTRA SP-M0-001 training logs |
+| 2026-06-26 15:59 | /experiment-bridge | results/summary/sp_m0_001_Cora_seed0_20260626T155803Z_summary.md | smoke | SPECTRA SP-M0-001 smoke summary table |
+| 2026-06-26 15:59 | /experiment-bridge | results/summary/sp_m0_001_Cora_seed0_20260626T155803Z_summary.json | smoke | SPECTRA SP-M0-001 parseable summary JSON |
+| 2026-06-26 15:59 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS_20260626_155906.md | experiment-bridge | SPECTRA SP-M0-001 negative result report |
+| 2026-06-26 15:59 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS.md | experiment-bridge | fixed latest SPECTRA negative result report |
+| 2026-06-26 15:59 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_155906.md | experiment-bridge | local SPECTRA code/integrity review |
+| 2026-06-26 15:59 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW.md | experiment-bridge | fixed latest SPECTRA code review |
+| 2026-06-26 15:59 | /experiment-bridge | refine-logs/EXPERIMENT_TRACKER_20260626_155906.md | experiment-bridge | SPECTRA tracker blocking SP-M1 after no-go |
+| 2026-06-26 15:59 | /experiment-bridge | refine-logs/EXPERIMENT_TRACKER.md | experiment-bridge | fixed latest SPECTRA no-go tracker |
+| 2026-06-26 15:59 | /research-wiki | research-wiki/ideas/spectra_gcl.md | wiki | SPECTRA-GCL marked smoke_negative |
+| 2026-06-26 15:59 | /research-wiki | research-wiki/experiments/spectra_sp_m0_001.md | wiki | SPECTRA SP-M0-001 experiment page |

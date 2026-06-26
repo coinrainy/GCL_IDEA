@@ -27,3 +27,4 @@
 - SPECTRA weight/threshold tuning：blocked by diagnostic-improves-but-accuracy-drops pattern。
 - SP-M1 multi-seed pilot：blocked。
 - Formal experiment and paper table：blocked。
+

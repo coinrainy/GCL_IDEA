@@ -2,11 +2,11 @@
 
 - ID：`spectra_gcl`
 - 全称：Spectral Boundary-Preserving Redundancy Reduction for Graph Contrastive Learning
-- 阶段：`proposed`
-- 当前决策：`GO_TO_SPECTRA_SMOKE_PLANNING`
+- 阶段：`smoke_negative`
+- 当前决策：`KILL_BOUNDARY_ENERGY_STORY`
 - 创建时间：2026-06-26T15:40:39Z
 - 任务类型：ordinary node classification GCL
-- Claim status：idea/proposal only；无 smoke/pilot/formal 结果；不支持性能 claim。
+- Claim status：已有 Cora seed0 smoke negative；无 pilot/formal 结果；不支持性能 claim。
 
 ## Origin
 
@@ -58,9 +58,25 @@ L_SPECTRA = L_rr + lambda_b * L_boundary + lambda_r * L_rank
 - 与 spectral SSL / DSR spectral 分支存在叙事碰撞。
 - 如果 diagnostics 改善但 accuracy 不改善，将重复 BEACON 失败模式，必须停止而不是调权重。
 
+## SP-M0-001 Result
+
+- 时间：2026-06-26T15:59:06Z
+- 阶段：Cora seed0 smoke only，不是 pilot/formal。
+- Summary：`results/summary/sp_m0_001_Cora_seed0_20260626T155803Z_summary.md/json`
+- Result report：`refine-logs/EXPERIMENT_RESULTS_20260626_155906.md`
+
+| ID | Variant | Test@best-val | Eff rank | Boundary retention |
+|---|---|---:|---:|---:|
+| S0 | GRACE | 84.78 | 64.57 | 0.9279 |
+| S1 | negative_free_rr | 83.58 | 74.16 | 0.9273 |
+| S2 | spectra_full | 82.47 | 76.56 | 0.9294 |
+| S5 | random_spectrum_guard | 81.60 | 67.67 | 0.9261 |
+| S7 | matched_parameter_GRACE | 84.78 | 64.57 | 0.9279 |
+
+SPECTRA full improved rank and boundary-retention diagnostics over S1, but did not improve accuracy. It was below GRACE/S7 and below S1. This repeats the CAST/BEACON lesson that better diagnostics do not automatically become node-classification gains.
+
 ## Decision
 
-`GO_TO_SPECTRA_SMOKE_PLANNING`
+`KILL_BOUNDARY_ENERGY_STORY`
 
-Next allowed action：通过 `/experiment-bridge` 实现并运行 `SP-M0-001` Cora seed0 smoke。
-
+Do not run SP-M1, Pilot-B, formal experiments, paper tables, or `/auto-review-loop` for current SPECTRA. Do not continue by tuning boundary/rank weights. The next useful action is a mechanism-level pivot that absorbs three failures: CAST low-overlap pairs, BEACON high-agreement gate, and SPECTRA boundary/rank diagnostics all failed to convert into accuracy.

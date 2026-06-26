@@ -1,0 +1,5 @@
+{"boundary_loss": 0.0, "epoch": 1, "loss": 50.71584701538086, "rank_guard_loss": 0.0, "rr_off_diag_loss": 189.83404541015625, "rr_on_diag_loss": 49.76667785644531, "rr_total_loss": 50.71584701538086, "time": 1782489489.4527214}
+{"boundary_loss": 0.0, "epoch": 50, "loss": 18.56298828125, "rank_guard_loss": 0.0, "rr_off_diag_loss": 968.3424072265625, "rr_on_diag_loss": 13.721277236938477, "rr_total_loss": 18.56298828125, "time": 1782489490.3963244}
+{"boundary_loss": 0.0, "epoch": 100, "loss": 11.798742294311523, "rank_guard_loss": 0.0, "rr_off_diag_loss": 909.8564453125, "rr_on_diag_loss": 7.249460220336914, "rr_total_loss": 11.798742294311523, "time": 1782489491.3839588}
+{"boundary_loss": 0.0, "epoch": 150, "loss": 7.985152244567871, "rank_guard_loss": 0.0, "rr_off_diag_loss": 870.6078491210938, "rr_on_diag_loss": 3.632112979888916, "rr_total_loss": 7.985152244567871, "time": 1782489492.35362}
+{"boundary_loss": 0.0, "epoch": 200, "loss": 7.366603851318359, "rank_guard_loss": 0.0, "rr_off_diag_loss": 755.1812744140625, "rr_on_diag_loss": 3.5906972885131836, "rr_total_loss": 7.366603851318359, "time": 1782489493.3445268}

@@ -1,0 +1,95 @@
+meta:
+  method: SPECTRA-GCL
+  smoke_id: SP-M0-001
+  status_default: smoke
+  split_type: stratified_random_1_1_8
+  evaluator: logreg_val
+  note: >
+    Cora seed0 smoke only. This config tests whether negative-free
+    redundancy reduction plus label-free spectral boundary-energy preservation
+    can avoid the pair-level false-negative correction failures observed in
+    CAST and BEACON. It must not be used for formal claims.
+
+dataset:
+  name: Cora
+  seed: 0
+
+pretrain:
+  Cora:
+    num_epochs: 200
+    learning_rate: 0.0005
+    weight_decay: 0.00001
+    num_hidden: 128
+    num_proj_hidden: 128
+    activation: relu
+    num_layers: 2
+    drop_edge_rate_1: 0.2
+    drop_edge_rate_2: 0.4
+    drop_feature_rate_1: 0.3
+    drop_feature_rate_2: 0.4
+
+spectra:
+  learning_rate: 0.0001
+  projector_hidden_dim: 128
+  projector_out_dim: 128
+  max_grad_norm: 5.0
+  barlow_lambda: 0.005
+  boundary_lambda: 1.0
+  rank_lambda: 1.0
+  rank_gamma: 1.0
+  smooth_steps: 1
+  boundary_num_buckets: 5
+  boundary_eps: 0.000001
+  diagnostics_max_pairs: 200000
+
+variants:
+  - id: S0
+    name: GRACE
+    family: grace
+    description: Existing InfoNCE GRACE baseline.
+  - id: S1
+    name: negative_free_rr
+    family: spectra
+    boundary_mode: none
+    use_boundary: false
+    use_rank_guard: false
+    description: Barlow/CCA-style negative-free redundancy-reduction baseline.
+  - id: S2
+    name: spectra_full
+    family: spectra
+    boundary_mode: high
+    use_boundary: true
+    use_rank_guard: true
+    description: "SPECTRA full: RR + high-pass boundary-energy preservation + rank guard."
+  - id: S3
+    name: no_boundary_energy
+    family: spectra
+    boundary_mode: none
+    use_boundary: false
+    use_rank_guard: true
+    description: SPECTRA without boundary-energy term.
+  - id: S4
+    name: no_rank_guard
+    family: spectra
+    boundary_mode: high
+    use_boundary: true
+    use_rank_guard: false
+    description: SPECTRA without explicit rank guard.
+  - id: S5
+    name: random_spectrum_guard
+    family: spectra
+    boundary_mode: random
+    use_boundary: true
+    use_rank_guard: true
+    description: Boundary target buckets are shuffled to rule out arbitrary spectral regularization.
+  - id: S6
+    name: low_band_only
+    family: spectra
+    boundary_mode: low
+    use_boundary: true
+    use_rank_guard: true
+    description: Preserve low-frequency/smoothed energy instead of high-pass boundary energy.
+  - id: S7
+    name: matched_parameter_GRACE
+    family: grace_matched
+    description: Same GRACE encoder/projection budget as SPECTRA; reuses S0 embedding when dimensions match.
