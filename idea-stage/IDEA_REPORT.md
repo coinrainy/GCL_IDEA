@@ -139,6 +139,7 @@ anti-proximity 不是装饰项；它是 IRIS 避开 kNN/PPR/embedding positive m
 
 ## Refined Proposal
 
+- Best idea decision: `idea-stage/BEST_IDEA_DECISION.md`
 - IRIS challenger: `idea-stage/IRIS_GCL_CHALLENGER_20260626_130500.md`
 - Prior boundary: `literature/IRIS_PRIOR_BOUNDARY.md`
 - Reviewer decision: `idea-stage/IRIS_VS_CAST_REVIEW.md`
@@ -151,3 +152,5 @@ anti-proximity 不是装饰项；它是 IRIS 避开 kNN/PPR/embedding positive m
 `SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE`.
 
 IRIS 是当前“最好的 idea / best bet”，但仍是 high-risk pre-smoke。下一步只允许最小 Cora seed=0 smoke 或进一步机制压实；不允许 formal，不允许 SOTA/robust/comprehensive，不允许性能 claim。
+
+本报告完成的是 **idea selection**，不是实验验证。

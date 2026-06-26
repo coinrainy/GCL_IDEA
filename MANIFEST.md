@@ -193,3 +193,5 @@
 | 2026-06-26 13:05 | /research-wiki | research-wiki/ideas/iris_gcl.md | wiki | proposed IRIS active best idea page |
 | 2026-06-26 13:05 | /research-wiki | research-wiki/ideas/cast_gcl.md | wiki | CAST demoted to mandatory IRIS control |
 | 2026-06-26 13:06 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of IRIS-GCL idea report |
+| 2026-06-26 13:15 | /idea-discovery | idea-stage/BEST_IDEA_DECISION_20260626_131500.md | idea-discovery | timestamped final best-idea decision audit selecting IRIS-GCL |
+| 2026-06-26 13:15 | /idea-discovery | idea-stage/BEST_IDEA_DECISION.md | idea-discovery | latest final best-idea decision audit selecting IRIS-GCL |
