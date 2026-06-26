@@ -1,0 +1,237 @@
+meta:
+  purpose: Amazon GRACE candidate search before any 10-seed long run.
+  evaluator: logreg_val
+  seeds: [0, 1]
+  datasets: [Computers, Photo]
+  policy: >
+    Do not use GCA parameters as active candidates. Search GRACE-like configs
+    by controlled changes around the current baseline: epochs, hidden/proj dim,
+    activation, augmentation rates, and tau.
+  deprecated_candidates:
+    computers_gca_500:
+      reason: "Rejected. Seed0/seed1 mean was 81.63±1.95, below current baseline and target."
+      values: [79.68, 83.58]
+    photo_gca_500:
+      reason: "Interrupted after seed0 at 90.95; GCA-derived params are not used further by request."
+      values: [90.95]
+
+candidates:
+  # Computers: current config is the control. Earlier 6-seed partial mean was 84.06±0.96.
+  - name: computers_current_500
+    dataset: Computers
+    source: controlled_search_current
+    hypothesis: "Control: current GRACE-like Amazon config."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.4
+      num_epochs: 500
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: computers_current_1000
+    dataset: Computers
+    source: controlled_search_epoch
+    hypothesis: "Test whether current config is undertrained."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.4
+      num_epochs: 1000
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: computers_tau02_500
+    dataset: Computers
+    source: controlled_search_tau
+    hypothesis: "Lower temperature may sharpen contrastive objective without changing augmentation."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.2
+      num_epochs: 500
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: computers_aug_balanced_500
+    dataset: Computers
+    source: controlled_search_augmentation
+    hypothesis: "Use nonzero feature drop on both views while keeping moderate edge drops."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.3
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.1
+      tau: 0.4
+      num_epochs: 500
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: computers_dim128_500
+    dataset: Computers
+    source: controlled_search_dimension
+    hypothesis: "Smaller encoder/projection may regularize Amazon-Computers."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 128
+      num_proj_hidden: 128
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.4
+      num_epochs: 500
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: computers_relu_500
+    dataset: Computers
+    source: controlled_search_activation
+    hypothesis: "Activation-only comparison against prelu."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: relu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.4
+      num_epochs: 500
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+
+  # Photo: run a matching controlled set because Photo can saturate early and may prefer different tau/drop.
+  - name: photo_current_500
+    dataset: Photo
+    source: controlled_search_current
+    hypothesis: "Control: current GRACE-like Amazon config."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.4
+      num_epochs: 500
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: photo_current_1000
+    dataset: Photo
+    source: controlled_search_epoch
+    hypothesis: "Test whether current Photo config benefits from longer pretraining."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.4
+      num_epochs: 1000
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: photo_tau02_500
+    dataset: Photo
+    source: controlled_search_tau
+    hypothesis: "Lower temperature while preserving current augmentation."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.2
+      num_epochs: 500
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: photo_aug_balanced_500
+    dataset: Photo
+    source: controlled_search_augmentation
+    hypothesis: "Balanced feature drop on both views."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.3
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.1
+      tau: 0.4
+      num_epochs: 500
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: photo_dim128_500
+    dataset: Photo
+    source: controlled_search_dimension
+    hypothesis: "Smaller hidden/projection dimension."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 128
+      num_proj_hidden: 128
+      activation: prelu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.4
+      num_epochs: 500
+      weight_decay: 0.00001
+      loss_batch_size: 4096
+  - name: photo_relu_500
+    dataset: Photo
+    source: controlled_search_activation
+    hypothesis: "Activation-only comparison against prelu."
+    overrides:
+      learning_rate: 0.001
+      num_hidden: 256
+      num_proj_hidden: 256
+      activation: relu
+      num_layers: 2
+      drop_edge_rate_1: 0.2
+      drop_edge_rate_2: 0.4
+      drop_feature_rate_1: 0.1
+      drop_feature_rate_2: 0.0
+      tau: 0.4
+      num_epochs: 500
+      weight_decay: 0.00001
+      loss_batch_size: 4096

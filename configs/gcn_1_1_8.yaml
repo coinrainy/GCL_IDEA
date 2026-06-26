@@ -1,0 +1,76 @@
+meta:
+  method: GCN
+  code_source: https://github.com/tkipf/gcn
+  code_dir: baselines/GCN
+  implementation: project_pyg_supervised_gcn
+  split_type: stratified_random_1_1_8_except_wikics_official
+  metric: accuracy_percent
+  status_default: development
+  note: >
+    Target numbers are transcribed from the user-provided screenshot. The local
+    runnable implementation uses PyTorch Geometric so that Cora, CiteSeer,
+    PubMed, Wiki-CS, Amazon-Computers, and Amazon-Photo share one audited
+    training and result-saving pipeline. The original tkipf/gcn repository is
+    kept under baselines/GCN as the historical source reference.
+
+targets:
+  Cora:
+    mean: 82.17
+    std: 0.59
+  CiteSeer:
+    mean: 71.46
+    std: 0.97
+  PubMed:
+    mean: 84.16
+    std: 0.23
+  WikiCS:
+    display_name: Wiki-CS
+    mean: 76.89
+    std: 0.37
+  Computers:
+    display_name: Amazon-Computers
+    mean: 86.34
+    std: 0.48
+  Photo:
+    display_name: Amazon-Photo
+    mean: 92.35
+    std: 0.25
+
+model:
+  num_layers: 2
+  hidden_dim: 16
+  dropout: 0.5
+  cached: true
+  add_self_loops: true
+  normalize: true
+
+training:
+  learning_rate: 0.01
+  weight_decay: 0.0005
+  max_epochs: 200
+  patience: 10
+  early_stopping_metric: val_loss
+  report_metric: test_at_best_validation_epoch
+
+dataset_overrides:
+  WikiCS:
+    is_undirected: false
+    early_stopping_mask: stopping
+    normalize_features: false
+    hidden_dim: 256
+    weight_decay: 0.00001
+    early_stopping_metric: val_accuracy
+    patience: 200
+    max_epochs: 1500
+  Computers:
+    normalize_features: false
+    hidden_dim: 64
+    max_epochs: 1000
+    patience: 100
+    early_stopping_metric: val_accuracy
+  Photo:
+    normalize_features: false
+    hidden_dim: 64
+    max_epochs: 1000
+    patience: 100
+    early_stopping_metric: val_accuracy

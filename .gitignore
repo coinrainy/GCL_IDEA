@@ -3,7 +3,15 @@
 __pycache__/
 *.py[cod]
 
+# 外部 baseline 源码 clone；用文档记录 URL/commit，不嵌套提交
+baselines/GRACE/
+baselines/GCA/
+baselines/GCN/
+baselines/MVGRL/
+baselines/GAT/
+
 # 实验运行产物
+data/
 results/raw/
 results/summary/
 runs/

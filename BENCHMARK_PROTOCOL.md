@@ -64,9 +64,13 @@ Heterophily benchmarks：若已有公认 fixed splits，优先使用 fixed split
 
 ## GCL Evaluation
 
-所有 GCL 方法必须使用相同 frozen-encoder evaluator，默认推荐 `frozen encoder + linear evaluator`。
+所有 GCL 方法必须使用相同 frozen-encoder evaluator。本项目默认且优先使用 `frozen encoder + Logistic Regression downstream classifier`，不再把 PyTorch `Linear` layer 训练器作为主评估口径。
 
-必须记录 encoder、hidden dim、projection dim、augmentation、contrastive loss、temperature、positive/negative sampling、pretrain epochs、evaluator type 和 evaluator seed。
+在 random `1:1:8` 主协议下，Logistic Regression 的超参数（例如 `C`、正则项）只能由 train/val 选择，或在 train 内部做交叉验证后再用 val 做协议核查；禁止使用 test set 选择 `C`、epoch、正则强度或任何 evaluator 参数。
+
+若为了复现 GRACE 原始代码或历史论文数值而采用 `sklearn LogisticRegression + GridSearchCV` 且没有显式 validation split，必须单独标注为 `official_grace_logreg_cv` 或等价协议，不能与本项目 `1:1:8` 主表混合。
+
+必须记录 encoder、hidden dim、projection dim、augmentation、contrastive loss、temperature、positive/negative sampling、pretrain epochs、evaluator type、Logistic Regression solver、`C` 候选集合、`C` 选择规则、evaluator seed。
 
 若使用 fine-tuning，必须单独建表，不能和 frozen evaluation 混合比较。
 

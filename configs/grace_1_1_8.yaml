@@ -1,0 +1,164 @@
+meta:
+  method: GRACE
+  code_source: https://github.com/CRIPAC-DIG/GRACE
+  code_dir: baselines/GRACE
+  split_type: stratified_random_1_1_8
+  metric: accuracy_percent
+  default_evaluator: logreg_val
+  status_default: development
+  note: >
+    Target numbers are transcribed from the user-provided screenshot of recent
+    GCL papers that reused GRACE under a 10%/10%/80% node-classification split.
+    Local results must be treated as reproduced results only after all seeds
+    finish under this fixed protocol.
+
+targets:
+  Cora:
+    mean: 83.2
+    std: 0.75
+  CiteSeer:
+    mean: 72.1
+    std: 1.51
+  PubMed:
+    mean: 86.7
+    std: 0.19
+  DBLP:
+    mean: 84.1
+    std: 0.34
+  Computers:
+    display_name: Amazon-Computers
+    mean: 86.8
+    std: 0.32
+  Photo:
+    display_name: Amazon-Photo
+    mean: 91.8
+    std: 0.15
+
+pretrain:
+  Cora:
+    seed: 39788
+    learning_rate: 0.0005
+    num_hidden: 128
+    num_proj_hidden: 128
+    activation: relu
+    num_layers: 2
+    drop_edge_rate_1: 0.2
+    drop_edge_rate_2: 0.4
+    drop_feature_rate_1: 0.3
+    drop_feature_rate_2: 0.4
+    tau: 0.4
+    num_epochs: 200
+    weight_decay: 0.00001
+    loss_batch_size: 0
+  CiteSeer:
+    seed: 38108
+    learning_rate: 0.001
+    num_hidden: 256
+    num_proj_hidden: 256
+    activation: prelu
+    num_layers: 2
+    drop_edge_rate_1: 0.2
+    drop_edge_rate_2: 0.0
+    drop_feature_rate_1: 0.3
+    drop_feature_rate_2: 0.2
+    tau: 0.9
+    num_epochs: 200
+    weight_decay: 0.00001
+    loss_batch_size: 0
+  PubMed:
+    seed: 23344
+    learning_rate: 0.001
+    num_hidden: 256
+    num_proj_hidden: 256
+    activation: relu
+    num_layers: 2
+    drop_edge_rate_1: 0.4
+    drop_edge_rate_2: 0.1
+    drop_feature_rate_1: 0.0
+    drop_feature_rate_2: 0.2
+    tau: 0.7
+    num_epochs: 1500
+    weight_decay: 0.00001
+    loss_batch_size: 4096
+  DBLP:
+    seed: 83521
+    learning_rate: 0.001
+    num_hidden: 256
+    num_proj_hidden: 256
+    activation: relu
+    num_layers: 2
+    drop_edge_rate_1: 0.1
+    drop_edge_rate_2: 0.4
+    drop_feature_rate_1: 0.1
+    drop_feature_rate_2: 0.0
+    tau: 0.7
+    num_epochs: 1000
+    weight_decay: 0.00001
+    loss_batch_size: 4096
+  Computers:
+    seed: 39788
+    learning_rate: 0.001
+    num_hidden: 256
+    num_proj_hidden: 256
+    activation: prelu
+    num_layers: 2
+    drop_edge_rate_1: 0.2
+    drop_edge_rate_2: 0.4
+    drop_feature_rate_1: 0.1
+    drop_feature_rate_2: 0.0
+    tau: 0.4
+    num_epochs: 500
+    weight_decay: 0.00001
+    loss_batch_size: 4096
+  Photo:
+    seed: 39788
+    learning_rate: 0.001
+    num_hidden: 256
+    num_proj_hidden: 256
+    activation: prelu
+    num_layers: 2
+    drop_edge_rate_1: 0.2
+    drop_edge_rate_2: 0.4
+    drop_feature_rate_1: 0.1
+    drop_feature_rate_2: 0.0
+    tau: 0.4
+    num_epochs: 500
+    weight_decay: 0.00001
+    loss_batch_size: 4096
+
+logreg_eval:
+  solver: liblinear
+  penalty: l2
+  tol: 0.0001
+  max_iter: 5000
+  fit_intercept: true
+  class_weight:
+  normalize_embeddings: true
+  c_values:
+    - 0.0009765625
+    - 0.001953125
+    - 0.00390625
+    - 0.0078125
+    - 0.015625
+    - 0.03125
+    - 0.0625
+    - 0.125
+    - 0.25
+    - 0.5
+    - 1.0
+    - 2.0
+    - 4.0
+    - 8.0
+    - 16.0
+    - 32.0
+    - 64.0
+    - 128.0
+    - 256.0
+    - 512.0
+
+linear_eval:
+  learning_rate: 0.01
+  weight_decay: 0.0
+  max_epochs: 1000
+  patience: 100
+  normalize_embeddings: true

@@ -1,0 +1,59 @@
+meta:
+  method: GAT
+  code_source: https://github.com/PetarV-/GAT
+  code_dir: baselines/GAT
+  implementation: project_pyg_supervised_gat
+  split_type: stratified_random_1_1_8
+  metric: accuracy_percent
+  status_default: development
+  note: >
+    Target numbers are transcribed from the user-provided screenshot. The
+    official GAT repository provides a TensorFlow 1.x Cora-only example; the
+    local runnable implementation uses PyTorch Geometric GATConv so that all
+    six screenshot datasets share one audited split, training, and
+    result-saving pipeline.
+
+targets:
+  Cora:
+    mean: 83.0
+    std: 0.30
+  CiteSeer:
+    mean: 72.5
+    std: 0.65
+  PubMed:
+    mean: 79.0
+    std: 0.40
+  DBLP:
+    mean: 81.5
+    std: 0.03
+  Computers:
+    mean: 85.2
+    std: 0.09
+  Photo:
+    mean: 91.2
+    std: 0.05
+
+model:
+  num_layers: 2
+  hidden_dim: 8
+  heads: 8
+  output_heads: 1
+  dropout: 0.6
+  add_self_loops: true
+  negative_slope: 0.2
+
+training:
+  learning_rate: 0.005
+  weight_decay: 0.0005
+  max_epochs: 1000
+  patience: 100
+  early_stopping_metric: val_accuracy
+  report_metric: test_at_best_validation_epoch
+
+dataset_overrides:
+  DBLP:
+    normalize_features: true
+  Computers:
+    normalize_features: false
+  Photo:
+    normalize_features: false
