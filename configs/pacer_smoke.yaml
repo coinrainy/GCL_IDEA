@@ -1,0 +1,108 @@
+meta:
+  method: PACER-GCL
+  smoke_id: PA-CER-M0-001
+  status_default: smoke
+  method_status: train-label-calibrated / semi-supervised GCL
+  split_type: stratified_random_1_1_8
+  evaluator: frozen_encoder_logistic_regression
+  note: >
+    PACER uses train labels to fit calibration probes and is therefore
+    semi-supervised. Test labels are never used for routing, thresholds,
+    training, or hyperparameter selection.
+
+dataset: Cora
+seed: 0
+
+pretrain_overrides:
+  Cora:
+    num_epochs: 200
+
+pacer:
+  warmup_epochs: 80
+  learning_rate: 0.0005
+  weight_decay: 0.00001
+  lambda_logit: 1.0
+  lambda_margin: 0.5
+  lambda_consistency: 1.0
+  lambda_supcon: 0.35
+  fragile_quantile: 0.6
+  margin_floor_quantile: 0.35
+  augmentation_margin_drop_views: 2
+  scalar_weight_min: 0.5
+  scalar_weight_max: 1.5
+  cv_folds: 3
+  probe_epochs: 300
+  probe_lr: 0.01
+  probe_weight_decay: 0.0001
+  probe_patience: 60
+  probe_hidden_dim: 0
+  max_grad_norm: 5.0
+
+variants:
+  - id: P0
+    name: GRACE
+    type: grace
+    uses_train_labels_for_pretrain: false
+  - id: P1
+    name: probe-only diagnostic
+    type: probe_only
+    uses_train_labels_for_pretrain: false
+  - id: P2
+    name: mask-only consistency
+    type: mask_only
+    uses_train_labels_for_pretrain: false
+  - id: P3
+    name: PACER full
+    type: pacer_full
+    uses_train_labels_for_pretrain: true
+  - id: P4
+    name: shuffled-label probe
+    type: shuffled_probe
+    uses_train_labels_for_pretrain: true
+    uses_shuffled_labels: true
+  - id: P5
+    name: random-probe route
+    type: random_route
+    uses_train_labels_for_pretrain: true
+  - id: P6
+    name: scalar reweight control
+    type: scalar_reweight
+    uses_train_labels_for_pretrain: true
+  - id: P7
+    name: train-only CV probe
+    type: train_only_cv_probe
+    uses_train_labels_for_pretrain: true
+  - id: P8
+    name: supervised-contrastive small-label control
+    type: supcon_control
+    uses_train_labels_for_pretrain: true
+
+logreg_eval:
+  solver: liblinear
+  penalty: l2
+  tol: 0.0001
+  max_iter: 5000
+  fit_intercept: true
+  class_weight:
+  normalize_embeddings: true
+  c_values:
+    - 0.0009765625
+    - 0.001953125
+    - 0.00390625
+    - 0.0078125
+    - 0.015625
+    - 0.03125
+    - 0.0625
+    - 0.125
+    - 0.25
+    - 0.5
+    - 1.0
+    - 2.0
+    - 4.0
+    - 8.0
+    - 16.0
+    - 32.0
+    - 64.0
+    - 128.0
+    - 256.0
+    - 512.0

@@ -327,6 +327,7 @@ def logreg_val_eval(
         "test_at_best": -1.0,
         "final_test": -1.0,
         "best_c": None,
+        "best_clf": None,
     }
     c_values = [float(c) for c in cfg["c_values"]]
     for c in c_values:
@@ -343,16 +344,19 @@ def logreg_val_eval(
         clf = OneVsRestClassifier(base_clf)
         clf.fit(X[train_idx], Y[train_idx])
         val_acc = accuracy_score(Y[val_idx], clf.predict(X[val_idx]))
-        test_acc = accuracy_score(Y[test_idx], clf.predict(X[test_idx]))
         if val_acc > best["valid_at_best"]:
             best.update(
                 {
                     "valid_at_best": float(val_acc),
-                    "test_at_best": float(test_acc),
-                    "final_test": float(test_acc),
                     "best_c": c,
+                    "best_clf": clf,
                 }
             )
+    if best["best_clf"] is None:
+        raise RuntimeError("Logistic Regression evaluator failed to fit any C value.")
+    test_acc = accuracy_score(Y[test_idx], best["best_clf"].predict(X[test_idx]))
+    best["test_at_best"] = float(test_acc)
+    best["final_test"] = float(test_acc)
 
     return {
         "evaluator_type": "logreg_val",
