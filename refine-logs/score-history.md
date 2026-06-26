@@ -1,7 +1,13 @@
 # Score Evolution
 
-| Round | Problem Fidelity | Method Specificity | Contribution Quality | Frontier Leverage | Feasibility | Validation Focus | Venue Readiness | Overall | Verdict |
-|-------|------------------|--------------------|----------------------|-------------------|-------------|------------------|-----------------|---------|---------|
-| 1 | 8.0 | 6.5 | 5.5 | 7.0 | 8.0 | 8.0 | 5.5 | 6.7 | REVISE |
-| 2 | 8.5 | 8.0 | 7.0 | 7.5 | 8.0 | 8.5 | 6.5 | 7.7 | READY_FOR_PILOT_PLANNING |
+| Round | Problem Fidelity | Method Specificity | Contribution Quality | Feasibility | Validation Focus | Overall | Verdict |
+|---:|---:|---:|---:|---:|---:|---:|---|
+| 1 | 8 | 6 | 6 | 7 | 8 | 6.0 | REVISE |
 
+## Active Idea
+
+BOND-GCL / Basin-capped Objective for Negative Debiasing.
+
+## Decision
+
+`REVISE_TO_SMOKE_PLANNING`。当前只能进入 smoke implementation，不能进入 formal 或性能 claim。

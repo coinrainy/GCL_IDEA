@@ -92,3 +92,26 @@
 | 2026-06-26 10:42 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW.md | experiment-bridge | fixed entry for latest DSR experiment bridge code review |
 | 2026-06-26 10:42 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS_20260626_104230.md | experiment-bridge | timestamped bridge result summary collecting DSR fix-audit-smoke |
 | 2026-06-26 10:42 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS.md | experiment-bridge | fixed entry for latest DSR experiment bridge results |
+| 2026-06-26 10:49 | /idea-discovery | literature/FALSE_NEGATIVE_BOND_LANDSCAPE_20260626_104951.md | idea-discovery | timestamped BOND-GCL literature boundary and gap summary |
+| 2026-06-26 10:49 | /idea-discovery | literature/FALSE_NEGATIVE_BOND_LANDSCAPE.md | idea-discovery | latest BOND-GCL literature boundary and gap summary |
+| 2026-06-26 10:49 | /idea-discovery | idea-stage/FN_BASIN_CANDIDATES_20260626_104951.md | idea-discovery | BOND basin-budget candidate brief sent to fresh reviewer |
+| 2026-06-26 10:49 | /novelty-check | idea-stage/BOND_GCL_NOVELTY_CHECK_20260626_104951.md | novelty-check | timestamped BOND-GCL novelty and reviewer report |
+| 2026-06-26 10:49 | /novelty-check | idea-stage/BOND_GCL_NOVELTY_CHECK.md | novelty-check | latest BOND-GCL novelty and reviewer report |
+| 2026-06-26 10:49 | /idea-discovery | idea-stage/IDEA_CANDIDATES_20260626_104951.md | idea-discovery | timestamped false-negative GCL candidate ranking after reviewer |
+| 2026-06-26 10:49 | /idea-discovery | idea-stage/IDEA_CANDIDATES.md | idea-discovery | latest false-negative GCL candidate ranking after reviewer |
+| 2026-06-26 10:49 | /idea-discovery | idea-stage/IDEA_REPORT_20260626_104951.md | idea-discovery | timestamped BOND-GCL idea discovery report |
+| 2026-06-26 10:49 | /idea-discovery | idea-stage/IDEA_REPORT.md | idea-discovery | latest BOND-GCL idea discovery report |
+| 2026-06-26 10:49 | /research-refine-pipeline | refine-logs/FINAL_PROPOSAL_20260626_104951.md | implementation | timestamped BOND-GCL final proposal |
+| 2026-06-26 10:49 | /research-refine-pipeline | refine-logs/FINAL_PROPOSAL.md | implementation | latest BOND-GCL final proposal |
+| 2026-06-26 10:49 | /research-refine-pipeline | refine-logs/REVIEW_SUMMARY_20260626_104951.md | implementation | timestamped BOND-GCL review summary |
+| 2026-06-26 10:49 | /research-refine-pipeline | refine-logs/REVIEW_SUMMARY.md | implementation | latest BOND-GCL review summary |
+| 2026-06-26 10:49 | /research-refine-pipeline | refine-logs/REFINEMENT_REPORT_20260626_104951.md | implementation | timestamped BOND-GCL refinement report |
+| 2026-06-26 10:49 | /research-refine-pipeline | refine-logs/REFINEMENT_REPORT.md | implementation | latest BOND-GCL refinement report |
+| 2026-06-26 10:49 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260626_104951.md | experiment-planning | timestamped BOND-GCL smoke/pilot experiment plan |
+| 2026-06-26 10:49 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | experiment-planning | latest BOND-GCL smoke/pilot experiment plan |
+| 2026-06-26 10:49 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_104951.md | experiment-planning | timestamped BOND-GCL experiment tracker |
+| 2026-06-26 10:49 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | latest BOND-GCL experiment tracker |
+| 2026-06-26 10:49 | /research-refine-pipeline | refine-logs/PIPELINE_SUMMARY_20260626_104951.md | implementation | timestamped BOND-GCL pipeline summary |
+| 2026-06-26 10:49 | /research-refine-pipeline | refine-logs/PIPELINE_SUMMARY.md | implementation | latest BOND-GCL pipeline summary |
+| 2026-06-26 10:49 | /research-wiki | research-wiki/ideas/bond_gcl.md | wiki | proposed BOND-GCL idea page with REVISE_TO_SMOKE_PLANNING status |
+| 2026-06-26 10:50 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of BOND-GCL idea report |
