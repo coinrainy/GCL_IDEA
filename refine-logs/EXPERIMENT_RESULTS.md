@@ -1,11 +1,11 @@
-# Experiment Results: R2-IRIS Smoke
+# Experiment Results: CPR-IRIS Weight Smoke
 
-Fixed entry for the latest IRIS/R2-IRIS smoke result.
+Fixed entry for the latest IRIS/R2/CPR smoke result.
 
-- Timestamped source: `refine-logs/EXPERIMENT_RESULTS_20260626_123130.md`
-- Summary JSON: `results/summary/r2_iris_smoke_Cora_seed0_20260626T123039Z_summary.json`
-- Summary Markdown: `results/summary/r2_iris_smoke_Cora_seed0_20260626T123039Z_summary.md`
-- Decision: `REVISE_NOT_PILOT`
+- Timestamped source: `refine-logs/EXPERIMENT_RESULTS_20260626_123827.md`
+- Summary JSON: `results/summary/cpr_weight_smoke_Cora_seed0_20260626T123736Z_summary.json`
+- Summary Markdown: `results/summary/cpr_weight_smoke_Cora_seed0_20260626T123736Z_summary.md`
+- Decision: `REVISE_TOWARD_CERTIFIED_CAST`
 
-R2 residualization rescues the old IRIS hard anti-proximity failure but does not yet beat the strongest controls. I13 hybrid reached `84.87` test@best-val and label agreement `0.7968`; I4 CAST proxy remains stronger on accuracy (`85.65`), and I1 kNN remains stronger on label agreement (`0.8151`). No Pilot-A/B or formal run is supported.
+Response residual works best as a certificate over CAST/kNN candidates, not as an independent selector. I17 reaches `85.52` test@best-val and label agreement `0.7953`, close to CAST accuracy `85.65` while improving CAST label agreement `0.7545`; however it does not clearly beat CAST or kNN, so no Pilot-A/B or formal run is supported.
 

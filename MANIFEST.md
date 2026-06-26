@@ -212,3 +212,10 @@
 | 2026-06-26 12:31 | manual-revise | results/summary/r2_iris_smoke_Cora_seed0_20260626T123039Z_summary.json | smoke | parseable R2-IRIS smoke summary JSON |
 | 2026-06-26 12:31 | manual-revise | refine-logs/EXPERIMENT_RESULTS_20260626_123130.md | smoke | timestamped R2-IRIS smoke result summary |
 | 2026-06-26 12:31 | manual-revise | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_123130.md | smoke | timestamped R2-IRIS local code review |
+| 2026-06-26 12:38 | manual-revise | configs/iris_smoke.yaml | smoke | CPR-IRIS response-certified proximity variants I14-I21 |
+| 2026-06-26 12:38 | manual-revise | scripts/run_iris_smoke.py | smoke | updated IRIS runner with response-certified kNN/CAST variants |
+| 2026-06-26 12:38 | manual-revise | logs/iris_smoke/cpr_weight_smoke_Cora_seed0_20260626T123736Z/ | smoke | GRACE warmup log for CPR-IRIS weight smoke |
+| 2026-06-26 12:38 | manual-revise | results/summary/cpr_weight_smoke_Cora_seed0_20260626T123736Z_summary.md | smoke | CPR-IRIS weight smoke summary table |
+| 2026-06-26 12:38 | manual-revise | results/summary/cpr_weight_smoke_Cora_seed0_20260626T123736Z_summary.json | smoke | parseable CPR-IRIS smoke summary JSON |
+| 2026-06-26 12:38 | manual-revise | refine-logs/EXPERIMENT_RESULTS_20260626_123827.md | smoke | timestamped CPR-IRIS smoke result summary |
+| 2026-06-26 12:38 | manual-revise | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_123827.md | smoke | timestamped CPR-IRIS local code review |

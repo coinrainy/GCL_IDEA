@@ -28,6 +28,7 @@ iris:
     max_fit_pairs: 250000
     soft_proximity_penalty: 0.15
     hybrid_cast_weight: 0.35
+    certification_weight: 0.3
   diffusion:
     alpha: 0.2
     steps: 3
@@ -92,3 +93,35 @@ variants:
     name: response_cast_hybrid
     family: response_cast_hybrid
     implementation_note: "Hybrid diagnostic: residual response plus CAST-style feature/embedding/structure score."
+  - id: I14
+    name: response_reranked_knn_pool
+    family: response_reranked_knn_pool
+    implementation_note: "Response residual reranks only a label-free embedding-kNN candidate pool."
+  - id: I15
+    name: response_reranked_cast_pool
+    family: response_reranked_cast_pool
+    implementation_note: "Response residual reranks only a label-free CAST-style candidate pool."
+  - id: I16
+    name: response_certified_knn_score
+    family: response_certified_knn_score
+    implementation_note: "Embedding-kNN score with residual response as a certificate term."
+  - id: I17
+    name: response_certified_cast_score
+    family: response_certified_cast_score
+    implementation_note: "CAST-style score with residual response as a certificate term."
+  - id: I18
+    name: response_certified_cast_w015
+    family: response_certified_cast_w015
+    implementation_note: "CAST-style score with a lighter 0.15 residual-response certificate."
+  - id: I19
+    name: response_certified_cast_w045
+    family: response_certified_cast_w045
+    implementation_note: "CAST-style score with a stronger 0.45 residual-response certificate."
+  - id: I20
+    name: response_certified_knn_w015
+    family: response_certified_knn_w015
+    implementation_note: "Embedding-kNN score with a lighter 0.15 residual-response certificate."
+  - id: I21
+    name: response_certified_knn_w045
+    family: response_certified_knn_w045
+    implementation_note: "Embedding-kNN score with a stronger 0.45 residual-response certificate."

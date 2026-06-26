@@ -1,16 +1,16 @@
-# Research Proposal: R2-IRIS / Residualized Response Invariant Signatures
+# Research Proposal: CPR-IRIS / Response-Certified Proximity
 
 ## Problem Anchor
 
 - **Bottom-line problem**：节点级 GCL 会把潜在同类节点当 negatives；仅靠相似度、近邻或 loss weighting 容易把 false-negative 发现退化为 positive mining。
-- **Must-solve bottleneck**：需要一个不依赖 pair proximity 的 semantic relation criterion。
-- **Core mechanism**：interventional response fingerprint + residualized response-invariant sibling discovery + multi-positive / neutral closure。
+- **Must-solve bottleneck**：需要让 proximity/CAST 候选获得语义证书，而不是退化成裸 kNN/PPR mining。
+- **Core mechanism**：interventional response fingerprint + response-certified CAST/proximity candidate closure。
 - **Non-goals**：不改 InfoNCE denominator 作为主贡献；不使用 test labels；不使用 learned augmentation policy；不把 smoke 写成性能 claim。
 - **Constraints**：首轮只做 Cora seed=0 smoke，`1:1:8` split，frozen encoder + Logistic Regression evaluator。
 
 ## Method Thesis
 
-**One-sentence thesis**：R2-IRIS discovers false negatives by identifying nodes whose interventional response similarity remains unusually high after controlling feature similarity, embedding similarity, graph proximity, and degree.
+**One-sentence thesis**：CPR-IRIS discovers false negatives by letting strong proximity/CAST candidate relations enter contrastive closure only when their interventional response residuals certify semantic consistency beyond ordinary feature, embedding, graph-proximity, and degree effects.
 
 ## Proposed Method
 
@@ -52,7 +52,7 @@ Construct:
 R_i = concat_{omega in Omega} whiten(r_i(omega))
 ```
 
-### 4. Residualized Response Siblings
+### 4. Response-Certified Candidate Closure
 
 The first IRIS smoke showed that hard anti-proximity filtering destroys sibling quality. The revised rule replaces hard exclusion with pair-level residualization:
 
@@ -66,7 +66,15 @@ sim_response(R_i, R_j)
   + residual_response(i, j)
 ```
 
-Node `j` becomes an R2-IRIS sibling for anchor `i` if `residual_response(i, j)` is among the top relation candidates for anchor `i`.
+The latest smoke indicates that residual response alone is not enough. CPR therefore uses strong label-free candidate generators first, then applies residual response as a certificate:
+
+```text
+score_cpr(i, j)
+  = score_candidate(i, j)
+  + lambda * residual_response(i, j)
+```
+
+where `score_candidate` is CAST-style or kNN-style and `lambda` is fixed before a smoke run.
 
 This is not allowed to use labels. Labels are used only after mining for offline diagnostics.
 
@@ -97,6 +105,8 @@ The contribution is relation discovery, not a new contrastive objective.
 | raw response no residual | tests whether residualization changes anything |
 | residual + soft proximity penalty | tests soft replacement for hard anti-proximity |
 | residual + CAST hybrid | tests whether response residuals help a stronger transport-like control |
+| response-certified CAST | current best CPR direction |
+| response-certified kNN | collapse-to-kNN control |
 
 ## Diagnostics
 
@@ -119,5 +129,5 @@ The contribution is relation discovery, not a new contrastive objective.
 
 ## Current Verdict
 
-`REVISE_NOT_PILOT`。  
-Hard anti-proximity IRIS failed the first smoke. R2 residualization rescues the failure mode but still does not beat the strongest controls in Cora seed=0 smoke. No Pilot-A/B or formal experiment is currently supported.
+`REVISE_TOWARD_CERTIFIED_CAST`。  
+Hard anti-proximity IRIS failed. R2 residualization rescues the failure mode. CPR response-certified CAST is currently the strongest direction, but Cora seed=0 smoke still does not justify Pilot-A/B or formal experiments.

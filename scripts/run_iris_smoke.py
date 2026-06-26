@@ -233,6 +233,22 @@ def topk_relations(score: np.ndarray, budget: int, mask: np.ndarray | None = Non
     return rel
 
 
+def topk_candidate_mask(score: np.ndarray, pool_size: int) -> np.ndarray:
+    n = score.shape[0]
+    mask = np.zeros((n, n), dtype=bool)
+    effective = score.copy()
+    np.fill_diagonal(effective, -np.inf)
+    for i in range(n):
+        row = effective[i]
+        finite = np.isfinite(row)
+        if not finite.any():
+            continue
+        k = min(pool_size, int(finite.sum()))
+        idx = np.argpartition(row, -k)[-k:]
+        mask[i, idx] = True
+    return mask
+
+
 def probabilistic_score(
     emb_sim: np.ndarray,
     feat_sim: np.ndarray,
@@ -461,6 +477,8 @@ def build_variant_relations(
     residual_score = matrices["residual_response_sim"]
     soft_penalty = float(cfg["residualization"].get("soft_proximity_penalty", 0.15))
     hybrid_cast_weight = float(cfg["residualization"].get("hybrid_cast_weight", 0.35))
+    certification_weight = float(cfg["residualization"].get("certification_weight", 0.3))
+    pool_size = int(cfg.get("candidate_pool_size", 128))
     emb_control_score = np.nan_to_num(standardize_score(matrices["emb_sim"]), nan=0.0, posinf=0.0, neginf=0.0)
     graph_control_score = np.nan_to_num(standardize_score(matrices["graph_sim"]), nan=0.0, posinf=0.0, neginf=0.0)
     proximity_score = 0.5 * emb_control_score + 0.5 * graph_control_score
@@ -469,6 +487,19 @@ def build_variant_relations(
     response_cast_hybrid = standardize_score(
         (1.0 - hybrid_cast_weight) * residual_score + hybrid_cast_weight * cast_score
     )
+    certified_knn_score = standardize_score(
+        (1.0 - certification_weight) * standardize_score(matrices["emb_sim"])
+        + certification_weight * residual_score
+    )
+    certified_cast_score = standardize_score(
+        (1.0 - certification_weight) * cast_score + certification_weight * residual_score
+    )
+    certified_cast_score_w015 = standardize_score(0.85 * cast_score + 0.15 * residual_score)
+    certified_cast_score_w045 = standardize_score(0.55 * cast_score + 0.45 * residual_score)
+    certified_knn_score_w015 = standardize_score(0.85 * standardize_score(matrices["emb_sim"]) + 0.15 * residual_score)
+    certified_knn_score_w045 = standardize_score(0.55 * standardize_score(matrices["emb_sim"]) + 0.45 * residual_score)
+    knn_pool_mask = topk_candidate_mask(matrices["emb_sim"], pool_size)
+    cast_pool_mask = topk_candidate_mask(cast_score, pool_size)
     score_by_family = {
         "grace_base": None,
         "embedding_knn": matrices["emb_sim"],
@@ -484,6 +515,14 @@ def build_variant_relations(
         "raw_response_no_residual": matrices["response_sim"],
         "residualized_soft_penalty": residual_soft_score,
         "response_cast_hybrid": response_cast_hybrid,
+        "response_reranked_knn_pool": residual_score,
+        "response_reranked_cast_pool": residual_score,
+        "response_certified_knn_score": certified_knn_score,
+        "response_certified_cast_score": certified_cast_score,
+        "response_certified_cast_w015": certified_cast_score_w015,
+        "response_certified_cast_w045": certified_cast_score_w045,
+        "response_certified_knn_w015": certified_knn_score_w015,
+        "response_certified_knn_w045": certified_knn_score_w045,
     }
     mask_by_family = {
         "grace_base": None,
@@ -500,6 +539,14 @@ def build_variant_relations(
         "raw_response_no_residual": None,
         "residualized_soft_penalty": None,
         "response_cast_hybrid": None,
+        "response_reranked_knn_pool": knn_pool_mask,
+        "response_reranked_cast_pool": cast_pool_mask,
+        "response_certified_knn_score": None,
+        "response_certified_cast_score": None,
+        "response_certified_cast_w015": None,
+        "response_certified_cast_w045": None,
+        "response_certified_knn_w015": None,
+        "response_certified_knn_w045": None,
     }
     for variant in variants:
         family = variant["family"]

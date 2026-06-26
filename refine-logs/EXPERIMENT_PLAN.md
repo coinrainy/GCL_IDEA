@@ -1,8 +1,8 @@
-# Experiment Plan: R2-IRIS Smoke
+# Experiment Plan: CPR-IRIS Smoke
 
 ## Status
 
-`REVISE_NOT_PILOT`
+`REVISE_TOWARD_CERTIFIED_CAST`
 
 本计划只定义最小 smoke。不得把 smoke 结果写成 formal、SOTA、robust 或 comprehensive。
 
@@ -32,6 +32,11 @@
 | I11 | raw response no residual | residualization necessity |
 | I12 | residual response + soft proximity penalty | soft anti-proximity replacement |
 | I13 | response + CAST hybrid | hybrid diagnostic against CAST control |
+| I14 | response reranked kNN pool | candidate-pool reranking |
+| I15 | response reranked CAST pool | CAST-pool reranking |
+| I16 | response-certified kNN score | additive certificate over kNN |
+| I17 | response-certified CAST score | additive certificate over CAST |
+| I18-I21 | certificate weight sweep | fixed-weight smoke diagnostics |
 
 ## Smoke Metrics
 
@@ -63,4 +68,4 @@ IRIS only moves beyond smoke if:
 
 ## Next Gate
 
-Only revised Cora seed=0 smoke is allowed until R2 becomes clearly distinct from and competitive with kNN/PMGCL/CAST controls. No Pilot-A or formal run is allowed yet.
+Only revised Cora seed=0 smoke is allowed until CPR becomes clearly distinct from and competitive with kNN/PMGCL/CAST controls. No Pilot-A or formal run is allowed yet.
