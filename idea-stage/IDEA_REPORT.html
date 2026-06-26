@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ORBIT-GCL Idea Discovery</title>
+<title>GRAFT-GCL Idea Discovery</title>
 
 <meta name="generator" content="ARIS render-html (academic, v1)">
 <meta name="aris:source-path" content="idea-stage/IDEA_REPORT.md">
-<meta name="aris:source-sha256" content="e1e8b13758724a6ce0669ac0e9bb89aa0e7150dd55e4d3f581fd3582c9e9f228">
-<meta name="aris:generated-at" content="2026-06-26 17:28 UTC">
+<meta name="aris:source-sha256" content="e9348b847381fc6d2d19cac354cf8245915a0e40572fe97e722915c15799e563">
+<meta name="aris:generated-at" content="2026-06-26 17:58 UTC">
 
 <!-- offline mode: MathJax + highlight.js skipped; math and code blocks render as plain text -->
 
@@ -312,36 +312,28 @@ footer.aris-footer a { color: var(--ink-muted); border-bottom: 1px dotted var(--
   <ol>
 <li><a href="#executive-summary">Executive Summary</a>
 </li>
-<li><a href="#已吸收失败证据">已吸收失败证据</a>
+<li><a href="#hard-boundary-from-orbit">Hard Boundary from ORBIT</a>
 </li>
 <li><a href="#literature-boundary">Literature Boundary</a>
 </li>
-<li><a href="#ranked-ideas">Ranked Ideas</a>
-<ul>
-<li><a href="#1-orbit-gcl--operator-response-basis-induction">1. ORBIT-GCL / Operator-Response Basis Induction</a></li>
-<li><a href="#2-morph-gcl--morphological-ego-program-learning">2. MORPH-GCL / Morphological Ego Program Learning</a></li>
-<li><a href="#3-scale-gcl--multi-scale-evidence-conservation">3. SCALE-GCL / Multi-scale Evidence Conservation</a></li>
-<li><a href="#4-atlas-gcl--self-supervised-label-function-atlas">4. ATLAS-GCL / Self-Supervised Label-Function Atlas</a></li>
-</ul>
+<li><a href="#method-thesis">Method Thesis</a>
 </li>
-<li><a href="#refined-orbit-proposal">Refined ORBIT Proposal</a>
-<ul>
-<li><a href="#problem-anchor">Problem Anchor</a></li>
-<li><a href="#method-thesis">Method Thesis</a></li>
-<li><a href="#non-goals">Non-Goals</a></li>
-</ul>
+<li><a href="#task-prior-families">Task Prior Families</a>
 </li>
-<li><a href="#kill-smoke-plan">Kill-Smoke Plan</a>
+<li><a href="#why-this-is-not-a-small-innovation">Why This Is Not a Small Innovation</a>
+</li>
+<li><a href="#required-controls-for-m0-smoke">Required Controls for M0 Smoke</a>
+</li>
+<li><a href="#hard-kill-rules">Hard Kill Rules</a>
 </li>
 <li><a href="#paper-skeleton">Paper Skeleton</a>
 <ul>
 <li><a href="#title">Title</a></li>
-<li><a href="#abstract-thesis">Abstract thesis</a></li>
-<li><a href="#main-contributions">Main contributions</a></li>
-<li><a href="#expected-sections">Expected sections</a></li>
+<li><a href="#abstract-thesis">Abstract Thesis</a></li>
+<li><a href="#contributions">Contributions</a></li>
 </ul>
 </li>
-<li><a href="#final-decision">Final Decision</a>
+<li><a href="#decision">Decision</a>
 </li>
 </ol>
 </nav>
@@ -349,80 +341,60 @@ footer.aris-footer a { color: var(--ink-muted); border-bottom: 1px dotted var(--
 <main>
 <header class="hero">
   
-  <h1>ORBIT-GCL Idea Discovery</h1>
+  <h1>GRAFT-GCL Idea Discovery</h1>
   
   
   <div class="meta">
     <span><strong>Source:</strong> <code>idea-stage/IDEA_REPORT.md</code></span>
-    <span><strong>SHA256:</strong> <code>e1e8b1375872</code></span>
-    <span><strong>Rendered:</strong> 2026-06-26 17:28 UTC</span>
+    <span><strong>SHA256:</strong> <code>e9348b847381</code></span>
+    <span><strong>Rendered:</strong> 2026-06-26 17:58 UTC</span>
     
   </div>
 </header>
 
-<h1 id="idea-discovery-report-orbit-gcl-operator-response-pivot">Idea Discovery Report: ORBIT-GCL Operator-Response Pivot</h1>
-<ul><li>时间：2026-06-26T17:16:14Z</li><li>方向：普通节点分类图对比学习，重新进行 idea 构思，优先可行性、创新性、完整论文骨架</li><li>Pipeline：project failure synthesis -&gt; literature boundary -&gt; candidate generation -&gt; fresh <code>gcl_scientific_reviewer</code> -&gt; refined proposal + kill-smoke plan</li><li>当前决策：<code>REVISE_TO_ORBIT_MINIMAL_SPEC_AND_KILL_SMOKE</code></li><li>Claim status：proposal only；未实现 ORBIT，未跑 ORBIT smoke/pilot/formal；不支持任何性能 claim。</li></ul>
+<h1 id="idea-discovery-report-graft-gcl-task-prior-pivot">Idea Discovery Report: GRAFT-GCL Task-Prior Pivot</h1>
+<ul><li>时间：2026-06-26T17:49:24Z</li><li>触发：ORBIT-GCL <code>OR-M0-001</code> negative smoke</li><li>方向：普通节点分类图对比学习，机制级 pivot</li><li>当前决策：<code>REVISE_TO_GRAFT_PRE_REVIEW_AND_M0_SMOKE_PLANNING</code></li><li>Claim status：proposal only；未实现 GRAFT，未跑 GRAFT smoke/pilot/formal；不支持任何性能 claim。</li></ul>
 <h2 id="executive-summary">Executive Summary</h2>
-<p>本轮重新构思选择 <strong>ORBIT-GCL / Operator-Response Basis Induction for Graph Contrastive Learning</strong> 作为当前 Top1。它不再继续 false-negative pair mining、positive/neutral closure、rank/boundary diagnostic、train-label probe routing 或 masked evidence group prediction，而是把自监督目标改成：学习每个节点在一组无标签 graph intervention operators 下的 response field。</p>
-<p>Fresh <code>gcl_scientific_reviewer</code> 给出 <code>REVISE</code>，confidence <code>0.73</code>。ORBIT 是当前候选中最像完整论文主线的方向，但必须先收缩为“node-level operator response field 的低秩 response-basis prediction”，并通过 Cora seed0 kill-smoke 证明它不是 GraphMAE/GraphMAE2、Graph-JEPA、TTER/D-SLA、GCIL/AS-GCL 或 regularization/capacity 的换名。</p>
-<h2 id="已吸收失败证据">已吸收失败证据</h2>
-<table><thead><tr><th>Prior line</th><th>Evidence</th><th>Lesson</th></tr></thead><tbody><tr><td>CAST / IRIS / CPR</td><td>low-overlap 或 response-certified pairs 没有稳定超过 kNN/CAST controls</td><td>更复杂的 pair certificate 不足以支撑节点分类收益</td></tr><tr><td>BEACON</td><td>更高 label agreement / margin-rank diagnostics 未转化为 accuracy</td><td>pair 安全性不是 causal objective</td></tr><tr><td>SPECTRA</td><td>effective-rank / boundary-retention 改善但 accuracy 下降</td><td>representation diagnostic 不能替代下游证据</td></tr><tr><td>PACER</td><td>train/val probe margin delta 改善但 random route / SupCon 更强</td><td>evaluator alignment proxy 也可能是伪信号</td></tr><tr><td>MEGA</td><td>MEGA full <code>67.44</code>，低于 GRACE <code>84.69</code> / GCMAE-style <code>84.36</code></td><td>masked evidence group 仍像弱化版 masked SSL，不能作为主线</td></tr></tbody></table>
-<p>这些 no-go 将问题重定义为：</p>
-<blockquote><p>不是还没找到足够好的假负样本，也不是还没找到足够好的 masked group；而是现有 graph SSL 的 supervision object 本身没有直接学习“节点对语义证据扰动的响应函数”。</p></blockquote>
+<p>本轮基于 ORBIT negative smoke 选择 <strong>GRAFT-GCL / Graph Prior-Task Fitted Contrastive Learning</strong> 作为新的机制级 pivot。ORBIT full <code>82.98</code> 低于 GRACE <code>84.78</code> 和 matched GRACE <code>84.96</code>，说明 operator-response basis target 虽有自监督信号，但不足以支持继续小调。</p>
+<p>GRAFT 的核心转向是：不再优化节点对、masked evidence、operator response、rank/boundary diagnostic 或 train-label probe route，而是在同一个真实图上生成一族无标签的 plausible node-classification tasks，并用这些 synthetic task labels 训练 task-conditioned supervised contrastive representation。真实标签只在最终 frozen Logistic Regression evaluator 中使用。</p>
+<h2 id="hard-boundary-from-orbit">Hard Boundary from ORBIT</h2>
+<p>本轮明确禁止：</p>
+<ul><li>调 ORBIT operator bank、basis rank、teacher、response target、loss weight。</li><li>继续 Graph-JEPA / response control / D-SLA / operator-id prediction 变体。</li><li>把 held-out response MSE、effective rank、boundary energy、probe margin 当作主贡献。</li></ul>
 <h2 id="literature-boundary">Literature Boundary</h2>
-<p>ORBIT 必须与以下近邻切开：</p>
-<ul><li>GRACE：node-level contrastive agreement with graph corruption。参考：https://arxiv.org/abs/2006.04131</li><li>GraphMAE / GraphMAE2：masked feature reconstruction、remask decoding、latent prediction。参考：https://arxiv.org/abs/2205.10803 和 https://arxiv.org/abs/2304.04779</li><li>GraphPAE / StructPosGSSL：结构与位置重建或结构/位置感知 SSL。参考：https://arxiv.org/html/2505.23345v2 和 https://arxiv.org/html/2502.16233v1</li><li>GCIL / AS-GCL：causal/spectral invariance 与 spectral augmentation。参考：https://arxiv.org/html/2401.12564 和 https://arxiv.org/html/2502.13525v1</li><li>Graph-JEPA / PCR：context-target latent prediction。参考：https://arxiv.org/html/2502.01684v4</li></ul>
-<p>ORBIT 的差异点不能写成“更多 augmentation”或“latent prediction”，而必须写成：</p>
-<blockquote><p>operator-valued node response target：一个节点在多个干预算子下的响应函数，而不是输入、节点身份、operator id 或单个 latent target。</p></blockquote>
-<h2 id="ranked-ideas">Ranked Ideas</h2>
-<h3 id="1-orbit-gcl--operator-response-basis-induction">1. ORBIT-GCL / Operator-Response Basis Induction</h3>
-<p><strong>核心 thesis</strong>：少标签节点分类需要 class-readable perturbation sensitivity。ORBIT 用固定无标签 operator bank 产生节点 response field，再训练 encoder 从 clean / weak view 预测 response basis，使表示显式携带“哪些图证据被扰动时该节点语义响应会改变”的信息。</p>
-<p><strong>最小机制</strong>：</p>
-<ol><li>固定 operator bank <code>Omega = {O_m}</code>，包括 feature-frequency mask、degree-preserving edge perturbation、diffusion-temperature shift、ego-radius crop、positional perturbation。</li><li>EMA teacher 产生 response field：</li></ol>
-<pre><code class="language-text">R_i = [h_T(O_1(G), i) - h_T(G, i), ..., h_T(O_M(G), i) - h_T(G, i)]</code></pre>
-<ol><li>对 <code>R_i</code> 做 train-label-free low-rank basis projection，得到 <code>b_i</code>。</li><li>Student 从 clean / weak view 表示预测 <code>b_i</code>，并在 held-out operators 上评估 response generalization。</li><li>Frozen encoder + Logistic Regression downstream，沿用项目统一 split/evaluator。</li></ol>
-<p><strong>为什么像完整论文主线</strong>：</p>
-<ul><li>Problem：Graph SSL objective mismatch for label-scarce node classification。</li><li>Method：operator response basis induction。</li><li>Theory/analysis：response basis 与 class-readable perturbation sensitivity 的关系。</li><li>Experiments：强对照覆盖 GCL、masked SSL、JEPA、transformation prediction、discrepancy regression、response controls 和 shortcut controls。</li><li>Ablation：operator family、basis rank、teacher source、held-out operator generalization、shortcut removal。</li></ul>
-<p><strong>Reviewer verdict</strong>：<code>REVISE</code>。保留，但不能直接 GO。</p>
-<h3 id="2-morph-gcl--morphological-ego-program-learning">2. MORPH-GCL / Morphological Ego Program Learning</h3>
-<p>用 ego graph edit program 作为自监督目标，训练 encoder 预测局部图形态程序 outcome / edit distance。创新性可能较强，但离普通节点分类 GCL 太远，且容易撞 Graph Edit Networks / GEDGNN / topology transformation SSL。状态：<code>PIVOT</code>，仅作备选。</p>
-<h3 id="3-scale-gcl--multi-scale-evidence-conservation">3. SCALE-GCL / Multi-scale Evidence Conservation</h3>
-<p>用 node/ego/community/global evidence flow 的 conservation law 约束表示。该方向容易重复 SPECTRA：诊断改善但 accuracy 不转化。状态：<code>KILL/weak PIVOT</code>。</p>
-<h3 id="4-atlas-gcl--self-supervised-label-function-atlas">4. ATLAS-GCL / Self-Supervised Label-Function Atlas</h3>
-<p>训练多族 label-free pseudo-label functions，构建 latent task atlas。该方向太像 AutoSSL / multi-pretext stacking。状态：<code>KILL</code>。</p>
-<h2 id="refined-orbit-proposal">Refined ORBIT Proposal</h2>
-<h3 id="problem-anchor">Problem Anchor</h3>
-<p>普通节点分类中的 Graph SSL 不是缺少更多 pair heuristics，而是缺少对“节点响应函数”的建模。一个节点的类别可读证据往往表现为对特征频段、结构扰动、扩散尺度、ego radius 和位置扰动的敏感性组合。现有 node-node contrastive / masked reconstruction / latent target prediction 没有把这种 operator response 作为主要学习对象。</p>
-<h3 id="method-thesis">Method Thesis</h3>
-<p>ORBIT 将 graph SSL 的自监督目标改为 node-level operator response basis prediction：让 encoder 在不使用标签、不使用 test 信息、不构造 cross-node positives 的情况下学习每个节点在多种图干预下的响应模式。</p>
-<h3 id="non-goals">Non-Goals</h3>
-<ul><li>不做 kNN/PPR/CAST mining。</li><li>不做 cross-node positive/neutral closure。</li><li>不做 train-label probe routing。</li><li>不做 masked feature/edge/position reconstruction 作为主目标。</li><li>不做多 pretext stacking。</li><li>不把 Barlow/VICReg/covariance guard 作为贡献；如使用，只能作为 collapse control 并做 no-guard ablation。</li></ul>
-<h2 id="kill-smoke-plan">Kill-Smoke Plan</h2>
-<p><code>OR-M0-001</code>：Cora seed0 only，stratified random <code>1:1:8</code>，frozen encoder + Logistic Regression evaluator。</p>
-<p>Required systems：</p>
-<ul><li>O0 GRACE</li><li>O1 matched-parameter GRACE</li><li>O2 GraphMAE2-lite</li><li>O3 GCMAE-style MAE+CL hybrid</li><li>O4 Graph-JEPA latent target</li><li>O5 TTER-style operator-id prediction</li><li>O6 D-SLA-style discrepancy regression</li><li>O7 IRIS/WILLOW same-node response control</li><li>O8 ORBIT response-magnitude-only</li><li>O9 ORBIT degree-only / feature-only response</li><li>O10 random operator labels</li><li>O11 shuffled response basis</li><li>O12 random teacher</li><li>O13 no-SVD raw response</li><li>O14 ORBIT full minimal</li></ul>
-<p>Required diagnostics：</p>
-<ul><li>Test@best-val accuracy, val accuracy, selected <code>C</code></li><li>held-out operator response prediction error</li><li>response-basis rank and usage</li><li>correlation / partial correlation with degree, feature norm, diffusion score</li><li>alignment / uniformity / effective rank</li><li>exact command, commit, dirty flag, config path, raw JSON path</li></ul>
-<p>Hard kill rules：</p>
-<ul><li>O14 不超过最强 matched control：kill。</li><li>O10/O11/O12/O9 接近 O14：kill。</li><li>held-out operator response prediction 失败：kill。</li><li>只提升 response prediction / rank / uniformity，不提升 frozen LogReg accuracy：kill。</li><li>提升在 matched capacity/budget 下消失：kill。</li></ul>
+<ul><li>GraphPFN：使用合成 attributed graph/task prior 训练 graph foundation model。GRAFT 不做跨图 foundation/in-context 模型，只在当前真实图上做 label-free task prior GCL。Source: https://arxiv.org/abs/2509.21489</li><li>AutoSSL：自动组合多个 graph SSL pretext tasks。GRAFT 不搜索 pretext 权重，而是定义 node-classification task prior。Source: https://arxiv.org/abs/2106.05470</li><li>AGSSL：多 teacher pretext knowledge distillation。GRAFT 不蒸馏 teacher，也不继续 ORBIT response teacher。Source: https://arxiv.org/abs/2210.02099</li><li>PCL：半监督 pseudo-label / negative-pair contrastive learning。GRAFT 不使用 train-label pseudo-labeler，不为真实任务造伪标签。Source: https://arxiv.org/html/2302.09532v3</li></ul>
+<h2 id="method-thesis">Method Thesis</h2>
+<blockquote><p>少标签节点分类真正需要的是一个对“可能的节点分类任务族”有良好线性可分性的 encoder，而不是对某个单一 pretext target 的高拟合。</p></blockquote>
+<p>GRAFT 将 graph SSL objective 改成 prior-task fitting：</p>
+<ol><li>在真实图 <code>G=(A,X)</code> 上构造无标签 task generator <code>p(tau | G)</code>。</li><li>每个 task <code>tau</code> 产生 synthetic class assignment <code>y_i^tau</code>，代表一种 plausible node-classification boundary。</li><li>Encoder <code>f_theta</code> 对每个 task 使用 task-conditioned supervised contrastive loss：</li></ol>
+<pre><code class="language-text">L_GRAFT = E_{tau ~ p(tau|G)} SupCon({f_theta(v_i)}, {y_i^tau})</code></pre>
+<ol><li>通过 task dropout、task family balancing 和 collapse guard 避免只记住单一 clustering。</li><li>训练结束后冻结 encoder，用项目统一 Logistic Regression evaluator 在真实 train/val/test split 上评估。</li></ol>
+<h2 id="task-prior-families">Task Prior Families</h2>
+<p>最小 GRAFT 只允许四类预注册任务：</p>
+<ol><li><strong>Feature mixture tasks</strong>：从稀疏 feature 子空间采样 class boundary，再做轻量 graph smoothing。</li><li><strong>Topology role tasks</strong>：基于 degree、ego density、PageRank/diffusion bucket、Laplacian positional bins 产生 role labels。</li><li><strong>Homophily-controlled MRF tasks</strong>：用 Potts/Ising-style label smoothing 采样不同 edge-label correlation 的任务。</li><li><strong>Feature-topology interaction tasks</strong>：让 labels 同时依赖 feature residual 与 topology role，避免只学 feature 或只学 structure。</li></ol>
+<p>禁止任务生成器读取真实 label、validation accuracy 或 test performance。</p>
+<h2 id="why-this-is-not-a-small-innovation">Why This Is Not a Small Innovation</h2>
+<p>GRAFT 的主线可以形成完整论文：</p>
+<ul><li>Problem：Graph SSL pretext 与少标签 node classification task mismatch。</li><li>Method：same-graph prior-task fitted contrastive learning。</li><li>Theory/analysis：task prior coverage、linear readout transfer、synthetic-real label alignment diagnostics。</li><li>Experiments：GCL/masked/JEPA/AutoSSL/pseudo-label/task-prior controls。</li><li>Ablations：task family、class count、homophily range、feature/topology factor、random prior、true-label SupCon upper bound。</li></ul>
+<h2 id="required-controls-for-m0-smoke">Required Controls for M0 Smoke</h2>
+<ul><li>G0 GRACE</li><li>G1 matched-parameter GRACE</li><li>G2 clustering SupCon pseudo-label control</li><li>G3 random task prior</li><li>G4 feature-only task prior</li><li>G5 topology-only task prior</li><li>G6 label-propagation/PPR task prior</li><li>G7 AutoSSL-style multi-pretext control</li><li>G8 GRAFT full</li><li>G9 task-shuffled GRAFT</li><li>G10 true-label SupCon upper bound diagnostic, train labels only, not a method</li></ul>
+<h2 id="hard-kill-rules">Hard Kill Rules</h2>
+<ul><li>G8 不超过 max(G0,G1,G2,G6,G7)：kill。</li><li>G8 与 G3/G9 接近：kill as random-task artifact。</li><li>G8 只赢 feature-only 或 topology-only，但输给 clustering/PPR：kill as pseudo-label/clustering variant。</li><li>G8 需要更多 epochs/params/task search 才赢：kill as unfair budget。</li><li>synthetic-real train-label NMI/ARI 高但 accuracy 不提升：kill as diagnostic-only。</li></ul>
 <h2 id="paper-skeleton">Paper Skeleton</h2>
 <h3 id="title">Title</h3>
-<p>Operator-Response Basis Induction for Graph Contrastive Learning</p>
-<h3 id="abstract-thesis">Abstract thesis</h3>
-<p>Graph SSL for node classification usually learns invariance across augmented views or reconstructs masked inputs. We argue that label-scarce node classification requires a different target: the response function of each node under graph interventions. ORBIT induces low-rank node-level response bases from a fixed bank of label-free graph operators and trains an encoder to predict these bases from clean views. This replaces node-node negatives and masked reconstruction with operator-valued self-supervision.</p>
-<h3 id="main-contributions">Main contributions</h3>
-<ol><li>提出 operator response field 作为 graph SSL 的新 supervision object。</li><li>给出 ORBIT 的无标签 response-basis induction 方法。</li><li>设计 held-out operator generalization 与 shortcut controls，用于区分 response learning 与 transformation-id / degree-feature shortcut。</li><li>在节点分类协议下与 GCL、masked SSL、JEPA、transformation prediction、discrepancy regression 强对照比较。</li></ol>
-<h3 id="expected-sections">Expected sections</h3>
-<ol><li>Introduction：为什么 false-negative 修补和 masked evidence 都不够。</li><li>Related Work：GCL、masked graph autoencoders、predictive graph SSL、causal/spectral graph SSL、transformation/discrepancy SSL。</li><li>Problem Formulation：operator response field。</li><li>Method：operator bank、teacher response field、basis projection、student objective、held-out operator test。</li><li>Experiments：protocol、baselines、main results、ablation、diagnostics、failure analysis。</li><li>Limitations：operator bank dependence、teacher bias、cost、transductive assumptions。</li></ol>
-<h2 id="final-decision">Final Decision</h2>
-<p><code>REVISE_TO_ORBIT_MINIMAL_SPEC_AND_KILL_SMOKE</code></p>
-<p>ORBIT 是当前最好的新方向，但不是 <code>GO</code>。下一步只能做最小 spec 和 Cora seed0 kill-smoke 实现；smoke 失败则 kill，不做小调。</p>
+<p>Graph Prior-Task Fitted Contrastive Learning for Node Classification</p>
+<h3 id="abstract-thesis">Abstract Thesis</h3>
+<p>Graph contrastive learning often optimizes view agreement, masked reconstruction, or hand-crafted predictive targets. We argue that these objectives are weak proxies for label-scarce node classification. GRAFT instead samples a distribution of label-free but plausible node-classification tasks on the observed graph and fits an encoder by task-conditioned contrastive meta-risk. This trains representations for downstream task transfer without using real labels during pretraining.</p>
+<h3 id="contributions">Contributions</h3>
+<ol><li>提出 same-graph prior-task fitting 作为 graph contrastive learning 的新 supervision object。</li><li>设计 label-free node-classification task generator，覆盖 feature、topology、homophily 和 interaction boundaries。</li><li>给出 task-conditioned SupCon meta-risk 与 task-prior balance / dropout 机制。</li><li>提供严格 controls，区分 GRAFT 与 pseudo-labeling、AutoSSL、GraphPFN、PPR/clustering 和 ORBIT response learning。</li></ol>
+<h2 id="decision">Decision</h2>
+<p><code>REVISE_TO_GRAFT_PRE_REVIEW_AND_M0_SMOKE_PLANNING</code></p>
+<p>本轮只完成机制级 pivot 与论文骨架。下一步不得直接 Pilot-A/B/formal；如实现，只能先做 Cora seed0 <code>GRAFT-M0-001</code> kill-smoke。</p>
 
 <footer class="aris-footer">
   Generated by <a href="https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep/blob/main/skills/render-html/SKILL.md">ARIS <code>/render-html</code></a> ·
   source path <code>idea-stage/IDEA_REPORT.md</code> ·
-  SHA256 <code>e1e8b1375872</code> ·
-  generated at 2026-06-26 17:28 UTC.
+  SHA256 <code>e9348b847381</code> ·
+  generated at 2026-06-26 17:58 UTC.
   This is a generated view — edit the source Markdown, then re-render.
 </footer>
 </main>

@@ -1,21 +1,10 @@
-# Idea Candidates: Operator-Response Pivot
+# Idea Candidates: Task-Prior Pivot after ORBIT
 
-- 时间：2026-06-26T17:16:14Z
-- 当前 active idea：`ORBIT-GCL`
-- 决策：`REVISE_TO_ORBIT_MINIMAL_SPEC_AND_KILL_SMOKE`
-- Claim status：proposal only；未实现、未跑 ORBIT smoke/pilot/formal。
+- 时间：2026-06-26T17:49:24Z
+- Current Top1：GRAFT-GCL / Graph Prior-Task Fitted Contrastive Learning
+- Decision：`REVISE_TO_GRAFT_PRE_REVIEW_AND_M0_SMOKE_PLANNING`
 
-| # | Idea | Reviewer verdict | Feasibility | Novelty | Status |
-|---:|---|---|---|---|---|
-| 1 | ORBIT-GCL / Operator-Response Basis Induction | `REVISE` | 高 | 中高，但需强对照切开 TTER/D-SLA/Graph-JEPA | Active |
-| 2 | MORPH-GCL / Morphological Ego Program Learning | `PIVOT` | 中低 | 中高 | Backup only |
-| 3 | SCALE-GCL / Multi-scale Evidence Conservation | `KILL/weak PIVOT` | 中 | 低到中 | Eliminated |
-| 4 | ATLAS-GCL / Self-Supervised Label-Function Atlas | `KILL` | 高 | 低 | Eliminated |
+See also:
 
-## Active Idea
-
-ORBIT-GCL 学习节点在固定无标签 graph intervention operator bank 下的 response field，并把其低秩 response basis 作为自监督目标。它不做 node-node negative，不做 masked reconstruction，不做 cross-node positive mining，不做 train-label probe routing。
-
-## Next Gate
-
-只允许 `OR-M0-001` Cora seed0 kill-smoke。若 ORBIT full 不超过最强 matched control，或 shortcut controls 接近 full，则 kill。
+- `idea-stage/TASK_PRIOR_CANDIDATES.md`
+- `idea-stage/GRAFT_GCL_NOVELTY_CHECK.md`

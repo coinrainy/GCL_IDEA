@@ -378,3 +378,17 @@
 | 2026-06-26 17:44 | /experiment-bridge | refine-logs/EXPERIMENT_TRACKER.md | experiment-bridge | latest ORBIT tracker after negative smoke |
 | 2026-06-26 17:44 | /research-wiki | research-wiki/experiments/orbit_or_m0_001.md | wiki | ORBIT OR-M0-001 smoke experiment page |
 | 2026-06-26 17:44 | /research-wiki | research-wiki/ideas/orbit_gcl.md | wiki | updated ORBIT idea page after negative smoke |
+| 2026-06-26 17:49 | /idea-discovery | literature/GRAFT_GCL_LANDSCAPE_20260626_174924.md | idea-discovery | timestamped GRAFT-GCL literature boundary after ORBIT no-go |
+| 2026-06-26 17:49 | /idea-discovery | literature/GRAFT_GCL_LANDSCAPE.md | idea-discovery | fixed entry for latest GRAFT-GCL literature boundary |
+| 2026-06-26 17:49 | /idea-discovery | idea-stage/TASK_PRIOR_CANDIDATES_20260626_174924.md | idea-discovery | task-prior pivot candidates after ORBIT no-go |
+| 2026-06-26 17:49 | /idea-discovery | idea-stage/TASK_PRIOR_CANDIDATES.md | idea-discovery | fixed entry for task-prior pivot candidates |
+| 2026-06-26 17:49 | /idea-discovery | idea-stage/GRAFT_GCL_NOVELTY_CHECK_20260626_174924.md | novelty-check | executor-local GRAFT-GCL novelty and risk audit |
+| 2026-06-26 17:49 | /idea-discovery | idea-stage/GRAFT_GCL_NOVELTY_CHECK.md | novelty-check | fixed entry for GRAFT-GCL novelty and risk audit |
+| 2026-06-26 17:49 | /idea-discovery | idea-stage/IDEA_CANDIDATES_20260626_174924.md | idea-discovery | timestamped GRAFT-GCL candidate ranking |
+| 2026-06-26 17:49 | /idea-discovery | idea-stage/IDEA_REPORT_20260626_174924.md | idea-discovery | timestamped GRAFT-GCL idea report |
+| 2026-06-26 17:49 | /idea-discovery | refine-logs/FINAL_PROPOSAL_20260626_174924.md | refinement | timestamped GRAFT-GCL final proposal |
+| 2026-06-26 17:49 | /idea-discovery | refine-logs/EXPERIMENT_PLAN_20260626_174924.md | experiment-planning | timestamped GRAFT-M0 kill-smoke plan |
+| 2026-06-26 17:49 | /idea-discovery | refine-logs/EXPERIMENT_TRACKER_20260626_174924.md | experiment-planning | timestamped GRAFT-GCL tracker |
+| 2026-06-26 17:49 | /idea-discovery | refine-logs/PIPELINE_SUMMARY_20260626_174924.md | idea-discovery | timestamped GRAFT-GCL pipeline summary |
+| 2026-06-26 17:49 | /research-wiki | research-wiki/ideas/graft_gcl.md | wiki | proposed GRAFT-GCL idea page |
+| 2026-06-26 17:49 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of GRAFT-GCL idea report |
