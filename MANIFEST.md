@@ -231,3 +231,11 @@
 | 2026-06-26 12:50 | postmortem | idea-stage/NEXT_DIRECTION_AFTER_IRIS_CPR_20260626_125000.md | decision | timestamped next-direction gate after IRIS/CPR |
 | 2026-06-26 12:50 | postmortem | idea-stage/NEXT_DIRECTION_AFTER_IRIS_CPR.md | decision | fixed entry for next direction after IRIS/CPR |
 | 2026-06-26 12:50 | postmortem | idea-stage/IDEA_REPORT.md | decision | latest idea report updated to PIVOT_REQUIRED after IRIS/CPR smoke |
+| 2026-06-26 13:55 | manual-implementation | configs/cast_certificate_smoke.yaml | smoke | CAST latent target-prediction certificate smoke config |
+| 2026-06-26 13:55 | manual-implementation | scripts/run_cast_certificate_smoke.py | smoke | CAST certificate smoke runner |
+| 2026-06-26 13:55 | manual-smoke | logs/cast_certificate/cast_cert_clean_smoke_Cora_seed0_20260626T135413Z/ | smoke | GRACE and certificate training logs for clean CAST certificate smoke |
+| 2026-06-26 13:55 | manual-smoke | results/summary/cast_cert_clean_smoke_Cora_seed0_20260626T135413Z_summary.md | smoke | CAST certificate clean smoke summary table |
+| 2026-06-26 13:55 | manual-smoke | results/summary/cast_cert_clean_smoke_Cora_seed0_20260626T135413Z_summary.json | smoke | parseable CAST certificate clean smoke summary JSON |
+| 2026-06-26 13:55 | manual-smoke | refine-logs/CAST_CERTIFICATE_RESULTS_20260626_135504.md | smoke | timestamped CAST certificate result report |
+| 2026-06-26 13:55 | manual-smoke | refine-logs/CAST_CERTIFICATE_RESULTS.md | smoke | fixed entry for CAST certificate result report |
+| 2026-06-26 13:55 | manual-smoke | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_135504.md | smoke | timestamped CAST certificate local code review |

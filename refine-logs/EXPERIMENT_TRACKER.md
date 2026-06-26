@@ -1,40 +1,31 @@
-# Experiment Tracker: IRIS / R2-IRIS / CPR-IRIS
+# Experiment Tracker: CAST Certificate
 
 ## Current Gate
 
-- Status：`IRIS_CPR_STOPPED`
-- Decision：`PIVOT_REQUIRED`
-- Completed action：implemented one certified CAST closure variant I22 and ran Cora seed=0 smoke only。
-- Forbidden：multi-dataset pilot、formal 10-seed run、SOTA/performance claim、继续 IRIS/CPR incremental variants。
+- Status：`CAST_CERTIFICATE_SMOKE_POSITIVE`
+- Decision：`GO_TO_PILOT_PLANNING_WITH_CAUTION`
+- Completed action：implemented real latent target-prediction CAST certificate and ran Cora seed=0 smoke only。
+- Forbidden：formal 10-seed run、SOTA/performance claim、直接把 smoke 写成论文主表。
 
 ## Smoke Matrix
 
 | ID | Variant | Status | Test@best-val | Label agreement | Decision |
 |---|---|---|---:|---:|---|
-| I4 | CAST one-step proxy | completed | 85.70 | 0.7548 | strongest accuracy |
-| I17 | CAST + residual cert w=0.30 | completed | 85.56 | 0.7953 | best surviving CPR score |
-| I18 | CAST + residual cert w=0.15 | completed | 85.56 | 0.7817 | close to I17 |
-| I19 | CAST + residual cert w=0.45 | completed | 85.42 | 0.8021 | higher agreement, lower accuracy |
-| I20 | kNN + residual cert w=0.15 | completed | 85.15 | 0.8120 | near kNN agreement |
-| I22 | certified CAST closure | completed | 84.96 | 0.7472 | killed |
+| C0 | GRACE | completed | 84.78 | 0.0000 | reference |
+| C1 | embedding kNN | completed | 85.19 | 0.8152 | label-agreement control |
+| C2 | CAST proxy | completed | 85.70 | 0.7548 | strong proxy control |
+| C3 | CAST candidate pool only | completed | 85.70 | 0.7548 | same as proxy |
+| C4 | latent target certificate | completed | 85.93 | 0.7911 | positive smoke |
+| C5 | certificate + CAST score | completed | 86.16 | 0.7886 | best smoke |
 
-## Evidence Status
+## Next Allowed Step
 
-- Code implemented：yes，`scripts/run_iris_smoke.py`。
-- Config implemented：yes，`configs/iris_smoke.yaml`。
-- Smoke run：completed, Cora seed=0 only。
-- Pilot run：no。
-- Formal run：no。
-- Claim support：negative/mixed smoke only；不支持性能提升 claim。
-- Result summary：`results/summary/closure_smoke_Cora_seed0_20260626T124638Z_summary.md`。
-- Bridge results：`refine-logs/EXPERIMENT_RESULTS.md`。
+Plan Pilot-A only:
 
-## Decision Notes
+- datasets: Cora, CiteSeer, PubMed first;
+- seeds: start with 0-2 only, not formal 10 seeds;
+- must include kNN, PPR, CAST proxy, C4, C5;
+- add overlap/partial-correlation diagnostics to prove not kNN/PPR mining.
 
-Certified closure is distinct from kNN/CAST but weaker. The only CPR signal worth preserving is additive response-certified CAST scoring. The overall IRIS/CPR line is near exhaustion; further work should either make a substantially new mechanism or pivot back to CAST/restart idea discovery.
+No formal claim is allowed until Pilot-A passes and then a separate formal protocol is frozen.
 
-## Stop Rule
-
-`STOP_IRIS_CPR_INCREMENTAL_REFINEMENT`
-
-See `refine-logs/IRIS_CPR_POSTMORTEM.md`. Do not add I23/I24-style variants.

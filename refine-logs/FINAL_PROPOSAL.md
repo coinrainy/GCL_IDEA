@@ -129,5 +129,5 @@ The contribution is relation discovery, not a new contrastive objective.
 
 ## Current Verdict
 
-`PIVOT_REQUIRED`。  
-Hard anti-proximity IRIS failed. R2 residualization rescues the failure mode. CPR response-certified CAST scoring is the only surviving signal. The explicit three-way certified closure variant is distinct but weaker. Incremental IRIS/CPR refinement is stopped; continue only with a real CAST certificate implementation or fresh idea discovery.
+`GO_TO_PILOT_PLANNING_WITH_CAUTION`。  
+Hard anti-proximity IRIS failed, but the real CAST latent target-prediction certificate produced a positive Cora seed=0 smoke. Continue with narrow Pilot-A planning for CAST certificate only; do not revive IRIS/CPR incremental variants.

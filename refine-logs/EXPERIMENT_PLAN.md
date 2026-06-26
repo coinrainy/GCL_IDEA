@@ -2,7 +2,7 @@
 
 ## Status
 
-`PIVOT_REQUIRED`
+`GO_TO_PILOT_PLANNING_WITH_CAUTION`
 
 本计划只定义最小 smoke。不得把 smoke 结果写成 formal、SOTA、robust 或 comprehensive。
 
@@ -69,4 +69,4 @@ IRIS only moves beyond smoke if:
 
 ## Next Gate
 
-The current certified closure variant is killed and IRIS/CPR incremental refinement is stopped. No Pilot-A or formal run is allowed. Further work requires a real CAST latent target-prediction certificate or fresh idea discovery.
+IRIS/CPR incremental refinement is stopped. The real CAST latent target-prediction certificate passed Cora seed=0 smoke and may proceed to narrow Pilot-A planning only. Formal runs remain forbidden.

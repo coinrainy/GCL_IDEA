@@ -1,32 +1,30 @@
-# Idea Report: After IRIS / CPR Smoke
+# Idea Report: CAST Certificate After IRIS / CPR
 
 ## Current Decision
 
-`PIVOT_REQUIRED`
+`GO_TO_PILOT_PLANNING_WITH_CAUTION`
 
-IRIS/CPR is no longer the active best idea for pilot escalation. Multiple Cora seed=0 smoke runs show:
+IRIS/CPR incremental refinement remains stopped. The viable direction is now **CAST latent target-prediction certificate**.
 
-- hard anti-proximity IRIS fails;
-- residual response rescues the failure but does not beat strong controls;
-- response-certified CAST scoring is the only surviving weak signal;
-- explicit certified closure is distinct but weaker.
+## Smoke Evidence
 
-## Best Available Signal
+Clean Cora seed=0 smoke:
 
-The best surviving variant is additive response-certified CAST scoring:
+| Variant | Test@best-val | Label agreement | kNN overlap | CAST overlap |
+|---|---:|---:|---:|---:|
+| GRACE | 84.78 | 0.0000 | 0.0000 | 0.0000 |
+| kNN | 85.19 | 0.8152 | 1.0000 | 0.2851 |
+| CAST proxy | 85.70 | 0.7548 | 0.2851 | 1.0000 |
+| latent target certificate | 85.93 | 0.7911 | 0.4150 | 0.2109 |
+| certificate + CAST score | 86.16 | 0.7886 | 0.3621 | 0.7606 |
 
-- I17 CAST + residual certificate: `85.56` test@best-val, label agreement `0.7953`;
-- I4 CAST proxy: `85.70`, label agreement `0.7548`;
-- I1 kNN: `85.24-85.29`, label agreement around `0.815`.
+## Interpretation
 
-This is not enough for Pilot-A/B or formal experiments.
+The real latent target-prediction certificate is the first positive smoke after several failed IRIS/CPR refinements. It improves over CAST proxy on both accuracy and label agreement, while not collapsing completely to kNN.
 
-## Next Direction
+## Boundary
 
-Do not continue IRIS/CPR by adding more score weights or threshold variants. The next valid step is one of:
+This is a smoke result only. It supports Pilot-A planning, not performance claims.
 
-1. implement real CAST latent target-prediction transport certificate;
-2. restart idea discovery using the IRIS/CPR failures as hard constraints.
-
-Canonical next-direction file: `idea-stage/NEXT_DIRECTION_AFTER_IRIS_CPR.md`.
+Canonical result file: `refine-logs/CAST_CERTIFICATE_RESULTS.md`.
 

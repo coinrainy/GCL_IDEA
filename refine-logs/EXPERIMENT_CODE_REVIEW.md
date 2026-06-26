@@ -1,10 +1,10 @@
-# Experiment Code Review: Certified CAST Closure Smoke
+# Experiment Code Review: CAST Certificate Smoke
 
-Fixed entry for the latest IRIS/R2/CPR closure code and integrity review.
+Fixed entry for the latest code and integrity review.
 
-- Timestamped source: `refine-logs/EXPERIMENT_CODE_REVIEW_20260626_124728.md`
-- Verdict: `PASS_AS_SMOKE_IMPLEMENTATION_WITH_NEGATIVE_RESULT`
-- Method decision: `KILL_CERTIFIED_CLOSURE_KEEP_CPR_SCORE`
+- Timestamped source: `refine-logs/EXPERIMENT_CODE_REVIEW_20260626_135504.md`
+- Verdict: `PASS_AS_SMOKE_IMPLEMENTATION_WITH_POSITIVE_SIGNAL`
+- Method decision: `GO_TO_PILOT_PLANNING_WITH_CAUTION`
 
-The implementation is acceptable for Cora seed=0 smoke, but I22 should not continue to Pilot-A/B or formal runs.
+The implementation is adequate for Cora seed=0 smoke and produced a positive signal. Do not treat it as formal evidence.
 
