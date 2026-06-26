@@ -263,3 +263,15 @@
 | 2026-06-26 14:49 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS_20260626_144910.md | pilot | aggregate CAST Certificate Pilot-A result report |
 | 2026-06-26 14:49 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS.md | pilot | fixed latest CAST Certificate Pilot-A result report |
 | 2026-06-26 14:49 | /research-wiki | research-wiki/ideas/cast_gcl.md | wiki | CAST-GCL downgraded to pilot_a_negative / revise_or_pivot |
+| 2026-06-26 15:04 | /idea-discovery | idea-stage/IDEA_REPORT_20260626_150434.md | idea-discovery | post-CAST no-go false-negative GCL idea report selecting BEACON-GCL |
+| 2026-06-26 15:04 | /idea-discovery | idea-stage/IDEA_REPORT.md | idea-discovery | fixed latest idea report pointing to BEACON-GCL |
+| 2026-06-26 15:04 | /idea-creator | idea-stage/IDEA_CANDIDATES_20260626_150434.md | idea-discovery | six candidate ideas after CAST Pilot-A no-go |
+| 2026-06-26 15:04 | /idea-creator | idea-stage/IDEA_CANDIDATES.md | idea-discovery | fixed latest candidate list |
+| 2026-06-26 15:04 | /research-refine | refine-logs/FINAL_PROPOSAL_20260626_150434.md | refinement | BEACON-GCL proposal |
+| 2026-06-26 15:04 | /research-refine | refine-logs/FINAL_PROPOSAL.md | refinement | fixed latest BEACON-GCL proposal |
+| 2026-06-26 15:04 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260626_150434.md | experiment-planning | BEACON-GCL smoke plan |
+| 2026-06-26 15:04 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | experiment-planning | fixed latest BEACON-GCL smoke plan |
+| 2026-06-26 15:04 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_150434.md | experiment-planning | BEACON-GCL tracker |
+| 2026-06-26 15:04 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | fixed latest BEACON-GCL tracker |
+| 2026-06-26 15:04 | /research-wiki | research-wiki/ideas/beacon_gcl.md | wiki | new BEACON-GCL idea page |
+| 2026-06-26 15:04 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | offline HTML view of BEACON-GCL idea report |

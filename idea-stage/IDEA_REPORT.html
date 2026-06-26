@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IRIS-GCL Idea Discovery Report</title>
+<title>BEACON-GCL Idea Discovery</title>
 
 <meta name="generator" content="ARIS render-html (academic, v1)">
 <meta name="aris:source-path" content="idea-stage/IDEA_REPORT.md">
-<meta name="aris:source-sha256" content="bca4c8056153c1c20c68d2cd16d00433d88a87448be0eb18db45a0e7b53501da">
-<meta name="aris:generated-at" content="2026-06-26 12:07 UTC">
+<meta name="aris:source-sha256" content="6a5660ba4f06066cabe83787c7561ccab6d4633ad66f6ed07f7f699a6b126d2a">
+<meta name="aris:generated-at" content="2026-06-26 15:08 UTC">
 
 <!-- offline mode: MathJax + highlight.js skipped; math and code blocks render as plain text -->
 
@@ -312,108 +312,123 @@ footer.aris-footer a { color: var(--ink-muted); border-bottom: 1px dotted var(--
   <ol>
 <li><a href="#executive-summary">Executive Summary</a>
 </li>
-<li><a href="#why-iris-is-better-than-cast">Why IRIS Is Better Than CAST</a>
-</li>
-<li><a href="#recommended-idea">Recommended Idea</a>
+<li><a href="#cast-failure-brief">CAST Failure Brief</a>
 <ul>
-<li><a href="#iris-gcl-interventional-response-invariant-signatures">IRIS-GCL: Interventional Response Invariant Signatures</a></li>
+<li><a href="#what-failed">What Failed</a></li>
+<li><a href="#mechanistic-reading">Mechanistic Reading</a></li>
+<li><a href="#new-hard-constraints">New Hard Constraints</a></li>
 </ul>
 </li>
-<li><a href="#method-sketch">Method Sketch</a>
+<li><a href="#literature-landscape">Literature Landscape</a>
+</li>
+<li><a href="#ranked-ideas">Ranked Ideas</a>
 <ul>
-<li><a href="#1-fixed-intervention-battery">1. Fixed Intervention Battery</a></li>
-<li><a href="#2-minimal-response-fingerprint">2. Minimal Response Fingerprint</a></li>
-<li><a href="#3-anti-proximity-response-siblings">3. Anti-proximity Response Siblings</a></li>
-<li><a href="#4-contrastive-relation-update">4. Contrastive Relation Update</a></li>
+<li><a href="#1-beacon-gcl-boundary-eligibility-aware-contrastive-neutralization--recommended">1. BEACON-GCL: Boundary-Eligibility Aware Contrastive Neutralization — Recommended</a></li>
+<li><a href="#2-bri-gcl-boundary-residual-infonce">2. BRI-GCL: Boundary-Residual InfoNCE</a></li>
+<li><a href="#3-triage-gcl-three-way-false-negative-action-routing">3. TRIAGE-GCL: Three-way False-negative Action Routing</a></li>
+<li><a href="#4-ramp-gcl-repulsion-audit-memory-for-persistent-harm">4. RAMP-GCL: Repulsion Audit Memory for Persistent Harm</a></li>
+<li><a href="#5-quota-gcl-uniformity-budgeted-false-negative-neutralization">5. QUOTA-GCL: Uniformity-budgeted False-negative Neutralization</a></li>
+<li><a href="#6-inv-gcl-invariance-before-debias-view-training">6. INV-GCL: Invariance-before-Debias View Training</a></li>
 </ul>
 </li>
-<li><a href="#required-controls">Required Controls</a>
+<li><a href="#eliminated-or-deprioritized-directions">Eliminated or Deprioritized Directions</a>
 </li>
-<li><a href="#kill-rules">Kill Rules</a>
+<li><a href="#top1-refined-direction">Top1 Refined Direction</a>
 </li>
-<li><a href="#deprioritized--control-ideas">Deprioritized / Control Ideas</a>
+<li><a href="#required-first-smoke">Required First Smoke</a>
 </li>
-<li><a href="#refined-proposal">Refined Proposal</a>
-</li>
-<li><a href="#decision">Decision</a>
+<li><a href="#output-links">Output Links</a>
 </li>
 </ol>
 </nav>
 
 <main>
 <header class="hero">
-  
-  <h1>IRIS-GCL Idea Discovery Report</h1>
+  <div class="eyebrow">Post-CAST Pivot</div>
+  <h1>BEACON-GCL Idea Discovery</h1>
   
   
   <div class="meta">
     <span><strong>Source:</strong> <code>idea-stage/IDEA_REPORT.md</code></span>
-    <span><strong>SHA256:</strong> <code>bca4c8056153</code></span>
-    <span><strong>Rendered:</strong> 2026-06-26 12:07 UTC</span>
+    <span><strong>SHA256:</strong> <code>6a5660ba4f06</code></span>
+    <span><strong>Rendered:</strong> 2026-06-26 15:08 UTC</span>
     
   </div>
 </header>
 
-<h1 id="idea-discovery-report-iris-gcl">Idea Discovery Report: IRIS-GCL</h1>
-<p><strong>方向</strong>：图对比学习假负样本方向，面向普通节点分类，寻找足够创新、适合 2026 投稿潜力的最佳 idea <strong>日期</strong>：2026-06-26 <strong>Pipeline</strong>：research-lit → idea-creator → novelty-check → research-review → research-refine-pipeline <strong>阶段结论</strong>：<code>SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE</code></p>
+<h1 id="idea-discovery-report">Idea Discovery Report</h1>
+<p><strong>Direction</strong>: 基于 CAST Certificate Pilot-A 负结果重新做 false-negative GCL idea discovery <strong>Date</strong>: 2026-06-26 <strong>Pipeline status</strong>: executor-local <code>/idea-discovery</code> pass; no fresh reviewer/subagent was spawned in this turn. <strong>Claim status</strong>: idea-stage only; no smoke, pilot, formal, SOTA, robust, or comprehensive claim.</p>
 <h2 id="executive-summary">Executive Summary</h2>
-<p>经过 BOND → SIVA → WILLOW → CAST 的连续筛选，当前最好的 idea 切换为 <strong>IRIS-GCL / Interventional Response Invariant Signatures for Graph Contrastive Learning</strong>。</p>
-<p>fresh <code>gcl_scientific_reviewer</code> 对 CAST 与 IRIS 做了直接比较，给出结论：</p>
-<pre><code class="language-text">SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE</code></pre>
-<p>IRIS 的 novelty 为 <code>7.2/10</code>，confidence <code>0.61</code>；CAST 降为 <code>6.5/10</code>。Reviewer 判断：CAST 更成熟但太接近 positive mining；IRIS 更高风险，但更像一个“足够创新”的 2026 论文主线，因为它用 <strong>跨节点 interventional response-function equivalence</strong> 来发现 false negatives，并通过 <strong>anti-proximity</strong> 强制避开普通 kNN/PPR/embedding positive mining。</p>
-<p>当前没有 smoke、pilot、development 或 formal 结果。IRIS 是当前 best bet，不是已验证方法。</p>
-<h2 id="why-iris-is-better-than-cast">Why IRIS Is Better Than CAST</h2>
-<table><thead><tr><th>Aspect</th><th>CAST</th><th>IRIS</th></tr></thead><tbody><tr><td>False-negative criterion</td><td>low-energy semantic transport path</td><td>invariant response-function sibling</td></tr><tr><td>Main risk</td><td>positive mining with certificate wrapper</td><td>response invariance may reflect role/degree not class semantics</td></tr><tr><td>How it avoids proximity mining</td><td>controls after candidate mining</td><td>anti-proximity built into sibling definition</td></tr><tr><td>Reviewer novelty</td><td>6.5/10</td><td>7.2/10</td></tr><tr><td>Current role</td><td>mandatory control</td><td>active best idea</td></tr></tbody></table>
-<p>CAST 仍直接服务 false negatives，但它从 candidate pool 出发，再用 certificate 排序，容易被说成高级 positive mining。IRIS 的判据不同：两个节点即使 feature/graph/embedding 不近，只要在标准干预电池下呈现相似 response function，就不应被强行作为 negatives。</p>
-<h2 id="recommended-idea">Recommended Idea</h2>
-<h3 id="iris-gcl-interventional-response-invariant-signatures">IRIS-GCL: Interventional Response Invariant Signatures</h3>
-<p><strong>Core thesis</strong>：</p>
-<pre><code class="language-text">False negatives are cross-node response-invariant siblings under anti-proximity.</code></pre>
-<p>也就是说，节点语义相似不只体现在“近”，也可能体现在“对环境/结构/特征干预的响应函数相似”。IRIS 不直接用 pair similarity，也不重写 InfoNCE loss，而是先构造 response fingerprint，再发现 anti-proximity response siblings。</p>
-<h2 id="method-sketch">Method Sketch</h2>
-<h3 id="1-fixed-intervention-battery">1. Fixed Intervention Battery</h3>
-<p>定义一组 label-free graph interventions：</p>
-<ul><li>spectral high-frequency perturbation；</li><li>low-pass / diffusion-scale perturbation；</li><li>ego edge drop / keep；</li><li>feature group mask；</li><li>neighbor role swap；</li><li>degree-bin preserving ego rewiring。</li></ul>
-<p>这些干预是固定环境扰动，不是 learned augmentation policy。</p>
-<h3 id="2-minimal-response-fingerprint">2. Minimal Response Fingerprint</h3>
-<p>先用 GRACE 或固定 SSL encoder warm up，然后冻结 encoder 构造 response signatures。</p>
-<p>最小 IRIS 版必须先移除 reviewer 认为可能循环的 <code>positive-gradient proxy</code>，只保留：</p>
-<pre><code class="language-text">r_i(omega)
-  = [
-      delta z_i(omega),
-      delta local smoothness_i(omega),
-      delta ego prediction consistency_i(omega)
-    ]</code></pre>
-<p>然后：</p>
-<pre><code class="language-text">R_i = concat_{omega in Omega} whiten(r_i(omega))</code></pre>
-<p>IRIS 使用 response fingerprint，而不是 raw embedding similarity。</p>
-<h3 id="3-anti-proximity-response-siblings">3. Anti-proximity Response Siblings</h3>
-<p>节点 <code>j</code> 是 anchor <code>i</code> 的 response-invariant sibling 当且仅当：</p>
-<pre><code class="language-text">sim_response(R_i, R_j) &gt;= tau_response
-and sim_embedding(z_i, z_j) &lt;= tau_embed_near
-and graph_proximity(i, j) &lt;= tau_graph_near</code></pre>
-<p>anti-proximity 不是装饰项；它是 IRIS 避开 kNN/PPR/embedding positive mining 的必要条件。必须报告被 anti-proximity 排除后的 coverage 与 label agreement。</p>
-<h3 id="4-contrastive-relation-update">4. Contrastive Relation Update</h3>
-<ul><li>same-node augmentations remain positives；</li><li>response-invariant siblings become multi-positives；</li><li>high response uncertainty nodes become neutral/excluded；</li><li>all others remain ordinary negatives。</li></ul>
-<p>主贡献是 relation discovery，不是新 loss。</p>
-<h2 id="required-controls">Required Controls</h2>
-<table><thead><tr><th>Control</th><th>Purpose</th></tr></thead><tbody><tr><td>GRACE</td><td>base reference</td></tr><tr><td>kNN multi-positive</td><td>proximity mining</td></tr><tr><td>PPR/diffusion positives</td><td>graph proximity</td></tr><tr><td>PMGCL-lite/BMM</td><td>probabilistic positive mining</td></tr><tr><td>CAST one-step</td><td>strongest previous candidate/control</td></tr><tr><td>IRIS full</td><td>main candidate</td></tr><tr><td>IRIS response-shuffled</td><td>response semantic test</td></tr><tr><td>IRIS no anti-proximity</td><td>collapse-to-proximity test</td></tr><tr><td>IRIS structural-signature-only</td><td>role-equivalence test</td></tr><tr><td>IRIS no gradient-proxy</td><td>circularity test</td></tr></tbody></table>
-<h2 id="kill-rules">Kill Rules</h2>
-<table><thead><tr><th>Kill rule</th><th>Meaning</th></tr></thead><tbody><tr><td>response-shuffled matches IRIS</td><td>response signature has no semantic content</td></tr><tr><td>structural-signature-only matches IRIS</td><td>IRIS is only role/degree equivalence</td></tr><tr><td>no anti-proximity beats full IRIS</td><td>IRIS collapses to ordinary proximity mining</td></tr><tr><td>response similarity has no partial correlation with label agreement after controlling feature/embedding/PPR/degree</td><td>kill IRIS</td></tr><tr><td>CAST matches IRIS on label agreement, false-negative repulsion mass, and accuracy with lower cost</td><td>do not switch; reconsider CAST or pivot</td></tr><tr><td>gains come only from more positives, compute, or broader candidate budget</td><td>invalid</td></tr></tbody></table>
-<h2 id="deprioritized--control-ideas">Deprioritized / Control Ideas</h2>
-<table><thead><tr><th>Idea</th><th>Current role</th></tr></thead><tbody><tr><td>CAST-GCL</td><td>mandatory control; previous best but too close to positive mining</td></tr><tr><td>WILLOW-GCL</td><td>module/control; Graph-JEPA/PCR wrapper risk</td></tr><tr><td>SIVA-GCL</td><td>reconstruction-critic control</td></tr><tr><td>BOND-GCL</td><td>archived loss-side baseline</td></tr></tbody></table>
-<h2 id="refined-proposal">Refined Proposal</h2>
-<ul><li>Best idea decision: <code>idea-stage/BEST_IDEA_DECISION.md</code></li><li>IRIS challenger: <code>idea-stage/IRIS_GCL_CHALLENGER_20260626_130500.md</code></li><li>Prior boundary: <code>literature/IRIS_PRIOR_BOUNDARY.md</code></li><li>Reviewer decision: <code>idea-stage/IRIS_VS_CAST_REVIEW.md</code></li><li>Proposal: <code>refine-logs/FINAL_PROPOSAL.md</code></li><li>Experiment plan: <code>refine-logs/EXPERIMENT_PLAN.md</code></li><li>Tracker: <code>refine-logs/EXPERIMENT_TRACKER.md</code></li></ul>
-<h2 id="decision">Decision</h2>
-<p><code>SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE</code>.</p>
-<p>IRIS 是当前“最好的 idea / best bet”，但仍是 high-risk pre-smoke。下一步只允许最小 Cora seed=0 smoke 或进一步机制压实；不允许 formal，不允许 SOTA/robust/comprehensive，不允许性能 claim。</p>
-<p>本报告完成的是 <strong>idea selection</strong>，不是实验验证。</p>
+<p>CAST Certificate 的关键信号是“C4 低 overlap 但不提升”：它确实不是 kNN/PPR/CAST 的同一套 pair mining，却仍然没有带来稳定节点分类收益。因此下一条主线不应继续找更多跨节点 positives，而应研究 <strong>false-negative edit 的 conditional eligibility</strong>：一个疑似假负 pair 只有在不破坏线性分类边界、representation rank 和局部 uniformity 时才允许改变训练几何。</p>
+<p>推荐 Top1 是 <strong>BEACON-GCL / Boundary-Eligibility Aware Contrastive Neutralization</strong>。它把 false-negative 修正从“相似 pair 该不该拉近”改成“这个 pair edit 对下游边界是否无害且有用”，用 counterfactual utility gate 决定 neutralize / keep-negative / defer。最小 smoke 不直接重训大模型，而是在 frozen GRACE embedding 上做 post-hoc relation edit sanity，先验证 eligibility gate 是否能筛掉 CAST 失败中的有害低-overlap pairs。</p>
+<h2 id="cast-failure-brief">CAST Failure Brief</h2>
+<h3 id="what-failed">What Failed</h3>
+<ul><li>Cora 3 seeds：C5 <code>82.73±2.94</code>，低于 kNN <code>84.23±1.16</code> 与 CAST proxy <code>83.79±2.14</code>。</li><li>CiteSeer 3 seeds：C5 <code>71.77±0.09</code>，低于 CAST proxy <code>71.99±0.36</code>。</li><li>PubMed seed0：C5 <code>85.47</code>，低于 kNN <code>85.67</code> 与 CAST proxy <code>85.62</code>。</li><li>C4 的 overlap 诊断是有价值的：例如 PubMed seed0 C4 vs kNN/PPR/CAST overlap 为 <code>0.0865 / 0.0422 / 0.0885</code>。</li></ul>
+<h3 id="mechanistic-reading">Mechanistic Reading</h3>
+<p>CAST 证明了“找到不同的 pair”不等于“找到有任务价值的 pair”。低-overlap certificate positives 可能满足局部语义或 ego-prediction consistency，但它们仍可能跨越分类边界、压缩类间 margin，或削弱 InfoNCE 的 uniformity。换句话说，false-negative correction 的主要失败模式不是 novelty 不够，而是 <strong>edit utility 未被认证</strong>。</p>
+<h3 id="new-hard-constraints">New Hard Constraints</h3>
+<ol><li>不继续 CAST certificate / C4 / C5 的小修小补。</li><li>不把相似度、PPR、CAST、kNN 或 score fusion 当主贡献。</li><li>不把所有疑似假负直接转正。</li><li>每个候选必须解释“为什么 false-negative 修正会伤害/不提升节点分类”。</li><li>首轮只允许 smoke/pilot；默认 Cora/CiteSeer/PubMed，seeds 0-2。</li></ol>
+<h2 id="literature-landscape">Literature Landscape</h2>
+<p>已有图 false-negative 文献主要沿五条线展开：过滤、降权、转正、生成 hard negatives、概率建模。ProGCL 类方法强调图上 high-similarity negatives 常是假负；Node Similarity / positive mining 类方法强调扩展 positives；AUGCL / uncertainty HNM 强调 uncertainty；PU / debiased CL 强调 negative contamination。CAST 的负结果提示：这些线如果只回答“哪个 pair 像假负”，仍然不够；还必须回答“这个 pair edit 是否保留 downstream boundary”。</p>
+<p>本轮把 gap 从 <code>false-negative detection</code> 收缩为：</p>
+<blockquote><p><strong>False-negative edit eligibility</strong>：在节点分类 GCL 中，一个疑似假负 pair 只有当其编辑不会破坏分类边界、不会过度损伤 uniformity、且能减少有害 repulsion 时，才应被 neutralized 或 soft-positive。</p></blockquote>
+<h2 id="ranked-ideas">Ranked Ideas</h2>
+<h3 id="1-beacon-gcl-boundary-eligibility-aware-contrastive-neutralization--recommended">1. BEACON-GCL: Boundary-Eligibility Aware Contrastive Neutralization — Recommended</h3>
+<p><strong>Core question</strong>：为什么低-overlap false-negative positives 仍然伤害？因为它们没有通过 boundary-utility gate。</p>
+<p><strong>Mechanism</strong>：对候选 pair <code>(i, j)</code> 不直接转正，而是做三路 eligibility：</p>
+<ul><li><code>benefit(i,j)</code>：当前 negative repulsion 是否与多视图稳定性冲突；</li><li><code>boundary_risk(i,j)</code>：虚拟 pair edit 是否降低 train-only / val-calibrated probe margin，或降低无标签 local boundary proxy；</li><li><code>geometry_risk(i,j)</code>：虚拟 edit 是否损伤 representation rank、local uniformity 或 degree/class-balance proxy。</li></ul>
+<p>只有 <code>benefit - lambda * boundary_risk - mu * geometry_risk &gt; tau</code> 的 pair 被 neutralized；未通过者继续作为普通 negatives；高风险相似 pair 被标记为 boundary-bearing negatives。</p>
+<p><strong>Why it is not CAST/kNN/PPR mining</strong>：候选池可以包含 kNN/PPR/CAST/C4，但贡献是 counterfactual acceptance test；同一候选池下必须比较 <code>all candidates</code>, <code>random gate</code>, <code>shuffled utility</code>, <code>no-boundary gate</code>。</p>
+<p><strong>Novelty risk</strong>：中等。它会被审稿人拿来和 ProGCL、AUGCL、Node Similarity、positive mining、validation-tuned mining 比较。差异点是 pair edit 的 downstream boundary utility，而不是 pair similarity/reliability 本身。</p>
+<p><strong>Feasibility</strong>：高。可以先复用现有 CAST runner 的 frozen embeddings、candidate relations、LogReg evaluator，并新增 post-hoc virtual edit gate。</p>
+<p><strong>Minimal smoke</strong>：Cora seed0，GRACE frozen embedding；候选池为 kNN ∪ PPR ∪ CAST proxy ∪ C4；比较 GRACE、kNN、CAST、C4、C5、all-candidate neutralization、BEACON gate、shuffled gate、no-boundary gate；输出 accuracy、label agreement、accepted-pair overlap、rank/uniformity delta、probe-margin delta。</p>
+<h3 id="2-bri-gcl-boundary-residual-infonce">2. BRI-GCL: Boundary-Residual InfoNCE</h3>
+<p><strong>Core question</strong>：false-negative 修正伤害，是因为把 boundary-sensitive 维度也一起拉平。</p>
+<p><strong>Mechanism</strong>：把 embedding 分成 boundary-sensitive subspace 与 nuisance subspace。疑似假负只在 nuisance subspace 中 neutralize repulsion；boundary subspace 保留 contrastive separation。无标签版用 local covariance / spectral directions 近似 boundary；半监督版用 train-only probe 的 weight directions。</p>
+<p><strong>Novelty risk</strong>：中等偏高。与 disentanglement、subspace contrastive、supervised probe regularization 有接近点。</p>
+<p><strong>Feasibility</strong>：中等。实现比 BEACON 多一个 subspace decomposition，但可以先 post-hoc 测试。</p>
+<p><strong>Minimal smoke</strong>：Cora seed0，固定 embedding；对 C4/C5 pairs 做 full-space smoothing vs nuisance-only smoothing；若 nuisance-only 明显优于 full-space，说明 CAST 失败来自 boundary-dimension damage。</p>
+<h3 id="3-triage-gcl-three-way-false-negative-action-routing">3. TRIAGE-GCL: Three-way False-negative Action Routing</h3>
+<p><strong>Core question</strong>：false-negative correction 失败，是因为所有疑似假负被迫进入同一种动作。</p>
+<p><strong>Mechanism</strong>：每个 candidate pair 被路由到 <code>positive</code>, <code>neutral</code>, <code>hard-negative</code>, <code>defer</code> 四类。路由依据不是相似度，而是 edit utility、uncertainty、geometry damage。主贡献是 action routing，不是 pair discovery。</p>
+<p><strong>Novelty risk</strong>：中等。容易被认为是 CER/eligibility routing 的变体，必须强调 action utility 和 CAST 负结果驱动。</p>
+<p><strong>Feasibility</strong>：高。可以在现有 relation smoothing 框架中实现。</p>
+<p><strong>Minimal smoke</strong>：Cora/CiteSeer seed0；比较 positive-only、neutral-only、hard-negative-preserve、full routing。</p>
+<h3 id="4-ramp-gcl-repulsion-audit-memory-for-persistent-harm">4. RAMP-GCL: Repulsion Audit Memory for Persistent Harm</h3>
+<p><strong>Core question</strong>：单次相似度或 certificate 容易误判；真正有害的假负 repulsion 应该在训练中持续出现。</p>
+<p><strong>Mechanism</strong>：维护 pair-level 或 anchor-level repulsion conflict memory。只有长期稳定地表现为“高相似 + 多视图一致 + repulsion force 大 + geometry risk 低”的 pair 才被 neutralized。</p>
+<p><strong>Novelty risk</strong>：中等。会与 curriculum false-negative filtering / IFND 比较。</p>
+<p><strong>Feasibility</strong>：中等。需要改训练 loop，存储 top-k memory。</p>
+<p><strong>Minimal smoke</strong>：Cora seed0，warmup 后每 20 epoch 更新 memory；比较 one-shot gate vs persistent gate。</p>
+<h3 id="5-quota-gcl-uniformity-budgeted-false-negative-neutralization">5. QUOTA-GCL: Uniformity-budgeted False-negative Neutralization</h3>
+<p><strong>Core question</strong>：false-negative 修正伤害，是因为局部正样本扩张吞掉了 uniformity budget。</p>
+<p><strong>Mechanism</strong>：每个 anchor、degree bucket、prototype bucket 都有 neutralization quota。候选 pair 的接纳不仅看 semantic signal，还看是否超出 uniformity / rank budget。</p>
+<p><strong>Novelty risk</strong>：中等偏低。可能被认为是 conservative positive mining + quota。</p>
+<p><strong>Feasibility</strong>：高。适合做 BEACON 的 ablation 或 safety component。</p>
+<p><strong>Minimal smoke</strong>：在 C4/C5 候选上加 quota，比较 no quota / degree quota / prototype quota。</p>
+<h3 id="6-inv-gcl-invariance-before-debias-view-training">6. INV-GCL: Invariance-before-Debias View Training</h3>
+<p><strong>Core question</strong>：跨节点假负修正不稳定，可能说明节点自身增强视图还没学到足够稳定的 invariance。</p>
+<p><strong>Mechanism</strong>：先训练 anchor-local invariance model，只有当 anchor 自身视图稳定后才允许跨节点 false-negative edit。核心不是找 pair，而是先校准 anchor 是否 eligible。</p>
+<p><strong>Novelty risk</strong>：中等。接近 curriculum / view stability / GraphMAE-style pretext。</p>
+<p><strong>Feasibility</strong>：中等。需要训练阶段 schedule。</p>
+<p><strong>Minimal smoke</strong>：Cora seed0，比较 no warmup、fixed warmup、anchor-stability-gated warmup。</p>
+<h2 id="eliminated-or-deprioritized-directions">Eliminated or Deprioritized Directions</h2>
+<ul><li>CAST certificate / C4 / C5 continuation：Pilot-A 已给出 no-go。</li><li>Pure kNN/PPR/CAST positive mining：无法解释低-overlap无收益。</li><li>Loss-only reweighting：创新性不足，且容易回到 ProGCL/DCL 线。</li><li>Direct all-positive conversion：CAST/IRIS/CPR 失败已经证明误转正风险高。</li><li>Heavy generators / KAN / LLM views：工程复杂且会混入架构贡献，不适合当前最小 smoke。</li></ul>
+<h2 id="top1-refined-direction">Top1 Refined Direction</h2>
+<p><strong>Active idea</strong>：BEACON-GCL / Boundary-Eligibility Aware Contrastive Neutralization <strong>One-sentence thesis</strong>：False-negative debiasing should be accepted only when a counterfactual pair edit reduces harmful repulsion without damaging boundary geometry or representation uniformity. <strong>Decision</strong>：<code>GO_TO_BEACON_SMOKE_PLANNING</code> <strong>Next step</strong>：实现 BEACON-lite post-hoc smoke，而不是继续 CAST seeds。</p>
+<h2 id="required-first-smoke">Required First Smoke</h2>
+<p>Run ID: <code>BE-M0-001</code> Dataset: Cora seed0 only Status: smoke Input: existing GRACE frozen embeddings and candidate pools Systems:</p>
+<ul><li>B0 GRACE</li><li>B1 kNN relation smoothing</li><li>B2 CAST proxy smoothing</li><li>B3 C4 latent certificate smoothing</li><li>B4 all-candidate neutralization</li><li>B5 BEACON full gate</li><li>B6 shuffled utility gate</li><li>B7 no-boundary gate</li><li>B8 no-uniformity gate</li></ul>
+<p>Pass condition:</p>
+<ul><li>B5 must beat or match B1/B2 on test@best-val without higher accepted-pair CAST/kNN overlap than B1/B2.</li><li>B5 must show nontrivial boundary/geometry protection: lower rank loss and lower probe-margin damage than B4/B7.</li><li>If B6 matches B5, kill BEACON.</li><li>If B7 beats B5, boundary gate is unnecessary; revise.</li></ul>
+<h2 id="output-links">Output Links</h2>
+<ul><li>Refined proposal: <code>refine-logs/FINAL_PROPOSAL_20260626_150434.md</code></li><li>Experiment plan: <code>refine-logs/EXPERIMENT_PLAN_20260626_150434.md</code></li><li>Tracker: <code>refine-logs/EXPERIMENT_TRACKER_20260626_150434.md</code></li></ul>
 
 <footer class="aris-footer">
   Generated by <a href="https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep/blob/main/skills/render-html/SKILL.md">ARIS <code>/render-html</code></a> ·
   source path <code>idea-stage/IDEA_REPORT.md</code> ·
-  SHA256 <code>bca4c8056153</code> ·
-  generated at 2026-06-26 12:07 UTC.
+  SHA256 <code>6a5660ba4f06</code> ·
+  generated at 2026-06-26 15:08 UTC.
   This is a generated view — edit the source Markdown, then re-render.
 </footer>
 </main>
