@@ -239,3 +239,7 @@
 | 2026-06-26 13:55 | manual-smoke | refine-logs/CAST_CERTIFICATE_RESULTS_20260626_135504.md | smoke | timestamped CAST certificate result report |
 | 2026-06-26 13:55 | manual-smoke | refine-logs/CAST_CERTIFICATE_RESULTS.md | smoke | fixed entry for CAST certificate result report |
 | 2026-06-26 13:55 | manual-smoke | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_135504.md | smoke | timestamped CAST certificate local code review |
+| 2026-06-26 14:01 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260626_140139.md | implementation | timestamped CAST Certificate Pilot-A plan |
+| 2026-06-26 14:01 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest CAST Certificate Pilot-A plan |
+| 2026-06-26 14:01 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_140139.md | implementation | timestamped CAST Certificate Pilot-A tracker |
+| 2026-06-26 14:01 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest CAST Certificate Pilot-A tracker |

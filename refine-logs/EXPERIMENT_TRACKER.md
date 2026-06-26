@@ -1,31 +1,16 @@
-# Experiment Tracker: CAST Certificate
+# Experiment Tracker: CAST Certificate Pilot-A
 
-## Current Gate
+Fixed entry for the latest Pilot-A tracker.
 
-- Status：`CAST_CERTIFICATE_SMOKE_POSITIVE`
-- Decision：`GO_TO_PILOT_PLANNING_WITH_CAUTION`
-- Completed action：implemented real latent target-prediction CAST certificate and ran Cora seed=0 smoke only。
-- Forbidden：formal 10-seed run、SOTA/performance claim、直接把 smoke 写成论文主表。
+- Timestamped source: `refine-logs/EXPERIMENT_TRACKER_20260626_140139.md`
+- Current gate: `PILOT_A_PLANNED`
+- Status: not started
 
-## Smoke Matrix
+First three runs to launch:
 
-| ID | Variant | Status | Test@best-val | Label agreement | Decision |
-|---|---|---|---:|---:|---|
-| C0 | GRACE | completed | 84.78 | 0.0000 | reference |
-| C1 | embedding kNN | completed | 85.19 | 0.8152 | label-agreement control |
-| C2 | CAST proxy | completed | 85.70 | 0.7548 | strong proxy control |
-| C3 | CAST candidate pool only | completed | 85.70 | 0.7548 | same as proxy |
-| C4 | latent target certificate | completed | 85.93 | 0.7911 | positive smoke |
-| C5 | certificate + CAST score | completed | 86.16 | 0.7886 | best smoke |
+1. `PA-M0-001`: CiteSeer seed 0 sanity with C0/C1/C2/C4/C5.
+2. `PA-M1-CORA`: Cora seeds 0-2 with C0-C5.
+3. `PA-M1-CITE`: CiteSeer seeds 0-2 with C0-C5.
 
-## Next Allowed Step
-
-Plan Pilot-A only:
-
-- datasets: Cora, CiteSeer, PubMed first;
-- seeds: start with 0-2 only, not formal 10 seeds;
-- must include kNN, PPR, CAST proxy, C4, C5;
-- add overlap/partial-correlation diagnostics to prove not kNN/PPR mining.
-
-No formal claim is allowed until Pilot-A passes and then a separate formal protocol is frozen.
+No formal 10-seed run or performance claim is allowed.
 
