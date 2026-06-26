@@ -2,19 +2,19 @@
 type: idea
 node_id: idea:iris_gcl
 title: "IRIS-GCL: Interventional Response Invariant Signatures"
-stage: smoke_failed
-outcome: pivot_required
+stage: smoke_mixed
+outcome: revise_not_pilot
 added: 2026-06-26T12:03:10Z
 based_on: []
 target_gaps: ["gap:FN-G2", "gap:FN-G3", "gap:FN-G4", "gap:FN-G8"]
-tags: ["gcl", "false-negative", "node-classification", "iris", "response-invariance", "anti-proximity", "smoke-failed", "pivot-required"]
+tags: ["gcl", "false-negative", "node-classification", "iris", "r2-iris", "response-invariance", "residualized-response", "smoke-mixed", "revise-not-pilot"]
 ---
 
-# IRIS-GCL: Interventional Response Invariant Signatures
+# R2-IRIS: Residualized Response Invariant Signatures
 
-**stage:** `smoke_failed`  ·  **outcome:** `pivot_required`
+**stage:** `smoke_mixed`  ·  **outcome:** `revise_not_pilot`
 
-Former high-risk non-loss false-negative GCL idea using anti-proximity cross-node response invariance. Cora seed=0 smoke failed and triggered `PIVOT_REQUIRED`.
+Revised high-risk non-loss false-negative GCL idea using residualized cross-node response invariance. Cora seed=0 smoke improved over hard anti-proximity IRIS but remains below the escalation bar.
 
 ## Thesis
 False negatives can be discovered as cross-node response-invariant siblings under a fixed intervention battery, with anti-proximity constraints preventing collapse into kNN/PPR/embedding positive mining.
@@ -24,14 +24,17 @@ Fresh reviewer selected IRIS over CAST, novelty 7.2/10, confidence 0.61. Smoke r
 
 ## Smoke Result
 
-- Run: `results/summary/iris_smoke_Cora_seed0_20260626T121843Z_summary.md`
+- First failed run: `results/summary/iris_smoke_Cora_seed0_20260626T121843Z_summary.md`
+- Revised R2 run: `results/summary/r2_iris_smoke_Cora_seed0_20260626T123039Z_summary.md`
 - Bridge report: `refine-logs/EXPERIMENT_RESULTS.md`
-- Decision: `PIVOT_REQUIRED`
+- Decision: `REVISE_NOT_PILOT`
 - I5 IRIS full: `76.48` test@best-val, label agreement `0.2418`
 - I7 no anti-proximity: `84.59` test@best-val, label agreement `0.7787`
 - I4 CAST proxy: `85.65` test@best-val, label agreement `0.7548`
+- I10 R2 residualized response: `84.46` test@best-val, label agreement `0.7783`
+- I13 residual response + CAST hybrid: `84.87` test@best-val, label agreement `0.7968`
 
-Do not continue current IRIS anti-proximity mechanism into Pilot-A/B or formal runs unless the mechanism is explicitly redesigned and re-planned.
+Do not continue into Pilot-A/B or formal runs until the response component becomes clearly distinct from and competitive with kNN/PMGCL/CAST controls.
 
 ## Connections
 _Edges are recorded in `graph/edges.jsonl`; summarize here for human readers._

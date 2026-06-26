@@ -1,16 +1,16 @@
-# Research Proposal: IRIS-GCL
+# Research Proposal: R2-IRIS / Residualized Response Invariant Signatures
 
 ## Problem Anchor
 
 - **Bottom-line problem**：节点级 GCL 会把潜在同类节点当 negatives；仅靠相似度、近邻或 loss weighting 容易把 false-negative 发现退化为 positive mining。
 - **Must-solve bottleneck**：需要一个不依赖 pair proximity 的 semantic relation criterion。
-- **Core mechanism**：interventional response fingerprint + anti-proximity response-invariant sibling discovery + multi-positive / neutral closure。
+- **Core mechanism**：interventional response fingerprint + residualized response-invariant sibling discovery + multi-positive / neutral closure。
 - **Non-goals**：不改 InfoNCE denominator 作为主贡献；不使用 test labels；不使用 learned augmentation policy；不把 smoke 写成性能 claim。
 - **Constraints**：首轮只做 Cora seed=0 smoke，`1:1:8` split，frozen encoder + Logistic Regression evaluator。
 
 ## Method Thesis
 
-**One-sentence thesis**：IRIS-GCL discovers false negatives by identifying nodes with invariant response functions under a fixed intervention battery, while enforcing anti-proximity to avoid ordinary kNN/PPR/embedding positive mining.
+**One-sentence thesis**：R2-IRIS discovers false negatives by identifying nodes whose interventional response similarity remains unusually high after controlling feature similarity, embedding similarity, graph proximity, and degree.
 
 ## Proposed Method
 
@@ -52,17 +52,23 @@ Construct:
 R_i = concat_{omega in Omega} whiten(r_i(omega))
 ```
 
-### 4. Anti-proximity Response Siblings
+### 4. Residualized Response Siblings
 
-Node `j` becomes an IRIS sibling for anchor `i` if:
+The first IRIS smoke showed that hard anti-proximity filtering destroys sibling quality. The revised rule replaces hard exclusion with pair-level residualization:
 
 ```text
-sim_response(R_i, R_j) >= tau_response
-and sim_embedding(z_i, z_j) <= tau_embed_near
-and graph_proximity(i, j) <= tau_graph_near
+sim_response(R_i, R_j)
+  = beta_0
+  + beta_1 sim_feature(x_i, x_j)
+  + beta_2 sim_embedding(z_i, z_j)
+  + beta_3 graph_proximity(i, j)
+  + beta_4 |degree_i - degree_j|
+  + residual_response(i, j)
 ```
 
-The anti-proximity constraints are mandatory. They force IRIS to search beyond ordinary feature/embedding/PPR neighbors.
+Node `j` becomes an R2-IRIS sibling for anchor `i` if `residual_response(i, j)` is among the top relation candidates for anchor `i`.
+
+This is not allowed to use labels. Labels are used only after mining for offline diagnostics.
 
 ### 5. Contrastive Relation Closure
 
@@ -87,6 +93,10 @@ The contribution is relation discovery, not a new contrastive objective.
 | IRIS no anti-proximity | collapse-to-proximity test |
 | IRIS structural-signature-only | role-equivalence test |
 | IRIS no gradient-proxy | circularity test |
+| R2 residualized response | revised main candidate |
+| raw response no residual | tests whether residualization changes anything |
+| residual + soft proximity penalty | tests soft replacement for hard anti-proximity |
+| residual + CAST hybrid | tests whether response residuals help a stronger transport-like control |
 
 ## Diagnostics
 
@@ -109,5 +119,5 @@ The contribution is relation discovery, not a new contrastive objective.
 
 ## Current Verdict
 
-`SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE`。  
-IRIS is the current best idea / best bet for sufficient innovation, but it has no smoke or formal evidence. Next step is minimal Cora seed=0 smoke only.
+`REVISE_NOT_PILOT`。  
+Hard anti-proximity IRIS failed the first smoke. R2 residualization rescues the failure mode but still does not beat the strongest controls in Cora seed=0 smoke. No Pilot-A/B or formal experiment is currently supported.

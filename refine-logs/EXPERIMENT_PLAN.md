@@ -1,8 +1,8 @@
-# Experiment Plan: IRIS-GCL Smoke
+# Experiment Plan: R2-IRIS Smoke
 
 ## Status
 
-`SWITCH_TO_IRIS_REVISE_BEFORE_SMOKE`
+`REVISE_NOT_PILOT`
 
 本计划只定义最小 smoke。不得把 smoke 结果写成 formal、SOTA、robust 或 comprehensive。
 
@@ -28,6 +28,10 @@
 | I7 | IRIS no anti-proximity | collapse-to-proximity test |
 | I8 | IRIS structural-signature-only | role-equivalence test |
 | I9 | IRIS no gradient-proxy | circularity test |
+| I10 | R2 residualized response | revised main candidate |
+| I11 | raw response no residual | residualization necessity |
+| I12 | residual response + soft proximity penalty | soft anti-proximity replacement |
+| I13 | response + CAST hybrid | hybrid diagnostic against CAST control |
 
 ## Smoke Metrics
 
@@ -59,4 +63,4 @@ IRIS only moves beyond smoke if:
 
 ## Next Gate
 
-Only Cora seed=0 smoke is allowed. No Pilot-A or formal run is allowed yet.
+Only revised Cora seed=0 smoke is allowed until R2 becomes clearly distinct from and competitive with kNN/PMGCL/CAST controls. No Pilot-A or formal run is allowed yet.

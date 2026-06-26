@@ -24,6 +24,10 @@ iris:
   anti_proximity:
     embedding_near_quantile: 0.8
     graph_near_quantile: 0.8
+  residualization:
+    max_fit_pairs: 250000
+    soft_proximity_penalty: 0.15
+    hybrid_cast_weight: 0.35
   diffusion:
     alpha: 0.2
     steps: 3
@@ -72,3 +76,19 @@ variants:
     name: iris_no_gradient_proxy
     family: iris_no_gradient_proxy
     implementation_note: "Equivalent to the current minimal IRIS response because positive-gradient proxy was removed before smoke."
+  - id: I10
+    name: r2_iris_residualized_response
+    family: residualized_response
+    implementation_note: "R2-IRIS: selects by response residual after controlling feature, embedding, graph proximity, and degree gap."
+  - id: I11
+    name: raw_response_no_residual
+    family: raw_response_no_residual
+    implementation_note: "Raw response top-k without anti-proximity or residualization."
+  - id: I12
+    name: residual_response_soft_proximity_penalty
+    family: residualized_soft_penalty
+    implementation_note: "Residual response with a soft proximity penalty instead of hard anti-proximity filtering."
+  - id: I13
+    name: response_cast_hybrid
+    family: response_cast_hybrid
+    implementation_note: "Hybrid diagnostic: residual response plus CAST-style feature/embedding/structure score."

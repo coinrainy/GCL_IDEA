@@ -205,3 +205,10 @@
 | 2026-06-26 12:23 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS.md | experiment-bridge | fixed entry for latest IRIS smoke bridge results |
 | 2026-06-26 12:23 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_122250.md | experiment-bridge | timestamped IRIS smoke code and integrity review |
 | 2026-06-26 12:23 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW.md | experiment-bridge | fixed entry for latest IRIS smoke code review |
+| 2026-06-26 12:31 | manual-revise | configs/iris_smoke.yaml | smoke | R2-IRIS residualized response variants I10-I13 |
+| 2026-06-26 12:31 | manual-revise | scripts/run_iris_smoke.py | smoke | updated IRIS runner with pair-level response residualization |
+| 2026-06-26 12:31 | manual-revise | logs/iris_smoke/r2_iris_smoke_Cora_seed0_20260626T123039Z/ | smoke | GRACE warmup log for R2-IRIS smoke |
+| 2026-06-26 12:31 | manual-revise | results/summary/r2_iris_smoke_Cora_seed0_20260626T123039Z_summary.md | smoke | R2-IRIS smoke summary table |
+| 2026-06-26 12:31 | manual-revise | results/summary/r2_iris_smoke_Cora_seed0_20260626T123039Z_summary.json | smoke | parseable R2-IRIS smoke summary JSON |
+| 2026-06-26 12:31 | manual-revise | refine-logs/EXPERIMENT_RESULTS_20260626_123130.md | smoke | timestamped R2-IRIS smoke result summary |
+| 2026-06-26 12:31 | manual-revise | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_123130.md | smoke | timestamped R2-IRIS local code review |

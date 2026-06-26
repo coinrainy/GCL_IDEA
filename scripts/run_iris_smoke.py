@@ -256,6 +256,55 @@ def probabilistic_score(
     return prob
 
 
+def standardize_score(score: np.ndarray) -> np.ndarray:
+    out = score.astype(np.float32, copy=True)
+    finite = np.isfinite(out)
+    if finite.any():
+        out[finite] = (out[finite] - out[finite].mean()) / max(out[finite].std(), 1e-6)
+    np.fill_diagonal(out, -np.inf)
+    return out
+
+
+def residualize_pair_score(
+    target: np.ndarray,
+    controls: list[np.ndarray],
+    degree: np.ndarray,
+    max_fit_pairs: int,
+    seed: int,
+) -> tuple[np.ndarray, dict[str, Any]]:
+    n = target.shape[0]
+    tri = np.triu_indices(n, k=1)
+    valid = np.isfinite(target[tri])
+    idx = np.where(valid)[0]
+    rng = np.random.default_rng(seed + 313)
+    if idx.size > max_fit_pairs:
+        idx = rng.choice(idx, max_fit_pairs, replace=False)
+    r = tri[0][idx]
+    c = tri[1][idx]
+    y = target[r, c].astype(np.float32)
+    degree_gap = np.abs(degree[r] - degree[c]).astype(np.float32)
+    design = np.stack([ctrl[r, c].astype(np.float32) for ctrl in controls] + [degree_gap], axis=1)
+    design = np.nan_to_num(design, nan=0.0, posinf=0.0, neginf=0.0)
+    y = np.nan_to_num(y, nan=0.0, posinf=0.0, neginf=0.0)
+    reg = LinearRegression().fit(design, y)
+
+    residual = np.empty_like(target, dtype=np.float32)
+    for i in range(n):
+        row_degree_gap = np.abs(degree[i] - degree).astype(np.float32)
+        row_design = np.stack([ctrl[i].astype(np.float32) for ctrl in controls] + [row_degree_gap], axis=1)
+        row_design = np.nan_to_num(row_design, nan=0.0, posinf=0.0, neginf=0.0)
+        row_target = np.nan_to_num(target[i].astype(np.float32), nan=0.0, posinf=0.0, neginf=0.0)
+        residual[i] = row_target - reg.predict(row_design).astype(np.float32)
+    residual = 0.5 * (residual + residual.T)
+    np.fill_diagonal(residual, -np.inf)
+    return standardize_score(residual), {
+        "fit_pairs": int(idx.size),
+        "controls": ["feature_similarity", "embedding_similarity", "graph_proximity", "degree_gap"],
+        "intercept": float(reg.intercept_),
+        "coefficients": [float(v) for v in reg.coef_.reshape(-1)],
+    }
+
+
 def relation_smooth_embeddings(z: np.ndarray, rel: np.ndarray, weight: float) -> np.ndarray:
     counts = rel.sum(axis=1, keepdims=True).astype(np.float32)
     neighbor_sum = rel.astype(np.float32) @ z
@@ -408,6 +457,18 @@ def build_variant_relations(
         seed,
     )
     cast_score = 0.4 * matrices["feat_sim"] + 0.35 * matrices["emb_sim"] + 0.25 * matrices["struct_sim"]
+    cast_score = standardize_score(cast_score)
+    residual_score = matrices["residual_response_sim"]
+    soft_penalty = float(cfg["residualization"].get("soft_proximity_penalty", 0.15))
+    hybrid_cast_weight = float(cfg["residualization"].get("hybrid_cast_weight", 0.35))
+    emb_control_score = np.nan_to_num(standardize_score(matrices["emb_sim"]), nan=0.0, posinf=0.0, neginf=0.0)
+    graph_control_score = np.nan_to_num(standardize_score(matrices["graph_sim"]), nan=0.0, posinf=0.0, neginf=0.0)
+    proximity_score = 0.5 * emb_control_score + 0.5 * graph_control_score
+    np.fill_diagonal(proximity_score, 0.0)
+    residual_soft_score = standardize_score(residual_score - soft_penalty * proximity_score)
+    response_cast_hybrid = standardize_score(
+        (1.0 - hybrid_cast_weight) * residual_score + hybrid_cast_weight * cast_score
+    )
     score_by_family = {
         "grace_base": None,
         "embedding_knn": matrices["emb_sim"],
@@ -419,6 +480,10 @@ def build_variant_relations(
         "iris_no_anti_proximity": matrices["response_sim"],
         "iris_structural_only": matrices["struct_sim"],
         "iris_no_gradient_proxy": matrices["response_sim"],
+        "residualized_response": residual_score,
+        "raw_response_no_residual": matrices["response_sim"],
+        "residualized_soft_penalty": residual_soft_score,
+        "response_cast_hybrid": response_cast_hybrid,
     }
     mask_by_family = {
         "grace_base": None,
@@ -431,6 +496,10 @@ def build_variant_relations(
         "iris_no_anti_proximity": None,
         "iris_structural_only": anti_mask,
         "iris_no_gradient_proxy": anti_mask,
+        "residualized_response": None,
+        "raw_response_no_residual": None,
+        "residualized_soft_penalty": None,
+        "response_cast_hybrid": None,
     }
     for variant in variants:
         family = variant["family"]
@@ -444,6 +513,7 @@ def build_variant_relations(
             "positive_budget": budget,
             "label_diagnostics_are_offline_only": True,
             "anti_proximity": anti_diag if mask_by_family[family] is not None else None,
+            "residualization": matrices.get("residualization_diagnostics") if family.startswith("residualized") or family == "response_cast_hybrid" else None,
             **label_agreement(rel, labels),
         }
     return relations, diagnostics
@@ -455,8 +525,8 @@ def markdown_summary(results: list[dict[str, Any]], path: Path) -> None:
         "",
         "本文件为 Cora seed=0 smoke/diagnostic 汇总，不支持 formal、SOTA 或 robust claim。",
         "",
-        "| ID | Variant | Test@best-val | Label agreement | FN mass after | Partial corr | Notes |",
-        "|---|---|---:|---:|---:|---:|---|",
+        "| ID | Variant | Test@best-val | Label agreement | FN mass after | Response pcorr | Residual pcorr | Notes |",
+        "|---|---|---:|---:|---:|---:|---:|---|",
     ]
     for result in results:
         diag = result["diagnostics"]
@@ -467,7 +537,8 @@ def markdown_summary(results: list[dict[str, Any]], path: Path) -> None:
             f"{eval_res['test_at_best']:.2f} | "
             f"{diag['pair_label_agreement']:.4f} | "
             f"{diag['false_negative_mass']['same_label_negative_mass_after_closure']:.4f} | "
-            f"{diag['partial_corr_label_response_after_controls']:.4f} | {note} |"
+            f"{diag['partial_corr_label_response_after_controls']:.4f} | "
+            f"{diag['partial_corr_label_residual_response_after_controls']:.4f} | {note} |"
         )
     path.write_text("\n".join(lines) + "\n")
 
@@ -519,13 +590,27 @@ def main() -> None:
     )
     degree = as_numpy(node_degree(data.edge_index, int(data.num_nodes))).astype(np.float32)
     struct = structural_signature(features, degree, diffusion)
+    emb_sim = cosine_matrix(z)
+    feat_sim = cosine_matrix(features)
+    graph_sim = diffusion
+    response_sim = cosine_matrix(response)
+    struct_sim = cosine_matrix(struct)
+    residual_response_sim, residualization_diagnostics = residualize_pair_score(
+        response_sim,
+        [feat_sim, emb_sim, graph_sim],
+        degree,
+        int(iris_cfg["residualization"]["max_fit_pairs"]),
+        seed,
+    )
     matrices = {
-        "emb_sim": cosine_matrix(z),
-        "feat_sim": cosine_matrix(features),
-        "graph_sim": diffusion,
+        "emb_sim": emb_sim,
+        "feat_sim": feat_sim,
+        "graph_sim": graph_sim,
         "response": response,
-        "response_sim": cosine_matrix(response),
-        "struct_sim": cosine_matrix(struct),
+        "response_sim": response_sim,
+        "residual_response_sim": residual_response_sim,
+        "residualization_diagnostics": residualization_diagnostics,
+        "struct_sim": struct_sim,
     }
     relations, relation_diagnostics = build_variant_relations(
         config["variants"], matrices, labels, iris_cfg, seed
@@ -534,6 +619,14 @@ def main() -> None:
     controls = [matrices["feat_sim"], matrices["emb_sim"], matrices["graph_sim"]]
     response_partial = partial_corr(
         matrices["response_sim"],
+        labels,
+        controls,
+        degree,
+        int(iris_cfg["diagnostics"]["partial_corr_max_pairs"]),
+        seed,
+    )
+    residual_response_partial = partial_corr(
+        matrices["residual_response_sim"],
         labels,
         controls,
         degree,
@@ -550,6 +643,7 @@ def main() -> None:
         eval_result = logreg_val_eval(torch.tensor(z_eval), data.y.cpu(), split, eval_cfg, seed)
         diag = relation_diagnostics[variant["id"]]
         diag["partial_corr_label_response_after_controls"] = response_partial
+        diag["partial_corr_label_residual_response_after_controls"] = residual_response_partial
         diag["false_negative_mass"] = false_negative_mass(
             z,
             labels,
@@ -613,6 +707,8 @@ def main() -> None:
         "bridge_decision_inputs": {
             "smoke_only": True,
             "response_partial_corr_label_after_controls": response_partial,
+            "residual_response_partial_corr_label_after_controls": residual_response_partial,
+            "residualization_diagnostics": residualization_diagnostics,
             "elapsed_sec": time.time() - start_all,
         },
     }

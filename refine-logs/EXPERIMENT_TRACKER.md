@@ -1,26 +1,30 @@
-# Experiment Tracker: IRIS-GCL
+# Experiment Tracker: IRIS / R2-IRIS
 
 ## Current Gate
 
-- Status：`SMOKE_COMPLETED_NEGATIVE`
-- Decision：`PIVOT_REQUIRED`
-- Completed action：implemented and ran minimal Cora seed=0 smoke only。
-- Forbidden：multi-dataset pilot、formal 10-seed run、SOTA/performance claim、继续当前 IRIS anti-proximity 机制的 Pilot-A/B。
+- Status：`R2_SMOKE_COMPLETED_MIXED`
+- Decision：`REVISE_NOT_PILOT`
+- Completed action：implemented residualized response variants I10-I13 and ran Cora seed=0 smoke only。
+- Forbidden：multi-dataset pilot、formal 10-seed run、SOTA/performance claim。
 
 ## Smoke Matrix
 
 | ID | Variant | Status | Test@best-val | Label agreement | Decision |
 |---|---|---|---:|---:|---|
-| I0 | GRACE | completed | 84.78 | 0.0000 | reference |
-| I1 | kNN multi-positive | completed | 85.24 | 0.8154 | stronger than I5 |
-| I2 | PPR/diffusion positives | completed | 83.58 | 0.7272 | stronger than I5 |
-| I3 | PMGCL-lite/BMM | completed | 85.38 | 0.7699 | stronger than I5 |
-| I4 | CAST one-step proxy | completed | 85.65 | 0.7548 | dominates I5 |
-| I5 | IRIS full | completed | 76.48 | 0.2418 | failed |
-| I6 | IRIS response-shuffled | completed | 80.07 | 0.1027 | mixed diagnostic |
-| I7 | IRIS no anti-proximity | completed | 84.59 | 0.7787 | kill rule triggered |
-| I8 | IRIS structural-signature-only | completed | 77.68 | 0.1125 | weaker than I5 on label agreement |
-| I9 | IRIS no gradient-proxy | completed | 76.48 | 0.2418 | equivalent to I5 by design |
+| I0 | GRACE | completed | 84.73 | 0.0000 | reference |
+| I1 | kNN multi-positive | completed | 85.29 | 0.8151 | strongest label agreement |
+| I2 | PPR/diffusion positives | completed | 83.58 | 0.7272 | graph proximity control |
+| I3 | PMGCL-lite/BMM | completed | 85.52 | 0.7699 | stronger accuracy than R2 |
+| I4 | CAST one-step proxy | completed | 85.65 | 0.7548 | strongest accuracy |
+| I5 | IRIS hard anti-proximity | completed | 76.29 | 0.2419 | failed |
+| I6 | IRIS response-shuffled | completed | 80.30 | 0.1029 | response sanity |
+| I7 | IRIS no anti-proximity | completed | 84.64 | 0.7783 | hard-filter removal helps |
+| I8 | IRIS structural-signature-only | completed | 77.35 | 0.1124 | weak |
+| I9 | IRIS no gradient-proxy | completed | 76.29 | 0.2419 | equivalent to I5 by design |
+| I10 | R2 residualized response | completed | 84.46 | 0.7783 | rescue, not enough |
+| I11 | raw response no residual | completed | 84.64 | 0.7783 | matches I7 |
+| I12 | residual + soft proximity penalty | completed | 84.18 | 0.7601 | worse than I10/I11 |
+| I13 | residual + CAST hybrid | completed | 84.87 | 0.7968 | best new variant, still not pilot-ready |
 
 ## Evidence Status
 
@@ -29,11 +33,10 @@
 - Smoke run：completed, Cora seed=0 only。
 - Pilot run：no。
 - Formal run：no。
-- Claim support：negative smoke only；不支持性能提升 claim。
-- Result summary：`results/summary/iris_smoke_Cora_seed0_20260626T121843Z_summary.md`。
+- Claim support：mixed/negative smoke only；不支持性能提升 claim。
+- Result summary：`results/summary/r2_iris_smoke_Cora_seed0_20260626T123039Z_summary.md`。
 - Bridge results：`refine-logs/EXPERIMENT_RESULTS.md`。
-- Bridge review：`refine-logs/EXPERIMENT_CODE_REVIEW.md`。
 
 ## Decision Notes
 
-The planned smoke pass conditions are not met. I5 fails against proximity mining controls and is dominated by no-anti-proximity I7 and CAST proxy I4. The only positive diagnostic is response-similarity partial correlation with label agreement after controls (`0.3707`), but the current anti-proximity selection rule fails to exploit it.
+Residualization is a useful correction to hard anti-proximity, but the current R2-IRIS variants remain dominated or matched by simpler controls. Do not escalate until the response component becomes both diagnostically distinct and competitive with kNN/PMGCL/CAST controls.
