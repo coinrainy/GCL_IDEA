@@ -226,3 +226,8 @@
 | 2026-06-26 12:47 | manual-revise | results/summary/closure_smoke_Cora_seed0_20260626T124638Z_summary.json | smoke | parseable certified closure smoke summary JSON |
 | 2026-06-26 12:47 | manual-revise | refine-logs/EXPERIMENT_RESULTS_20260626_124728.md | smoke | timestamped certified closure smoke result summary |
 | 2026-06-26 12:47 | manual-revise | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_124728.md | smoke | timestamped certified closure local code review |
+| 2026-06-26 12:50 | postmortem | refine-logs/IRIS_CPR_POSTMORTEM_20260626_125000.md | decision | timestamped postmortem stopping IRIS/CPR incremental refinement |
+| 2026-06-26 12:50 | postmortem | refine-logs/IRIS_CPR_POSTMORTEM.md | decision | fixed entry for IRIS/CPR postmortem |
+| 2026-06-26 12:50 | postmortem | idea-stage/NEXT_DIRECTION_AFTER_IRIS_CPR_20260626_125000.md | decision | timestamped next-direction gate after IRIS/CPR |
+| 2026-06-26 12:50 | postmortem | idea-stage/NEXT_DIRECTION_AFTER_IRIS_CPR.md | decision | fixed entry for next direction after IRIS/CPR |
+| 2026-06-26 12:50 | postmortem | idea-stage/IDEA_REPORT.md | decision | latest idea report updated to PIVOT_REQUIRED after IRIS/CPR smoke |

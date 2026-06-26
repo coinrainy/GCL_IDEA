@@ -2,10 +2,10 @@
 
 ## Current Gate
 
-- Status：`CERTIFIED_CLOSURE_SMOKE_COMPLETED_NEGATIVE`
-- Decision：`KILL_CERTIFIED_CLOSURE_KEEP_CPR_SCORE`
+- Status：`IRIS_CPR_STOPPED`
+- Decision：`PIVOT_REQUIRED`
 - Completed action：implemented one certified CAST closure variant I22 and ran Cora seed=0 smoke only。
-- Forbidden：multi-dataset pilot、formal 10-seed run、SOTA/performance claim、继续当前 I22 neutral-closure 机制。
+- Forbidden：multi-dataset pilot、formal 10-seed run、SOTA/performance claim、继续 IRIS/CPR incremental variants。
 
 ## Smoke Matrix
 
@@ -32,3 +32,9 @@
 ## Decision Notes
 
 Certified closure is distinct from kNN/CAST but weaker. The only CPR signal worth preserving is additive response-certified CAST scoring. The overall IRIS/CPR line is near exhaustion; further work should either make a substantially new mechanism or pivot back to CAST/restart idea discovery.
+
+## Stop Rule
+
+`STOP_IRIS_CPR_INCREMENTAL_REFINEMENT`
+
+See `refine-logs/IRIS_CPR_POSTMORTEM.md`. Do not add I23/I24-style variants.

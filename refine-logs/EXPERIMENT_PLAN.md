@@ -2,7 +2,7 @@
 
 ## Status
 
-`KILL_CERTIFIED_CLOSURE_KEEP_CPR_SCORE`
+`PIVOT_REQUIRED`
 
 本计划只定义最小 smoke。不得把 smoke 结果写成 formal、SOTA、robust 或 comprehensive。
 
@@ -69,4 +69,4 @@ IRIS only moves beyond smoke if:
 
 ## Next Gate
 
-The current certified closure variant is killed. No Pilot-A or formal run is allowed. Further work requires a substantially new mechanism or a pivot back to CAST/restarted idea discovery.
+The current certified closure variant is killed and IRIS/CPR incremental refinement is stopped. No Pilot-A or formal run is allowed. Further work requires a real CAST latent target-prediction certificate or fresh idea discovery.

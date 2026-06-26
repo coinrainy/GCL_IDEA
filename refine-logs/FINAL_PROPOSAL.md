@@ -129,5 +129,5 @@ The contribution is relation discovery, not a new contrastive objective.
 
 ## Current Verdict
 
-`KILL_CERTIFIED_CLOSURE_KEEP_CPR_SCORE`。  
-Hard anti-proximity IRIS failed. R2 residualization rescues the failure mode. CPR response-certified CAST scoring is the only surviving signal. The explicit three-way certified closure variant is distinct but weaker and should not continue without a substantially new mechanism.
+`PIVOT_REQUIRED`。  
+Hard anti-proximity IRIS failed. R2 residualization rescues the failure mode. CPR response-certified CAST scoring is the only surviving signal. The explicit three-way certified closure variant is distinct but weaker. Incremental IRIS/CPR refinement is stopped; continue only with a real CAST certificate implementation or fresh idea discovery.
