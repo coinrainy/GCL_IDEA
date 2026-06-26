@@ -310,3 +310,15 @@
 | 2026-06-26 15:59 | /experiment-bridge | refine-logs/EXPERIMENT_TRACKER.md | experiment-bridge | fixed latest SPECTRA no-go tracker |
 | 2026-06-26 15:59 | /research-wiki | research-wiki/ideas/spectra_gcl.md | wiki | SPECTRA-GCL marked smoke_negative |
 | 2026-06-26 15:59 | /research-wiki | research-wiki/experiments/spectra_sp_m0_001.md | wiki | SPECTRA SP-M0-001 experiment page |
+| 2026-06-26 16:06 | /idea-discovery | idea-stage/IDEA_CANDIDATES_20260626_160634.md | idea-discovery | post triple-no-go candidate ranking selecting PACER-GCL |
+| 2026-06-26 16:06 | /idea-discovery | idea-stage/IDEA_CANDIDATES.md | idea-discovery | fixed entry for latest PACER candidate ranking |
+| 2026-06-26 16:06 | /idea-discovery | idea-stage/IDEA_REPORT_20260626_160634.md | idea-discovery | timestamped PACER-GCL idea discovery report |
+| 2026-06-26 16:06 | /idea-discovery | idea-stage/IDEA_REPORT.md | idea-discovery | fixed entry for latest PACER-GCL idea report |
+| 2026-06-26 16:06 | /research-refine | refine-logs/FINAL_PROPOSAL_20260626_160634.md | refinement | timestamped PACER-GCL final proposal |
+| 2026-06-26 16:06 | /research-refine | refine-logs/FINAL_PROPOSAL.md | refinement | fixed entry for latest PACER-GCL final proposal |
+| 2026-06-26 16:06 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260626_160634.md | experiment-planning | timestamped PACER-GCL smoke plan |
+| 2026-06-26 16:06 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | experiment-planning | fixed entry for latest PACER smoke plan |
+| 2026-06-26 16:06 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_160634.md | experiment-planning | timestamped PACER-GCL tracker |
+| 2026-06-26 16:06 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | fixed entry for latest PACER tracker |
+| 2026-06-26 16:06 | /research-wiki | research-wiki/ideas/pacer_gcl.md | wiki | proposed PACER-GCL idea page after fresh reviews |
+| 2026-06-26 16:06 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of PACER-GCL idea report |

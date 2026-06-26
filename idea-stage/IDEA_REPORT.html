@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPECTRA-GCL Idea Discovery</title>
+<title>PACER-GCL Idea Discovery</title>
 
 <meta name="generator" content="ARIS render-html (academic, v1)">
 <meta name="aris:source-path" content="idea-stage/IDEA_REPORT.md">
-<meta name="aris:source-sha256" content="886d2760ffca19679a2a1113e8712f0e7b5bc14e8e8a3605e48a05c83a5a44fe">
-<meta name="aris:generated-at" content="2026-06-26 15:44 UTC">
+<meta name="aris:source-sha256" content="a29be6e5b4462cafee13e114e73712e2a9f6016b39bcd9871cb1272ddac85298">
+<meta name="aris:generated-at" content="2026-06-26 16:13 UTC">
 
 <!-- offline mode: MathJax + highlight.js skipped; math and code blocks render as plain text -->
 
@@ -312,37 +312,30 @@ footer.aris-footer a { color: var(--ink-muted); border-bottom: 1px dotted var(--
   <ol>
 <li><a href="#hard-constraints-applied">Hard Constraints Applied</a>
 </li>
-<li><a href="#failure-evidence">Failure Evidence</a>
-<ul>
-<li><a href="#cast-pilot-a">CAST Pilot-A</a></li>
-<li><a href="#beacon-be-m0">BEACON BE-M0</a></li>
-</ul>
+<li><a href="#fresh-reviewer-reading">Fresh Reviewer Reading</a>
 </li>
-<li><a href="#mechanism-explanation">Mechanism Explanation</a>
+<li><a href="#why-previous-fixes-failed">Why Previous Fixes Failed</a>
 <ul>
-<li><a href="#1-pair-correctness-cannot-guarantee-boundary-usefulness">1. Pair correctness cannot guarantee boundary usefulness</a></li>
-<li><a href="#2-false-negative-repair-may-trade-away-effective-rank">2. False-negative repair may trade away effective rank</a></li>
-<li><a href="#3-offline-pair-metrics-are-not-downstream-objectives">3. Offline pair metrics are not downstream objectives</a></li>
-<li><a href="#4-pair-edits-happen-too-late">4. Pair edits happen too late</a></li>
+<li><a href="#cast">CAST</a></li>
+<li><a href="#beacon">BEACON</a></li>
+<li><a href="#spectra">SPECTRA</a></li>
 </ul>
 </li>
 <li><a href="#new-problem-statement">New Problem Statement</a>
 </li>
-<li><a href="#candidate-set">Candidate Set</a>
+<li><a href="#ranked-ideas">Ranked Ideas</a>
 </li>
-<li><a href="#selected-top1-spectra-gcl">Selected Top1: SPECTRA-GCL</a>
+<li><a href="#selected-top1-pacer-gcl">Selected Top1: PACER-GCL</a>
 <ul>
-<li><a href="#method-sketch">Method Sketch</a></li>
-<li><a href="#what-it-is-not">What It Is Not</a></li>
+<li><a href="#core-mechanism">Core Mechanism</a></li>
+<li><a href="#why-it-addresses-false-negatives">Why It Addresses False Negatives</a></li>
 <li><a href="#novelty-boundary">Novelty Boundary</a></li>
 </ul>
 </li>
-<li><a href="#minimal-smoke-design">Minimal Smoke Design</a>
+<li><a href="#minimal-smoke">Minimal Smoke</a>
 <ul>
-<li><a href="#scope">Scope</a></li>
 <li><a href="#variants">Variants</a></li>
 <li><a href="#required-diagnostics">Required Diagnostics</a></li>
-<li><a href="#smoke-go-rule">Smoke GO Rule</a></li>
 </ul>
 </li>
 <li><a href="#decision">Decision</a>
@@ -352,84 +345,74 @@ footer.aris-footer a { color: var(--ink-muted); border-bottom: 1px dotted var(--
 
 <main>
 <header class="hero">
-  <div class="eyebrow">Post CAST/BEACON No-go</div>
-  <h1>SPECTRA-GCL Idea Discovery</h1>
+  <div class="eyebrow">Post Triple No-go</div>
+  <h1>PACER-GCL Idea Discovery</h1>
   
   
   <div class="meta">
     <span><strong>Source:</strong> <code>idea-stage/IDEA_REPORT.md</code></span>
-    <span><strong>SHA256:</strong> <code>886d2760ffca</code></span>
-    <span><strong>Rendered:</strong> 2026-06-26 15:44 UTC</span>
+    <span><strong>SHA256:</strong> <code>a29be6e5b446</code></span>
+    <span><strong>Rendered:</strong> 2026-06-26 16:13 UTC</span>
     
   </div>
 </header>
 
-<h1 id="idea-discovery-report-spectra-gcl">Idea Discovery Report: SPECTRA-GCL</h1>
-<ul><li>时间：2026-06-26T15:40:39Z</li><li>Skill：<code>/idea-discovery</code></li><li>触发原因：CAST Certificate Pilot-A no-go 与 BEACON-GCL BE-M0 no-go 后，重新做 false-negative GCL 机制级 idea discovery。</li><li>范围：普通节点分类 GCL；优先 Cora/CiteSeer/PubMed smoke/pilot；统一 stratified random <code>1:1:8</code> split；frozen encoder + Logistic Regression evaluator。</li><li>状态：executor-local discovery；本轮未运行 fresh reviewer、未实现代码、未跑实验、未产生性能 claim。</li></ul>
+<h1 id="idea-discovery-report-pacer-gcl">Idea Discovery Report: PACER-GCL</h1>
+<ul><li>时间：2026-06-26T16:06:34Z</li><li>Skill：<code>/idea-discovery</code></li><li>触发原因：CAST / BEACON / SPECTRA 三连 no-go 后，重新做 false-negative GCL 机制级 idea discovery。</li><li>状态：fresh reviewer informed；未实现代码、未跑新实验、未产生性能 claim。</li><li>Fresh scientific reviewer verdict：<code>PIVOT</code>，置信度 <code>0.78</code>。</li><li>Fresh experiment auditor verdict：<code>WARN</code>，允许机制级 pivot，但下一轮 smoke 前必须预注册 controls/kill rules、保存完整 run command，并避免 dirty-run provenance 风险。</li></ul>
 <h2 id="hard-constraints-applied">Hard Constraints Applied</h2>
-<ol><li>不继续 CAST C4/C5。</li><li>不继续 BEACON 当前 gate，不做 threshold/weight 小调。</li><li><p>必须吸收两个失败证据：</p>
-<ul><li>CAST：低-overlap certificate pairs 没有带来分类收益。</li><li>BEACON：更高 label agreement / 更好 margin-rank diagnostics 也没有带来分类收益。</li></ul></li><li>新 idea 不能是 kNN/PPR/CAST mining、positive mining、score fusion、loss-only reweighting、post-hoc relation smoothing。</li><li>优先解释为什么 pair-level false-negative correction 在节点分类上反复无法转化为 accuracy。</li><li>尝试 objective-level / representation-level 重新定义问题。</li></ol>
-<h2 id="failure-evidence">Failure Evidence</h2>
-<h3 id="cast-pilot-a">CAST Pilot-A</h3>
-<p>CAST 的 C4 latent certificate 在 Cora/CiteSeer/PubMed seed0 上与 kNN/PPR/CAST overlap 都较低，尤其 PubMed seed0 与 kNN/PPR/CAST 的 overlap 分别约为 <code>0.0865/0.0422/0.0885</code>。这说明 C4 不是简单复制 kNN/PPR/CAST mining。</p>
-<p>但 C4/C5 没有稳定超过最强 mining controls。Cora 与 CiteSeer 上 kNN/CAST proxy 仍更强；PubMed seed0 上 C4/C5 也没有形成清晰优势。因此“pair 选择足够不同”不是充分条件。</p>
-<h3 id="beacon-be-m0">BEACON BE-M0</h3>
-<p>BEACON B5 full gate 在 Cora seed0 上有最高 label agreement <code>0.8611</code>，probe-margin delta <code>0.3063</code>，rank delta 也比若干候选更温和。它确实选出了 offline 看起来更安全的 pair。</p>
-<p>但 B5 accuracy <code>84.87</code> 低于 kNN <code>85.29</code>、CAST proxy <code>85.70</code>、all-candidate neutralization <code>85.42</code>，也低于 shuffled/no-boundary/no-geometry variants。这说明“更高 label agreement + 更好 margin/rank diagnostics”仍不是充分条件。</p>
-<h2 id="mechanism-explanation">Mechanism Explanation</h2>
-<p>pair-level false-negative correction 失败的关键，不是当前证书不够复杂，而是它优化了错误层级。</p>
-<h3 id="1-pair-correctness-cannot-guarantee-boundary-usefulness">1. Pair correctness cannot guarantee boundary usefulness</h3>
-<p>节点分类的线性 evaluator 需要的是一组全局可分方向。把某些同类或近似同类 pair 拉近，可能提升局部 agreement，却同时压缩类内多簇、少数类边界和高频残差信号。对 Cora/CiteSeer 这类文本属性图，类别内部可能本来就有多个 topic submodes；过度 smoothing 会让 Logistic Regression 更难用少量 train labels 找到清晰边界。</p>
-<h3 id="2-false-negative-repair-may-trade-away-effective-rank">2. False-negative repair may trade away effective rank</h3>
-<p>relation smoothing / neutralization 往往会减少 repulsion，但 repulsion 也承担 uniformity 和 rank 维持。若修正 false negatives 的同时降低有效秩，模型会得到更“干净”的局部 pair 诊断，却丢掉可线性分割的表示维度。</p>
-<h3 id="3-offline-pair-metrics-are-not-downstream-objectives">3. Offline pair metrics are not downstream objectives</h3>
-<p>label agreement 是 oracle diagnostic；margin-rank 是局部 geometry diagnostic；overlap 是 novelty diagnostic。它们都不是 downstream train/val LogReg 的目标。BEACON 的 no-go 说明：即使这些诊断变好，也可能只是让已容易分类的区域更一致，而没有帮助真正决定 accuracy 的边界节点。</p>
-<h3 id="4-pair-edits-happen-too-late">4. Pair edits happen too late</h3>
-<p>如果 GNN message passing、augmentation 或 InfoNCE 训练已经把边界频带抹平，后续再用 certificate pair 去修 denominator/numerator，只是在一个已损伤的 representation 上做关系补丁。更合理的方向是从一开始约束 representation 的边界能量、冗余和有效秩。</p>
+<ol><li>不继续 CAST C4/C5。</li><li>不继续 BEACON gate 或 threshold/weight 小调。</li><li>不继续 SPECTRA boundary-energy / rank-guard 权重小调。</li><li>新 idea 不能是 kNN/PPR/CAST mining、positive mining、score fusion、loss-only reweighting、post-hoc relation smoothing、单纯 negative-free + diagnostic regularizer。</li><li>必须解释为什么 pair-level 和 representation-diagnostic-level 修正都无法转化为节点分类 accuracy。</li><li>从“训练目标是否和少标签 Logistic Regression 下游匹配”重新定义问题。</li></ol>
+<h2 id="fresh-reviewer-reading">Fresh Reviewer Reading</h2>
+<p>Fresh <code>gcl_scientific_reviewer</code> 的核心意见：</p>
+<ul><li>CAST、BEACON、SPECTRA 都在优化代理变量，而不是 frozen Logistic Regression 真实需要的全局线性可分结构。</li><li>pair overlap、label agreement、margin/rank、effective-rank、boundary-retention 以后只能作为 diagnostics，不能作为 GO 条件。</li><li>下一轮应优先考虑“少标签校准的 evaluator-aligned GCL”，但必须诚实标注为 semi-supervised / train-label-calibrated，不得伪装成无监督。</li><li>推荐方向是 probe-aligned mechanism：把 false-negative 处理从 pair purity 改成“是否改善 train/val linear probe margin 与泛化稳定性”。</li></ul>
+<p>Fresh <code>gcl_experiment_auditor</code> 的核心约束：</p>
+<ul><li>新 idea 的 GO 条件必须是 frozen encoder + LogReg test@best-val 超过强 controls，不能是 overlap、agreement、margin/rank、effective-rank 或 boundary-retention。</li><li>Cora seed0 smoke 未过 kill rules 前，不允许 Cora seeds 0-2、PubMed、Pilot-B、formal 或 GPU 长跑。</li><li>下一轮 runner 必须保存完整 run command，并尽量在 clean commit 下运行；raw JSON 中若 <code>project_dirty=true</code>，不得进入 formal/provenance claim。</li></ul>
+<h2 id="why-previous-fixes-failed">Why Previous Fixes Failed</h2>
+<h3 id="cast">CAST</h3>
+<p>CAST 的 C4 latent certificate 与 kNN/PPR/CAST overlap 低，但 C4/C5 没有稳定超过 mining controls。低 overlap 只能证明“不是同一批 pair”，不能证明这些 pair 会改善少标签 linear decision boundary。</p>
+<h3 id="beacon">BEACON</h3>
+<p>BEACON full gate 的 label agreement 和 margin/rank diagnostics 更好，但 accuracy 低于 shuffled/no-boundary/no-geometry controls。这说明“更像同类”或“局部几何更安全”的 pair edit 未必帮助真正的边界节点。</p>
+<h3 id="spectra">SPECTRA</h3>
+<p>SPECTRA full 的 effective rank 和 boundary retention 高于 negative-free baseline，但 accuracy 更低。这说明 representation diagnostics 也可能只是在改善几何外观，而不是改善 Logistic Regression 可读出性。</p>
 <h2 id="new-problem-statement">New Problem Statement</h2>
-<p>不要继续问：</p>
-<blockquote><p>Which cross-node pairs should be converted from negatives to positives/neutral pairs?</p></blockquote>
+<p>不再问：</p>
+<blockquote><p>Which false-negative pairs should be repaired?</p></blockquote>
+<p>也不再问：</p>
+<blockquote><p>Which representation diagnostic should be regularized?</p></blockquote>
 <p>改问：</p>
-<blockquote><p>Can a graph SSL objective avoid false-negative damage by preserving boundary-sensitive representation geometry without cross-node pair mining?</p></blockquote>
-<h2 id="candidate-set">Candidate Set</h2>
-<p>完整候选见 <code>idea-stage/IDEA_CANDIDATES_20260626_154039.md</code>。本轮生成 7 个候选：</p>
-<ol><li><strong>SPECTRA-GCL / Spectral Boundary-Preserving Redundancy Reduction</strong></li><li><strong>MAST-GCL / Masked Alignment with Structural Targets</strong></li><li><strong>GRAIN-GCL / Granularity-Preserving Prototype SSL</strong></li><li><strong>RIFT-GCL / Rank-Isotropy Frontier Training</strong></li><li><strong>BAND-MAE / Boundary-band Masked Graph Autoencoding</strong></li><li><strong>DUAL-GCL / Orthogonal Masked-Contrastive Channels</strong></li><li><strong>CALM-GCL / Class-agnostic Local Margin Preservation</strong></li></ol>
-<h2 id="selected-top1-spectra-gcl">Selected Top1: SPECTRA-GCL</h2>
-<p><strong>One-sentence thesis</strong>：SPECTRA-GCL replaces pair-level false-negative correction with a negative-free redundancy-reduction objective that explicitly preserves label-free spectral boundary energy and effective representation rank, so false negatives are avoided by objective design rather than mined away pair by pair.</p>
-<h3 id="method-sketch">Method Sketch</h3>
-<p>Given two graph augmentations, an encoder produces node representations <code>h1, h2</code> and projected representations <code>z1, z2</code>.</p>
-<p>SPECTRA uses three terms:</p>
-<ol><li><code>L_rr</code>：Barlow/VICReg/CCA-style negative-free redundancy-reduction loss on same-node two-view representations。</li><li><code>L_boundary</code>：label-free boundary energy preservation。用 graph Laplacian residual / high-pass edge residual 近似边界频带，约束增强前后节点表示在中高频 band 的能量分布不被过度压平。</li><li><code>L_rank</code>：effective-rank / variance guard，防止 negative-free objective collapse 或过度低秩。</li></ol>
-<p>总目标：</p>
-<pre><code class="language-text">L = L_rr + lambda_b * L_boundary + lambda_r * L_rank</code></pre>
-<p>其中 <code>lambda_b/lambda_r</code> 在 smoke 中固定为小集合，不使用 test set 选择。正式前只能通过 train/val 或预注册 protocol 决定。</p>
-<h3 id="what-it-is-not">What It Is Not</h3>
-<ul><li>不是 kNN/PPR/CAST mining。</li><li>不新增跨节点 positives。</li><li>不做 candidate relation smoothing。</li><li>不做 score fusion。</li><li>不把 label agreement 当训练目标。</li><li>不继续 CAST C4/C5 或 BEACON gate。</li></ul>
+<blockquote><p>Can pretraining be calibrated so that the frozen representation is easier for a small train-label Logistic Regression probe to read out, without using test labels and without converting unlabeled nodes into pseudo-positive pairs?</p></blockquote>
+<h2 id="ranked-ideas">Ranked Ideas</h2>
+<p>完整候选见 <code>idea-stage/IDEA_CANDIDATES_20260626_160634.md</code>。本轮生成 7 个候选：</p>
+<ol><li><strong>PACER-GCL / Probe-Aligned Calibration for Evaluator-Ready GCL</strong></li><li><strong>MARS-GCL / Masked Readout-Sufficient Pretraining</strong></li><li><strong>VALOR-GCL / Validation-Oriented Objective Selection</strong></li><li><strong>CLASSIC-GCL / Class-Basis SSL without Pair Mining</strong></li><li><strong>GRAIL-GCL / Granularity-Regularized Linear Readout Alignment</strong></li><li><strong>AUGUR-GCL / Readout-Calibrated Augmentation Risk</strong></li><li><strong>FALCON-GCL / Fold-Consistent SSL Objective Routing</strong></li></ol>
+<h2 id="selected-top1-pacer-gcl">Selected Top1: PACER-GCL</h2>
+<p><strong>One-sentence thesis</strong>：PACER-GCL uses train-label logistic probes to estimate which anchors are fragile for the downstream linear readout, then changes their SSL objective type from instance discrimination to masked logit-preserving consistency, avoiding pair mining while aligning pretraining with the actual node-classification evaluator.</p>
+<h3 id="core-mechanism">Core Mechanism</h3>
+<p>PACER has three stages:</p>
+<ol><li><strong>Warmup</strong>：train a normal GRACE encoder for a short fixed budget。</li><li><strong>Probe calibration</strong>：freeze warmup embeddings and train a Logistic Regression probe using train labels only。Validation labels can select fixed hyperparameters or early stopping, but cannot train the probe objective or thresholds used on test。</li><li><p><strong>Objective routing</strong>：</p>
+<ul><li>readout-stable anchors：continue normal GRACE objective；</li><li>readout-fragile anchors：switch to masked logit-preserving consistency。Two masked views must preserve the train-probe logit direction/margin instead of being pushed through all-node instance discrimination。</li></ul></li></ol>
+<p>Important：PACER does <strong>not</strong> select cross-node positives, does <strong>not</strong> smooth relations, and does <strong>not</strong> score unlabeled node pairs as same-class.</p>
+<h3 id="why-it-addresses-false-negatives">Why It Addresses False Negatives</h3>
+<p>False negatives hurt because instance discrimination may optimize away information that a small linear classifier needs. PACER does not try to identify false-negative pairs. It detects anchors for which the current representation is fragile under the downstream readout and changes the pretraining treatment for those anchors. This reframes false negatives as an <strong>objective-treatment mismatch</strong> problem rather than a pair-classification problem.</p>
 <h3 id="novelty-boundary">Novelty Boundary</h3>
-<p>SPECTRA 必须诚实承认与以下方向接近：</p>
-<ul><li>Graph Barlow Twins / CCA-SSG / BGRL：negative-free GCL。</li><li>VICReg / Barlow Twins：redundancy reduction 与 collapse guard。</li><li>GraphMAE / masked graph modeling：非对比式图 SSL。</li><li>spectral GCL / DSR-style spectral branch：谱信息与边界残差。</li></ul>
-<p>可争取的新意是：<strong>从 false-negative pair-correction 失败出发，把问题重定义为 boundary-energy-preserving negative-free GCL，并用 CAST/BEACON no-go 的诊断证明 pair correctness 不是主瓶颈。</strong></p>
-<h2 id="minimal-smoke-design">Minimal Smoke Design</h2>
-<h3 id="scope">Scope</h3>
-<ul><li>Dataset：Cora</li><li>Seed：0</li><li>Split：stratified random <code>1:1:8</code></li><li>Evaluator：frozen encoder + Logistic Regression train/val <code>C</code> selection</li><li>Status：smoke only，不产生 pilot/formal/performance claim</li></ul>
+<p>PACER must not claim novelty for:</p>
+<ul><li>supervised contrastive learning；</li><li>semi-supervised GCL；</li><li>simple probe loss；</li><li>validation-based model selection；</li><li>sample reweighting。</li></ul>
+<p>The defensible boundary is narrower:</p>
+<blockquote><p>evaluator-aligned SSL objective routing for node-level GCL, where train-label probes decide objective type rather than pair labels, thresholds, relation smoothing, or scalar weights.</p></blockquote>
+<h2 id="minimal-smoke">Minimal Smoke</h2>
+<p><code>PA-CER-M0-001</code>：</p>
+<ul><li>Dataset：Cora seed0</li><li>Split：stratified random <code>1:1:8</code></li><li>Evaluator：frozen encoder + Logistic Regression train/val <code>C</code> selection</li><li>Status：smoke only</li></ul>
 <h3 id="variants">Variants</h3>
-<table><thead><tr><th>ID</th><th>Variant</th><th>Purpose</th></tr></thead><tbody><tr><td>S0</td><td>GRACE</td><td>current contrastive baseline</td></tr><tr><td>S1</td><td>CCA/Barlow negative-free baseline</td><td>check whether removing negatives alone helps</td></tr><tr><td>S2</td><td>SPECTRA full</td><td>boundary energy + redundancy reduction + rank guard</td></tr><tr><td>S3</td><td>no-boundary-energy</td><td>test whether boundary preservation matters</td></tr><tr><td>S4</td><td>no-rank-guard</td><td>test collapse/rank necessity</td></tr><tr><td>S5</td><td>random-spectrum guard</td><td>rule out arbitrary spectral regularization</td></tr><tr><td>S6</td><td>low-band-only guard</td><td>test whether high/mid boundary band is necessary</td></tr><tr><td>S7</td><td>matched-parameter GRACE head</td><td>rule out projection/head capacity</td></tr></tbody></table>
+<table><thead><tr><th>ID</th><th>Variant</th><th>Purpose</th></tr></thead><tbody><tr><td>P0</td><td>GRACE</td><td>baseline</td></tr><tr><td>P1</td><td>probe-only diagnostic</td><td>train probe on warmup, no encoder update</td></tr><tr><td>P2</td><td>mask-only consistency</td><td>masked consistency without probe routing</td></tr><tr><td>P3</td><td>PACER full</td><td>train-probe objective routing + masked logit-preserving consistency</td></tr><tr><td>P4</td><td>shuffled-label probe</td><td>leakage/story control</td></tr><tr><td>P5</td><td>random-probe route</td><td>route control</td></tr><tr><td>P6</td><td>scalar reweight control</td><td>prove not loss-only reweighting</td></tr><tr><td>P7</td><td>train-only CV probe</td><td>avoid val leakage and check stability</td></tr><tr><td>P8</td><td>supervised-contrastive small-label control</td><td>check whether PACER is merely SupCon/semi-supervised contrastive</td></tr></tbody></table>
 <h3 id="required-diagnostics">Required Diagnostics</h3>
-<ul><li>Logistic Regression test@best-val。</li><li>effective rank / participation ratio。</li><li>covariance off-diagonal redundancy。</li><li>alignment/uniformity for comparability, but not used as success alone。</li><li>boundary energy retention：pre/post augmentation and pre/post training。</li><li>high-pass residual variance by degree bucket。</li><li>label-only offline boundary bucket accuracy, reported only as diagnostic and never used for training/threshold selection。</li></ul>
-<h3 id="smoke-go-rule">Smoke GO Rule</h3>
-<p><code>GO_TO_M1_PILOT</code> only if:</p>
-<ul><li>S2 beats S1 or matches S1 while improving boundary/rank diagnostics; and</li><li>S2 does not lose to S0 by more than a small smoke tolerance; and</li><li>S3/S5/S6 show that the boundary-energy term is not arbitrary.</li></ul>
-<p>Otherwise:</p>
-<ul><li>if S1 beats S2：<code>KILL_BOUNDARY_ENERGY_STORY</code>；</li><li>if diagnostics improve but accuracy does not：<code>REVISE_OBJECTIVE_NOT_DIAGNOSTIC</code>；</li><li>if all negative-free variants underperform GRACE：<code>PIVOT_AWAY_FROM_NEGATIVE_FREE_BOUNDARY</code>。</li></ul>
+<ul><li>accuracy / val accuracy / selected <code>C</code></li><li>exact run command and clean/dirty provenance</li><li>train-probe margin delta</li><li>validation-probe margin delta</li><li>fragile-anchor fraction</li><li>route distribution by degree bucket</li><li>shuffled-label and random-route gaps</li><li>train-vs-val overfit gap</li></ul>
 <h2 id="decision">Decision</h2>
-<p><code>GO_TO_SPECTRA_SMOKE_PLANNING</code></p>
-<p>This is an idea/planning decision only. No code was changed for SPECTRA in this report, no experiment was run, and no performance claim is supported.</p>
+<p><code>GO_TO_PACER_SMOKE_PLANNING_WITH_CAUTION</code></p>
+<p>This decision is not a performance claim. It only means PACER is the best next smoke candidate after CAST/BEACON/SPECTRA no-go. The method must be described as train-label-calibrated / semi-supervised GCL, not unsupervised GCL.</p>
 
 <footer class="aris-footer">
   Generated by <a href="https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep/blob/main/skills/render-html/SKILL.md">ARIS <code>/render-html</code></a> ·
   source path <code>idea-stage/IDEA_REPORT.md</code> ·
-  SHA256 <code>886d2760ffca</code> ·
-  generated at 2026-06-26 15:44 UTC.
+  SHA256 <code>a29be6e5b446</code> ·
+  generated at 2026-06-26 16:13 UTC.
   This is a generated view — edit the source Markdown, then re-render.
 </footer>
 </main>
