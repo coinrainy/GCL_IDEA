@@ -1,0 +1,49 @@
+meta:
+  method: CAST-Certificate
+  status_default: smoke
+  split_type: stratified_random_1_1_8
+  evaluator: logreg_val
+  note: >
+    Minimal Cora seed=0 smoke for a real latent target-prediction CAST
+    certificate. The certificate is trained without labels and is used only for
+    relation construction under the project frozen-encoder evaluator.
+
+dataset:
+  name: Cora
+  seed: 0
+
+pretrain:
+  Cora:
+    num_epochs: 200
+
+certificate:
+  hidden_dim: 256
+  output_normalize: true
+  train_epochs: 300
+  learning_rate: 0.001
+  weight_decay: 0.00001
+  batch_edges: 8192
+  alpha_values: [0.0, 0.25, 0.5]
+  candidate_pool_size: 128
+  positive_budget: 10
+  relation_smoothing_weight: 1.0
+
+variants:
+  - id: C0
+    name: GRACE
+    family: grace_base
+  - id: C1
+    name: embedding_knn
+    family: embedding_knn
+  - id: C2
+    name: cast_proxy
+    family: cast_proxy
+  - id: C3
+    name: cast_candidate_pool_only
+    family: cast_pool_only
+  - id: C4
+    name: latent_target_certificate
+    family: latent_certificate
+  - id: C5
+    name: certificate_plus_cast_score
+    family: certificate_plus_cast
