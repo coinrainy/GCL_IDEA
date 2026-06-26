@@ -2,7 +2,7 @@
 
 ## Status
 
-`REVISE_TOWARD_CERTIFIED_CAST`
+`KILL_CERTIFIED_CLOSURE_KEEP_CPR_SCORE`
 
 本计划只定义最小 smoke。不得把 smoke 结果写成 formal、SOTA、robust 或 comprehensive。
 
@@ -37,6 +37,7 @@
 | I16 | response-certified kNN score | additive certificate over kNN |
 | I17 | response-certified CAST score | additive certificate over CAST |
 | I18-I21 | certificate weight sweep | fixed-weight smoke diagnostics |
+| I22 | certified CAST closure | three-way positive/neutral/negative closure |
 
 ## Smoke Metrics
 
@@ -68,4 +69,4 @@ IRIS only moves beyond smoke if:
 
 ## Next Gate
 
-Only revised Cora seed=0 smoke is allowed until CPR becomes clearly distinct from and competitive with kNN/PMGCL/CAST controls. No Pilot-A or formal run is allowed yet.
+The current certified closure variant is killed. No Pilot-A or formal run is allowed. Further work requires a substantially new mechanism or a pivot back to CAST/restarted idea discovery.

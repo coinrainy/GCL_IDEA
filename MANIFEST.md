@@ -219,3 +219,10 @@
 | 2026-06-26 12:38 | manual-revise | results/summary/cpr_weight_smoke_Cora_seed0_20260626T123736Z_summary.json | smoke | parseable CPR-IRIS smoke summary JSON |
 | 2026-06-26 12:38 | manual-revise | refine-logs/EXPERIMENT_RESULTS_20260626_123827.md | smoke | timestamped CPR-IRIS smoke result summary |
 | 2026-06-26 12:38 | manual-revise | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_123827.md | smoke | timestamped CPR-IRIS local code review |
+| 2026-06-26 12:47 | manual-revise | configs/iris_smoke.yaml | smoke | certified CAST closure variant I22 |
+| 2026-06-26 12:47 | manual-revise | scripts/run_iris_smoke.py | smoke | updated IRIS runner with positive/neutral closure diagnostics |
+| 2026-06-26 12:47 | manual-revise | logs/iris_smoke/closure_smoke_Cora_seed0_20260626T124638Z/ | smoke | GRACE warmup log for certified closure smoke |
+| 2026-06-26 12:47 | manual-revise | results/summary/closure_smoke_Cora_seed0_20260626T124638Z_summary.md | smoke | certified closure smoke summary table |
+| 2026-06-26 12:47 | manual-revise | results/summary/closure_smoke_Cora_seed0_20260626T124638Z_summary.json | smoke | parseable certified closure smoke summary JSON |
+| 2026-06-26 12:47 | manual-revise | refine-logs/EXPERIMENT_RESULTS_20260626_124728.md | smoke | timestamped certified closure smoke result summary |
+| 2026-06-26 12:47 | manual-revise | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_124728.md | smoke | timestamped certified closure local code review |

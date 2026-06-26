@@ -129,5 +129,5 @@ The contribution is relation discovery, not a new contrastive objective.
 
 ## Current Verdict
 
-`REVISE_TOWARD_CERTIFIED_CAST`。  
-Hard anti-proximity IRIS failed. R2 residualization rescues the failure mode. CPR response-certified CAST is currently the strongest direction, but Cora seed=0 smoke still does not justify Pilot-A/B or formal experiments.
+`KILL_CERTIFIED_CLOSURE_KEEP_CPR_SCORE`。  
+Hard anti-proximity IRIS failed. R2 residualization rescues the failure mode. CPR response-certified CAST scoring is the only surviving signal. The explicit three-way certified closure variant is distinct but weaker and should not continue without a substantially new mechanism.

@@ -249,6 +249,54 @@ def topk_candidate_mask(score: np.ndarray, pool_size: int) -> np.ndarray:
     return mask
 
 
+def certified_closure_relations(
+    candidate_score: np.ndarray,
+    certificate_score: np.ndarray,
+    cfg: dict[str, Any],
+) -> tuple[np.ndarray, np.ndarray, dict[str, float]]:
+    n = candidate_score.shape[0]
+    pool_size = int(cfg["candidate_pool_size"])
+    pos_q = float(cfg["positive_quantile"])
+    neutral_q = float(cfg["neutral_quantile"])
+    min_positive = int(cfg.get("min_positive_per_anchor", 1))
+    pool_mask = topk_candidate_mask(candidate_score, pool_size)
+    positive = np.zeros((n, n), dtype=bool)
+    neutral = np.zeros((n, n), dtype=bool)
+    for i in range(n):
+        cand = np.where(pool_mask[i])[0]
+        if cand.size == 0:
+            continue
+        cert = certificate_score[i, cand]
+        finite = np.isfinite(cert)
+        if not finite.any():
+            continue
+        cand = cand[finite]
+        cert = cert[finite]
+        pos_thr = float(np.quantile(cert, pos_q))
+        neutral_thr = float(np.quantile(cert, neutral_q))
+        pos_idx = cand[cert >= pos_thr]
+        if pos_idx.size < min_positive:
+            top = np.argsort(cert)[::-1][:min_positive]
+            pos_idx = cand[top]
+        if pos_idx.size > 0:
+            joint = candidate_score[i, pos_idx] + certificate_score[i, pos_idx]
+            pos_idx = pos_idx[np.argsort(joint)[::-1]]
+        neu_idx = cand[(cert >= neutral_thr) & (cert < pos_thr)]
+        positive[i, pos_idx] = True
+        neutral[i, neu_idx] = True
+    neutral &= ~positive
+    closure = positive | neutral
+    diag = {
+        "candidate_pool_size": float(pool_size),
+        "positive_quantile": pos_q,
+        "neutral_quantile": neutral_q,
+        "mean_neutral_count": float(neutral.sum(axis=1).mean()),
+        "neutral_anchor_coverage": float((neutral.sum(axis=1) > 0).mean()),
+        "closure_mean_count": float(closure.sum(axis=1).mean()),
+    }
+    return positive, neutral, diag
+
+
 def probabilistic_score(
     emb_sim: np.ndarray,
     feat_sim: np.ndarray,
@@ -349,6 +397,13 @@ def label_agreement(rel: np.ndarray, labels: np.ndarray) -> dict[str, float]:
         "pair_label_agreement": pair_agree,
         "per_anchor_label_agreement": float(per_anchor[counts > 0].mean()) if (counts > 0).any() else 0.0,
     }
+
+
+def relation_overlap(rel: np.ndarray, ref: np.ndarray) -> float:
+    denom = int(rel.sum())
+    if denom == 0:
+        return 0.0
+    return float((rel & ref).sum() / denom)
 
 
 def partial_corr(
@@ -455,13 +510,14 @@ def build_variant_relations(
     labels: np.ndarray,
     cfg: dict[str, Any],
     seed: int,
-) -> tuple[dict[str, np.ndarray], dict[str, dict[str, Any]]]:
+) -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], dict[str, dict[str, Any]]]:
     budget = int(cfg["positive_budget"])
     anti_mask, anti_diag = anti_proximity_mask(
         matrices["emb_sim"], matrices["graph_sim"], cfg["anti_proximity"]
     )
     rng = np.random.default_rng(seed + 101)
     relations: dict[str, np.ndarray] = {}
+    closure_masks: dict[str, np.ndarray] = {}
     diagnostics: dict[str, dict[str, Any]] = {}
     shuffled = rng.permutation(matrices["response"].shape[0])
     shuffled_response_sim = cosine_matrix(matrices["response"][shuffled])
@@ -547,23 +603,45 @@ def build_variant_relations(
         "response_certified_cast_w045": None,
         "response_certified_knn_w015": None,
         "response_certified_knn_w045": None,
+        "certified_cast_closure": None,
     }
     for variant in variants:
         family = variant["family"]
         if family == "grace_base":
             rel = np.zeros_like(matrices["emb_sim"], dtype=bool)
+            closure_mask = rel
+            extra_diag: dict[str, Any] = {}
+        elif family == "certified_cast_closure":
+            rel, neutral, closure_diag = certified_closure_relations(
+                cast_score,
+                residual_score,
+                cfg["certified_closure"],
+            )
+            closure_mask = rel | neutral
+            extra_diag = {
+                "neutral_label_agreement": label_agreement(neutral, labels),
+                "closure_label_agreement": label_agreement(closure_mask, labels),
+                "certified_closure": closure_diag,
+            }
         else:
             rel = topk_relations(score_by_family[family], budget, mask_by_family[family])
+            closure_mask = rel
+            extra_diag = {}
         relations[variant["id"]] = rel
+        closure_masks[variant["id"]] = closure_mask
         diagnostics[variant["id"]] = {
             "variant_family": family,
             "positive_budget": budget,
             "label_diagnostics_are_offline_only": True,
             "anti_proximity": anti_diag if mask_by_family[family] is not None else None,
             "residualization": matrices.get("residualization_diagnostics") if family.startswith("residualized") or family == "response_cast_hybrid" else None,
+            **extra_diag,
             **label_agreement(rel, labels),
         }
-    return relations, diagnostics
+    for variant_id, rel in relations.items():
+        diagnostics[variant_id]["overlap_with_knn_I1"] = relation_overlap(rel, relations.get("I1", rel))
+        diagnostics[variant_id]["overlap_with_cast_I4"] = relation_overlap(rel, relations.get("I4", rel))
+    return relations, closure_masks, diagnostics
 
 
 def markdown_summary(results: list[dict[str, Any]], path: Path) -> None:
@@ -659,7 +737,7 @@ def main() -> None:
         "residualization_diagnostics": residualization_diagnostics,
         "struct_sim": struct_sim,
     }
-    relations, relation_diagnostics = build_variant_relations(
+    relations, closure_masks, relation_diagnostics = build_variant_relations(
         config["variants"], matrices, labels, iris_cfg, seed
     )
 
@@ -694,7 +772,7 @@ def main() -> None:
         diag["false_negative_mass"] = false_negative_mass(
             z,
             labels,
-            rel,
+            closure_masks[variant["id"]],
             float(iris_cfg["diagnostics"]["tau_for_repulsion_mass"]),
         )
         result = {

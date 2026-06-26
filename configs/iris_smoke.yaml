@@ -29,6 +29,11 @@ iris:
     soft_proximity_penalty: 0.15
     hybrid_cast_weight: 0.35
     certification_weight: 0.3
+  certified_closure:
+    candidate_pool_size: 128
+    positive_quantile: 0.75
+    neutral_quantile: 0.45
+    min_positive_per_anchor: 1
   diffusion:
     alpha: 0.2
     steps: 3
@@ -125,3 +130,7 @@ variants:
     name: response_certified_knn_w045
     family: response_certified_knn_w045
     implementation_note: "Embedding-kNN score with a stronger 0.45 residual-response certificate."
+  - id: I22
+    name: certified_cast_closure
+    family: certified_cast_closure
+    implementation_note: "Three-way closure: CAST candidates with high residual response become positives, uncertain certified candidates become neutral/excluded."
