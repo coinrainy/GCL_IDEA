@@ -47,7 +47,7 @@ Canonical files:
 - `literature/FALSE_NEGATIVE_GAP_MAP_FOR_GPT_IDEA_CREATOR.md`
 
 Focus
-## Recent Relationships (12 total)
+## Recent Relationships (16 total)
   idea:bond_gcl --addresses_gap--> gap:FN-G1
   idea:bond_gcl --addresses_gap--> gap:FN-G3
   idea:bond_gcl --addresses_gap--> gap:FN-G4
@@ -60,3 +60,7 @@ Focus
   idea:willow_gcl --addresses_gap--> gap:FN-G3
   idea:willow_gcl --addresses_gap--> gap:FN-G4
   idea:willow_gcl --addresses_gap--> gap:FN-G8
+  idea:cast_gcl --addresses_gap--> gap:FN-G2
+  idea:cast_gcl --addresses_gap--> gap:FN-G3
+  idea:cast_gcl --addresses_gap--> gap:FN-G4
+  idea:cast_gcl --addresses_gap--> gap:FN-G8

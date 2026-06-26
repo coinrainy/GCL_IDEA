@@ -10,3 +10,7 @@
 {"from": "idea:willow_gcl", "to": "gap:FN-G3", "type": "addresses_gap", "evidence": "idea willow_gcl addresses gap", "added": "2026-06-26T11:36:56Z"}
 {"from": "idea:willow_gcl", "to": "gap:FN-G4", "type": "addresses_gap", "evidence": "idea willow_gcl addresses gap", "added": "2026-06-26T11:36:56Z"}
 {"from": "idea:willow_gcl", "to": "gap:FN-G8", "type": "addresses_gap", "evidence": "idea willow_gcl addresses gap", "added": "2026-06-26T11:36:56Z"}
+{"from": "idea:cast_gcl", "to": "gap:FN-G2", "type": "addresses_gap", "evidence": "idea cast_gcl addresses gap", "added": "2026-06-26T11:45:03Z"}
+{"from": "idea:cast_gcl", "to": "gap:FN-G3", "type": "addresses_gap", "evidence": "idea cast_gcl addresses gap", "added": "2026-06-26T11:45:03Z"}
+{"from": "idea:cast_gcl", "to": "gap:FN-G4", "type": "addresses_gap", "evidence": "idea cast_gcl addresses gap", "added": "2026-06-26T11:45:03Z"}
+{"from": "idea:cast_gcl", "to": "gap:FN-G8", "type": "addresses_gap", "evidence": "idea cast_gcl addresses gap", "added": "2026-06-26T11:45:03Z"}

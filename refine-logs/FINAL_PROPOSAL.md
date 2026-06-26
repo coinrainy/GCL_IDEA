@@ -1,98 +1,113 @@
-# Research Proposal: WILLOW-GCL
+# Research Proposal: CAST-GCL
 
 ## Problem Anchor
 
-- **Bottom-line problem**：普通节点分类 GCL 同时受两个信号问题限制：随机增强 positives 经 message passing 后可能过度预对齐，真实节点 negatives 在 hard region 又容易包含 false negatives。
-- **Must-solve bottleneck**：不要继续改 denominator 或 pair weights；必须改变 positive view 的生成机制，并证明该机制不是普通 learned augmentation。
-- **Core mechanism**：latent ego target-prediction certificate + certified intervention positive search。
-- **Non-goals**：不主打 virtual hard negatives；不重构 raw feature；不向原图加入 synthetic nodes/edges；不使用 test label；不把 smoke 写成性能 claim。
+- **Bottom-line problem**：节点级 GCL 把大量真实节点作为 negatives，但其中一部分可能与 anchor 共享下游类别语义，形成 false negatives。
+- **Must-solve bottleneck**：不能只改 loss 权重，也不能只生成同一 anchor 的 harder positive view；需要构造可验证的跨节点 semantic relation。
+- **Core mechanism**：latent ego target-prediction certificate + cross-node semantic transport + positive closure。
+- **Non-goals**：不使用 test labels；不使用 class-aware counterfactual gradients；不生成 hard negatives 作为主贡献；不把 smoke 写成性能 claim。
 - **Constraints**：首轮只做 Cora seed=0 smoke，`1:1:8` split，frozen encoder + Logistic Regression evaluator。
 
 ## Method Thesis
 
-**One-sentence thesis**：WILLOW-GCL uses a latent ego target-prediction certificate to search for hard but semantically certified positive views, making graph contrastive positives informative without relying on loss-side false-negative correction.
-
-## Minimal Irreplaceable Core
-
-WILLOW 不能被拆成任意单组件：
-
-- latent world prediction alone = Graph-JEPA / Predict-Cluster-Refine risk；
-- intervention search alone = SIVA / GCA / RGCL / ACGA risk；
-- WILLOW = 用 latent ego target-prediction error 约束 intervention search，生成更远但语义稳定的 GCL positive view。
+**One-sentence thesis**：CAST-GCL treats false negatives as missing semantic transport relations and constructs a certified cross-node positive closure before contrastive training.
 
 ## Proposed Method
 
 ### 1. Latent Ego Target-Prediction Certificate
 
-对 anchor `i` 采样 context ego-subgraph `c_i` 与多个 masked target ego-subgraphs `t_i^1...t_i^m`。
+Train a WILLOW-style certificate:
 
 ```text
-h_c      = E_online(c_i)
-h_t^k    = E_target(t_i^k)       # EMA target encoder
+h_c      = E_online(context_ego_i)
+h_t^k    = E_target(masked_target_ego_i^k)
 pred_t^k = P(h_c, pos_k)
-L_cert   = sum_k || pred_t^k - stopgrad(h_t^k) ||_2^2
+cert_error = sum_k || pred_t^k - stopgrad(h_t^k) ||_2^2
 ```
 
-实现约束：
+The certificate is only used to score semantic stability of interventions and transport paths.
 
-- `E_target` 使用 EMA，不通过 predictor 反传。
-- 不使用 raw feature decoder。
-- collapse prevention 可先采用 variance/covariance regularizer 或 target embedding normalization。
-- `epsilon` 必须由 train/val diagnostic 选择，禁止看 test。
+### 2. Candidate Pool
 
-### 2. Certified Intervention Positive Search
+For each anchor `i`, create a small candidate pool from train-only / label-free signals:
 
-在固定 search budget 下，对每个 anchor 搜索 intervention `a`：
+- feature kNN；
+- diffusion / personalized PageRank neighborhood；
+- current frozen-pretrain embedding kNN；
+- random budget-matched candidates。
+
+No label or test-set information is used.
+
+### 3. Semantic Transport Energy
+
+For candidate `j`, search a short path of local interventions:
 
 ```text
-a_i^+ = argmax_a dist(view_i(a), view_i(original))
-        subject to cert_error(i, a) <= epsilon
+i = u_0 -> u_1 -> ... -> u_L = j
 ```
 
-候选 intervention 只包括 node-local 操作：feature mask、edge drop/keep、neighbor context mask、小范围 ego-context substitution。首版使用 greedy candidate pool，不训练大 generator。
-
-### 3. Contrastive Encoder Training
-
-用 certified positive view 替代普通 random positive：
+Energy:
 
 ```text
-positive pair = (ordinary view of ego_i, certified intervention view_i(a_i^+))
-loss = GRACE/GCA-style contrastive objective
+E_transport(i, j)
+  = min_path sum_l [
+      cert_error(u_l -> u_{l+1})
+      + lambda_edit * edit_cost(u_l, u_{l+1})
+      + lambda_anchor * anchor_drift(u_l, i)
+    ]
 ```
 
-真实节点 negatives 保持 easy/random subset 或诊断项；主线不加入 virtual negatives。
+First implementation can use `L=1` and `L=2` greedy paths only.
+
+### 4. Positive Closure
+
+Define:
+
+```text
+P_i = {j: E_transport(i, j) <= tau_transport}
+```
+
+Training relation:
+
+- same-node augmented views remain positives；
+- `j in P_i` becomes cross-node positive；
+- uncertain boundary candidates become neutral diagnostics；
+- remaining nodes are standard negatives。
+
+The main contribution is the relation constructor, not a new contrastive loss.
 
 ## Required Controls
 
 | System | Purpose |
 |---|---|
 | GRACE | base GCL reference |
-| Graph-JEPA-only | 检查 latent prediction 本身是否已解释效果 |
-| SIVA reconstruction-critic positive | 检查 WILLOW 是否真的强于 GraphMAE-like critic |
-| edit-distance matched random hard positive | 检查 certificate 是否必要 |
-| certificate-shuffled WILLOW | 检查 certificate 是否包含 anchor-level 语义 |
-| WILLOW-certified positive | main candidate |
+| WILLOW same-node | certificate without cross-node closure |
+| kNN multi-positive | simple positive mining control |
+| PMGCL-lite/BMM | probabilistic positive mining control |
+| certificate-shuffled CAST | semantic certificate control |
+| random transport budget-matched | search budget control |
+| CAST one-step / two-step | main variants |
 
 ## Metrics
 
-- Frozen Logistic Regression accuracy under project protocol。
-- `cert_error` distribution。
-- view edit distance / representation distance。
-- post-GNN positive similarity。
+- Frozen Logistic Regression accuracy。
+- transported positives per anchor。
+- offline label agreement of transported positives。
+- transport energy vs label agreement correlation。
+- false-negative repulsion mass before/after closure。
 - positive gradient norm。
-- offline label-agreement diagnostic only for auditing, never for training。
-- false-negative repulsion mass diagnostic。
+- search time and candidate budget。
 
 ## Kill Rules
 
-- Graph-JEPA-only matches WILLOW：kill。
-- SIVA reconstruction critic matches WILLOW：downgrade to SIVA/control。
-- matched random positive matches WILLOW：certificate invalid。
-- certificate-shuffled matches WILLOW：certificate not semantic。
-- `cert_error` is uncorrelated with offline semantic stability / label agreement：kill certificate。
-- gains come only from larger search or compute budget：invalid mechanism evidence。
+- kNN multi-positive matches CAST：transport certificate unnecessary。
+- PMGCL-lite/BMM matches CAST：CAST reduces to ordinary positive mining。
+- certificate-shuffled CAST matches CAST：certificate has no semantic content。
+- random transport matches CAST：path search is not meaningful。
+- transport energy is uncorrelated with offline label agreement：kill。
+- WILLOW same-node matches CAST：cross-node closure unnecessary。
 
 ## Current Verdict
 
-`REVISE_TO_WILLOW_SMOKE_PLANNING`。  
-这是 proposal evidence，不是实验结果。下一步只能做最小 smoke，不允许 formal 或性能 claim。
+`REVISE_TO_CAST_PRE_REVIEW`。  
+这是 proposal evidence，不是实验结果。下一步应先做 fresh novelty review 或最小 smoke，不允许 formal 或性能 claim。

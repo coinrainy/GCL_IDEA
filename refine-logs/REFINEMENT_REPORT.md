@@ -1,17 +1,16 @@
-# Refinement Report: WILLOW-GCL
+# Refinement Report: CAST-GCL
 
 ## What Changed
 
-SIVA-GCL was demoted from active mainline to mandatory control because its semantic critic can be read as GraphMAE-like reconstruction plus intervention augmentation. WILLOW keeps the positive-view direction but replaces the reconstruction critic with a latent ego target-prediction certificate.
+WILLOW-GCL was demoted from active mainline to module/control because same-anchor certified view generation still risks being perceived as Graph-JEPA/PCR plus augmentation scoring. CAST keeps the latent certificate but moves the contribution to cross-node semantic transport and positive closure.
 
 ## Main Refinement
 
-- Replace "world model" overclaim with "latent ego target-prediction certificate"。
-- Delete virtual negatives from the mainline。
-- Require fixed intervention budget and matched random controls。
-- Add Graph-JEPA-only and certificate-shuffled controls as kill gates。
-- Keep the paper narrative inside GCL positive signal and false-negative exposure。
+- Move from same-node hard positive generation to cross-node false-negative relation construction。
+- Use transport energy rather than pair probability as the semantic relation criterion。
+- Require PMGCL-lite, kNN positive, WILLOW same-node, shuffled-certificate, and random-transport controls。
+- Keep all claims at pre-review/proposal level。
 
 ## Current State
 
-Ready only for smoke implementation planning. No code or experiment was run in this refinement.
+Ready only for fresh review or Cora seed=0 smoke planning. No code or experiment was run.

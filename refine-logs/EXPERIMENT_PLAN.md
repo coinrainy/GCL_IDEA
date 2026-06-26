@@ -1,8 +1,8 @@
-# Experiment Plan: WILLOW-GCL Smoke Only
+# Experiment Plan: CAST-GCL Pre-review Smoke
 
 ## Status
 
-`REVISE_TO_WILLOW_SMOKE_PLANNING`
+`REVISE_TO_CAST_PRE_REVIEW`
 
 本计划只定义最小 smoke。不得把 smoke 结果写成 formal、SOTA、robust 或 comprehensive。
 
@@ -18,42 +18,42 @@
 
 | ID | System | Purpose |
 |---|---|---|
-| W0 | GRACE | base contrastive reference |
-| W1 | Graph-JEPA-only | latent certificate alone |
-| W2 | SIVA reconstruction-critic positive | reconstruction critic control |
-| W3 | edit-distance matched random hard positive | search distance control |
-| W4 | certificate-shuffled WILLOW | certificate semantic control |
-| W5 | WILLOW-certified positive | main candidate |
+| C0 | GRACE | base contrastive reference |
+| C1 | WILLOW same-node certificate | certificate without cross-node closure |
+| C2 | kNN multi-positive | simple positive mining control |
+| C3 | PMGCL-lite/BMM positive mining | probabilistic mining control |
+| C4 | certificate-shuffled CAST | certificate semantic control |
+| C5 | random transport budget-matched | search budget control |
+| C6 | CAST one-step transport | main minimal variant |
+| C7 | CAST two-step transport | main extended variant |
 
 ## Smoke Metrics
 
 - LogReg test accuracy at best validation checkpoint。
-- `cert_error` mean/std and threshold acceptance rate。
-- intervention edit distance and representation distance。
-- post-GNN positive similarity。
+- transported positives per anchor。
+- offline label agreement of transported positives。
+- transport energy vs label agreement correlation。
+- false-negative repulsion mass before/after closure。
 - positive gradient norm。
-- offline label agreement diagnostic for selected positives。
-- false-negative repulsion mass diagnostic。
-- wall-clock and search budget。
+- search time and candidate budget。
 
 ## Pass Conditions
 
-WILLOW 只能被视为 smoke-worthy if：
+CAST can only move beyond pre-review if:
 
-- W5 的 positive views 比 W0 更远，但 post-GNN 不崩。
-- W5 优于 W3/W4，说明 certificate 不是随机搜索噪声。
-- W5 优于或机制指标强于 W2，说明 latent target-prediction certificate 比 reconstruction critic 有必要。
-- W1 不能完全解释 W5，说明 view generation 有独立贡献。
+- C6/C7 have higher transported-positive label agreement than C2/C3/C5 diagnostics。
+- C6/C7 reduce false-negative repulsion mass without simply increasing positive count。
+- C6/C7 beat C4 and C5 under the same budget。
+- C1 cannot fully explain C6/C7。
 
 ## Kill Rules
 
-- W1 matches W5：kill WILLOW。
-- W2 matches W5：downgrade to SIVA/control。
-- W3 matches W5：certificate invalid。
-- W4 matches W5：certificate not semantic。
-- `cert_error` 与 offline semantic stability 不相关：kill。
-- W5 只因更大 compute/search budget 获益：invalid。
+- C2 or C3 matches C6/C7：ordinary positive mining is enough。
+- C4 matches C6/C7：certificate is not semantic。
+- C5 matches C6/C7：transport path is not meaningful。
+- transport energy does not correlate with offline label agreement：kill。
+- gains only come from more positives or more compute：invalid。
 
 ## Next Gate
 
-只有 smoke 通过后，才允许设计 Pilot-A：Cora/CiteSeer/PubMed seeds 0-4。Pilot 仍不支持 formal claim。
+Before implementation-heavy work, run fresh `gcl_scientific_reviewer` on CAST or implement the Cora seed=0 smoke only. No Pilot-A or formal run is allowed yet.

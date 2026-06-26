@@ -1,92 +1,87 @@
-# Idea Discovery Report: WILLOW-GCL
+# Idea Discovery Report: CAST-GCL
 
 **方向**：图对比学习假负样本方向，面向普通节点分类，继续避开 loss-only trick，追求更有 2026 投稿潜力的机制创新  
 **日期**：2026-06-26  
 **Pipeline**：research-lit → idea-creator → novelty-check → research-review → research-refine-pipeline  
-**阶段结论**：`REVISE_TO_WILLOW_SMOKE_PLANNING`
+**阶段结论**：`REVISE_TO_CAST_PRE_REVIEW`
 
 ## Executive Summary
 
-用户进一步指出 SIVA-GCL 虽然不再是 loss trick，但仍像在 GraphMAE / GCA / RGCL 的边界上组合组件，创新力度不够。这个判断也成立。因此本轮把主线从 **SIVA-GCL-positive-core** 推进到 **WILLOW-GCL / World-model Intervention Learning for Latent-node cOntrastive vieWs**。
+上一轮 WILLOW-GCL 已经把方向从 loss-side 修补推进到 latent certificate driven hard positive views，但它仍存在一个硬伤：容易被 reviewer 解释为 **Graph-JEPA / Predict-Cluster-Refine + learned augmentation scorer**。这比 BOND/SIVA 更好，但还没有完全满足“足够创新”的目标。
 
-WILLOW 不把贡献放在 denominator、pair weight 或新 loss 上，也不把 GraphMAE 式重构 critic 当核心。它的最小不可替代机制是：
+本轮进一步把主线推进为 **CAST-GCL / Certificate-guided Semantic Transport for Graph Contrastive Learning**。CAST 不再只生成同一节点的 hard positive view，而是用 latent ego target-prediction certificate 构造 **跨节点语义传输图**：如果真实节点 `j` 可以通过低能量的 node-local intervention path 从 anchor `i` 到达，那么 `j` 就不应再作为 `i` 的 negative，而应进入 multi-positive / neutral relation closure。
+
+核心思想：
 
 ```text
-latent ego target-prediction certificate
-        +
-certified intervention positive search for GCL
+false negatives are missing semantic transport relations,
+not merely over-weighted denominator terms.
 ```
 
-也就是说，先训练一个 JEPA-like 的 node-local latent target prediction module，用 context ego view 预测 masked target ego views 的 latent embedding；再把预测误差作为语义证书，搜索“尽可能远但仍被预测证书接受”的正视图。最终仍服务 GCL：用 certified hard positive 替代普通随机增强 positive，从 positive signal 端减少对真实节点 hard negatives 的依赖。
+CAST 目前是比 WILLOW 更激进、更直接对应 false-negative 问题的候选，但尚未获得 fresh reviewer verdict，也没有 smoke 结果。因此当前状态是 `REVISE_TO_CAST_PRE_REVIEW`，不是 `GO`。
 
-fresh `gcl_scientific_reviewer` 给出 `REVISE`、novelty `7.0/10`、confidence `0.68`。它是当前 BOND/SIVA/WILLOW 三者中最强候选，但仍不能写成 `GO`，也不能进入 formal 或性能 claim。
+## Why CAST Replaces WILLOW As The Active Candidate
+
+| Aspect | WILLOW | CAST |
+|---|---|---|
+| Main mechanism | same-anchor certified hard positive view | cross-node certified semantic transport |
+| False-negative handling | indirect, by strengthening positive signal | direct, by identifying real nodes that should not be negatives |
+| Main prior risk | Graph-JEPA + augmentation scorer | positive mining / transport heuristic |
+| Required evidence | harder same-node positives help | transported nodes have high label agreement and reduce false-negative repulsion mass |
+
+WILLOW remains useful as a module/control. CAST uses WILLOW's latent certificate, but adds the missing cross-node relation construction step.
 
 ## Prior Boundary
 
-当前必须正面避开的 prior：
+CAST must avoid the following collisions:
 
-- **Graph-JEPA / Predict, Cluster, Refine**：已有 latent context-target prediction；WILLOW 不能只是 Graph-JEPA 预训练，必须证明 certificate 对 GCL view generation 有贡献。
-- **GraphMAE**：已有 masked feature reconstruction；WILLOW 不能靠 raw feature decoder 或 reconstruction loss 定义语义。
-- **SPGCL 2026**：指出 message passing 导致 positive pre-alignment；WILLOW 必须证明生成的 positive 更能恢复 positive learning signal。
-- **CGC / BalanceGCL / ACGA**：已有 counterfactual / hard negative / positive-negative graph generation；WILLOW 主线删除 virtual negatives。
-- **RGCL / GCA / AutoGCL**：已有 rationale-aware 或 learned augmentation；WILLOW 必须证明 latent target-prediction certificate 不是普通 augmentation scorer。
-- **DoG**：已有 graph diffusion synthetic structures；WILLOW 只生成 training views，不向原图注入 synthetic nodes/edges。
+- **Graph-JEPA / Predict, Cluster, Refine**：latent context-target prediction already exists; CAST uses it only as a certificate for cross-node relation construction.
+- **PMGCL / positive mining**：pair probability estimation already exists; CAST requires low-energy intervention paths, not only similarity/BMM probability.
+- **BalanceGCL**：semantic-aware positives and hard negatives already exist at graph level; CAST is node-level, does not use class-aware counterfactual gradients, and does not generate hard negatives as the main contribution.
+- **GCA/RGCL/AutoGCL**：learned augmentation already exists; CAST builds a certified transport relation graph between real nodes.
 
 ## Recommended Idea
 
-### WILLOW-GCL: Latent Certificate Driven Hard Positive Views
+### CAST-GCL: Certificate-guided Semantic Transport
 
-- **Method**：对每个 anchor 采样 context ego-subgraph 与多个 masked target ego-subgraphs；online encoder 预测 EMA target encoder 的 latent target embedding；用 target-prediction error 作为 semantic certificate；在固定 intervention budget 下搜索 view distance 最大且 certificate error 低的 positive view；用该 view 训练 GRACE/GCA-style encoder。
-- **Hypothesis**：如果 certified positive 比普通增强更远，但仍保持 latent semantic stability，那么它能缓解 positive pre-alignment，并降低训练对真实节点 hard negatives 的依赖。
-- **Minimum experiment**：只允许 Cora seed=0 smoke；对照 GRACE、Graph-JEPA-only、SIVA reconstruction-critic positive、edit-distance matched random hard positive、certificate-shuffled WILLOW、WILLOW-certified positive。
-- **Diagnostics**：world prediction error、view edit distance、post-GNN positive similarity、positive gradient norm、offline label-agreement diagnostic、false-negative repulsion mass。
-- **Novelty**：7.0/10；当前强于 SIVA 6.7/10 与 BOND 5.8-6.0/10。
-- **Risk**：HIGH；`world_error <= epsilon` 可能只学习 degree/homophily/feature smoothness，而不是节点分类语义。
-- **Contribution type**：view generation / latent certificate / positive-signal mechanism。
+- **Method**：train a latent ego target-prediction certificate; for each anchor, search candidate real nodes through short node-local intervention paths; score the path by certificate error, edit cost, and anchor drift; low-energy reachable nodes become semantic positives or neutral nodes in GCL.
+- **Hypothesis**：false negatives can be reduced more directly by constructing a certified cross-node positive closure than by reweighting negatives or only making same-node positives harder.
+- **Minimum experiment**：Cora seed=0 smoke; compare GRACE, WILLOW same-node certificate, kNN multi-positive, PMGCL-lite/BMM positive mining, certificate-shuffled CAST, CAST one-step transport, CAST two-step transport.
+- **Diagnostics**：transported positive count, offline label agreement, transport energy vs label agreement correlation, false-negative repulsion mass, LogReg accuracy, search budget.
+- **Novelty status**：PRE_REVIEW；desk audit suggests stronger differentiation than WILLOW, but no fresh reviewer score yet.
+- **Risk**：HIGH；transport may collapse into expensive positive mining or kNN multi-positive.
 - **Pilot result**：SKIPPED；本轮未实现代码、未跑新实验。
-
-## Why WILLOW Is Stronger Than SIVA
-
-SIVA 的 critic 是 masked-context semantic stability critic，容易被 reviewer 归入 GraphMAE-like reconstruction + learned augmentation。WILLOW 把稳定性判据从 raw reconstruction 改为 latent context-target prediction，并把该模块限制为 **certificate**，而不是最终 SSL objective。
-
-关键区别：
-
-- SIVA：critic 约束干预正样本，风险是 reconstruction shortcut。
-- WILLOW：latent target-prediction certificate 约束干预正样本，风险转为 Graph-JEPA collision，但更有机制新意。
-- WILLOW 的贡献不在“我也做 world model”，而在“用 latent target prediction error 认证 hard positive view”。
 
 ## Mandatory Kill Rules
 
-WILLOW 只有在以下规则不触发时才允许继续：
-
 | Kill rule | 解释 |
 |---|---|
-| Graph-JEPA-only 匹配 WILLOW | 说明 view generation 没有贡献，kill WILLOW |
-| SIVA reconstruction critic 匹配 WILLOW | 说明 latent certificate 不必要，降回 SIVA |
-| edit-distance matched random positive 匹配 WILLOW | 说明 certificate 无效 |
-| certificate-shuffled WILLOW 匹配 WILLOW | 说明 prediction certificate 没有语义信息 |
-| world_error 与 offline label agreement / semantic stability 无相关 | 说明 certificate 学到非任务语义，kill |
-| WILLOW 只因更大 search/compute budget 获益 | 不算机制证据 |
+| kNN multi-positive matches CAST | transport certificate unnecessary |
+| PMGCL-lite/BMM matches CAST | CAST reduces to positive mining |
+| certificate-shuffled CAST matches CAST | certificate has no semantic content |
+| transport energy does not correlate with offline label agreement | kill CAST |
+| CAST only works by selecting many more positives | invalid unless budget-matched variant also works |
+| WILLOW same-node matches CAST | cross-node closure unnecessary; downgrade to WILLOW |
 
-## Deprioritized Ideas
+## Deprioritized / Control Ideas
 
 | Idea | Current role |
 |---|---|
-| BOND-GCL | archived baseline / ablation；loss-side 风险过高 |
-| SIVA-GCL-positive-core | mandatory control；如果 WILLOW 不优于 SIVA，降回 SIVA 或继续 pivot |
-| DSR-GCL | 已有 Cora seed=0 audit-smoke 弱信号，不作为当前主线 |
-| IGT-GCL | novelty 较低，作为反例保留 |
+| WILLOW-GCL | module/control; provides latent certificate but not enough cross-node false-negative handling |
+| SIVA-GCL-positive-core | reconstruction-critic control |
+| BOND-GCL | archived loss-side baseline |
+| DSR-GCL | archived/pivoted due weak Cora seed=0 audit-smoke |
 
 ## Refined Proposal
 
+- Candidate brief: `idea-stage/CAST_GCL_CANDIDATE_20260626_121500.md`
+- Prior boundary: `literature/CAST_PRIOR_BOUNDARY.md`
 - Proposal: `refine-logs/FINAL_PROPOSAL.md`
 - Experiment plan: `refine-logs/EXPERIMENT_PLAN.md`
 - Tracker: `refine-logs/EXPERIMENT_TRACKER.md`
-- Novelty report: `idea-stage/WILLOW_GCL_NOVELTY_CHECK.md`
-- Reviewer trace: `.aris/traces/novelty-check/2026-06-26_run06/`
 
 ## Decision
 
-`REVISE_TO_WILLOW_SMOKE_PLANNING`.
+`REVISE_TO_CAST_PRE_REVIEW`.
 
-当前只允许规划最小 smoke。不得进入 formal，不得写 SOTA/robust/comprehensive，不得把 reviewer novelty `7.0/10` 当成论文可接收证据。
+当前只允许进入 fresh novelty review 或最小 smoke 设计，不允许 formal，不允许写 SOTA/robust/comprehensive，不允许产生性能 claim。

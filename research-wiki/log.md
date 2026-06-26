@@ -45,5 +45,11 @@ _Append-only timeline._
 - `2026-06-26T11:27:25Z` upsert_idea: added idea:willow_gcl [stage=proposed outcome=pending]
 - `2026-06-26T11:27:25Z` 用户继续要求 idea 足够创新，不能只是 loss 或普通 critic。已将当前主线从 SIVA-GCL 切换为 WILLOW-GCL / Latent Ego Target-Prediction Certified Views。fresh gcl_scientific_reviewer 给出 REVISE、novelty 7.0/10、confidence 0.68，认为 WILLOW 是当前 BOND/SIVA/WILLOW 中最强候选，但必须收缩为 latent ego target-prediction certificate + certified intervention positive search，并用 Graph-JEPA-only、SIVA reconstruction-critic、matched random positive、certificate-shuffled controls 证明不可替代。SIVA 已降为 mandatory control。本轮未实现代码、未跑 smoke/pilot/formal 实验、未产生性能 claim。当前 decision：REVISE_TO_WILLOW_SMOKE_PLANNING。
 - `2026-06-26T11:28:00Z` Rendered `idea-stage/IDEA_REPORT.html` from the WILLOW-GCL Markdown report. HTML is a generated reading view only; Markdown remains canonical and no claim status changed.
+- `2026-06-26T12:15:00Z` upsert_idea: updated idea:willow_gcl [stage=archived outcome=unknown]
+- `2026-06-26T12:15:00Z` upsert_idea: added idea:cast_gcl [stage=proposed outcome=pending]
+- `2026-06-26T12:15:00Z` 继续按用户要求提升 idea 创新性。WILLOW 虽非 loss trick，但仍存在 Graph-JEPA/PCR + augmentation scorer 风险；已将当前活跃候选推进为 CAST-GCL / Certificate-guided Semantic Transport。CAST 使用 latent ego target-prediction certificate 构造跨节点 semantic transport energy，把低能量可达的真实节点纳入 multi-positive / neutral closure，直接处理 false negatives。WILLOW 降为 module/control。当前尚未运行 fresh reviewer、代码实现或 smoke 实验，decision：REVISE_TO_CAST_PRE_REVIEW；不支持 formal 或性能 claim。
+- `2026-06-26T12:16:00Z` Rendered `idea-stage/IDEA_REPORT.html` from the CAST-GCL Markdown report. HTML is a generated reading view only; Markdown remains canonical and no claim status changed.
 - `2026-06-26T11:36:56Z` upsert_idea: added idea:willow_gcl [stage=proposed outcome=pending]
 - `2026-06-26T11:36:56Z` upsert_idea: updated idea:siva_gcl [stage=archived outcome=unknown]
+- `2026-06-26T11:45:03Z` upsert_idea: updated idea:willow_gcl [stage=archived outcome=unknown]
+- `2026-06-26T11:45:03Z` upsert_idea: added idea:cast_gcl [stage=proposed outcome=pending]

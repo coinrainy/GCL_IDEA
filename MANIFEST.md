@@ -152,3 +152,19 @@
 | 2026-06-26 11:27 | /research-wiki | research-wiki/ideas/willow_gcl.md | wiki | proposed WILLOW active candidate idea page |
 | 2026-06-26 11:27 | /research-wiki | research-wiki/ideas/siva_gcl.md | wiki | SIVA demoted to mandatory control for WILLOW |
 | 2026-06-26 11:28 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of WILLOW-GCL idea report |
+| 2026-06-26 12:15 | /idea-discovery | idea-stage/CAST_GCL_CANDIDATE_20260626_121500.md | idea-discovery | CAST-GCL corrective candidate brief beyond WILLOW |
+| 2026-06-26 12:15 | /idea-discovery | literature/CAST_PRIOR_BOUNDARY_20260626_121500.md | idea-discovery | timestamped CAST prior boundary and collision map |
+| 2026-06-26 12:15 | /idea-discovery | literature/CAST_PRIOR_BOUNDARY.md | idea-discovery | latest CAST prior boundary and collision map |
+| 2026-06-26 12:15 | /idea-discovery | idea-stage/IDEA_CANDIDATES_20260626_121500.md | idea-discovery | timestamped CAST pivot candidate ranking |
+| 2026-06-26 12:15 | /idea-discovery | idea-stage/IDEA_CANDIDATES.md | idea-discovery | latest CAST pivot candidate ranking |
+| 2026-06-26 12:15 | /idea-discovery | idea-stage/IDEA_REPORT_20260626_121500.md | idea-discovery | timestamped CAST idea discovery report |
+| 2026-06-26 12:15 | /idea-discovery | idea-stage/IDEA_REPORT.md | idea-discovery | latest CAST idea discovery report |
+| 2026-06-26 12:15 | /research-refine-pipeline | refine-logs/FINAL_PROPOSAL_20260626_121500.md | refinement | timestamped CAST final proposal |
+| 2026-06-26 12:15 | /research-refine-pipeline | refine-logs/FINAL_PROPOSAL.md | refinement | latest CAST final proposal |
+| 2026-06-26 12:15 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260626_121500.md | experiment-planning | timestamped CAST pre-review smoke plan |
+| 2026-06-26 12:15 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | experiment-planning | latest CAST pre-review smoke plan |
+| 2026-06-26 12:15 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_121500.md | experiment-planning | timestamped CAST experiment tracker |
+| 2026-06-26 12:15 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | latest CAST experiment tracker |
+| 2026-06-26 12:15 | /research-wiki | research-wiki/ideas/cast_gcl.md | wiki | proposed CAST active corrective candidate idea page |
+| 2026-06-26 12:15 | /research-wiki | research-wiki/ideas/willow_gcl.md | wiki | WILLOW demoted to CAST module/control |
+| 2026-06-26 12:16 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of CAST-GCL idea report |

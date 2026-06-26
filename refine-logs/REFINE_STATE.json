@@ -1,11 +1,11 @@
 {
-  "phase": "done",
-  "round": 2,
-  "agent_id": "019f03b0-08ab-71a3-bdd2-3ddc54326ede",
-  "last_score": 7.0,
-  "last_verdict": "REVISE",
+  "phase": "pre_review",
+  "round": 3,
+  "agent_id": null,
+  "last_score": null,
+  "last_verdict": "PRE_REVIEW",
   "status": "completed",
-  "timestamp": "2026-06-26T11:27:25Z",
-  "active_idea": "WILLOW-GCL",
-  "decision": "REVISE_TO_WILLOW_SMOKE_PLANNING"
+  "timestamp": "2026-06-26T12:15:00Z",
+  "active_idea": "CAST-GCL",
+  "decision": "REVISE_TO_CAST_PRE_REVIEW"
 }

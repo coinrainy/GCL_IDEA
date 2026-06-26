@@ -1,21 +1,24 @@
-# Review Summary: WILLOW-GCL
+# Review Summary: CAST-GCL
 
-## Reviewer Verdict
+## Current Review Status
 
-- Role：fresh `gcl_scientific_reviewer`
-- Verdict：`REVISE`
-- Novelty：`7.0/10`
-- Confidence：`0.68`
-- Recommendation：replace SIVA fixed report with revised WILLOW mainline; keep SIVA as mandatory baseline/control.
+- Fresh reviewer for CAST：not yet run。
+- Current status：`REVISE_TO_CAST_PRE_REVIEW`
+- Basis：desk novelty audit against WILLOW, Graph-JEPA/PCR, PMGCL, BalanceGCL, and learned augmentation prior。
 
-## Key Reviewer Message
+## Why This Is Not Complete
 
-WILLOW 的可取之处不是“做一个 world model”，而是把 latent context-target prediction error 变成 semantic certificate，再约束 GCL positive view search。该组合目前比 BOND/SIVA 更强，但仍需要 smoke 证明 certificate 与 positive-signal 机制不可替代。
+CAST appears more directly aligned with false-negative GCL than WILLOW because it constructs cross-node semantic positive closure. However, it has not yet passed a fresh `gcl_scientific_reviewer` review, and it has no smoke result. Therefore it cannot be marked `GO`.
 
-## Required Controls
+## Next Review Prompt
 
-Graph-JEPA-only、SIVA reconstruction-critic positive、edit-distance matched random hard positive、certificate-shuffled WILLOW。
+Ask whether CAST is genuinely more novel than:
+
+- WILLOW same-node certified hard positives；
+- PMGCL-style positive mining；
+- BalanceGCL semantic-aware positives；
+- Graph-JEPA/PCR latent prediction。
 
 ## Decision
 
-`REVISE_TO_WILLOW_SMOKE_PLANNING`
+`REVISE_TO_CAST_PRE_REVIEW`
