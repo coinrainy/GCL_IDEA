@@ -3,8 +3,8 @@ meta:
   base_config: configs/grace_1_1_8.yaml
   split_type: stratified_random_1_1_8
   metric: accuracy_percent
-  status_default: smoke
-  default_eval_embedding: concat_stopgrad_res
+  status_default: audit-smoke
+  default_eval_embedding: h_concat
   note: >
     Minimal DSR-GCL smoke/pilot config. This file is for mechanism checking only:
     no formal runs, no SOTA or performance claim.
@@ -28,6 +28,12 @@ pretrain:
     variance_gamma: 1.0
     eps: 0.000001
     firewall_threshold: 0.00000001
+    make_undirected_after_dropout: true
+    representation_note: >
+      DSR VICReg uses raw projected p features; InfoNCE normalizes internally.
+      Main DSR audit evaluation uses encoder-level h embeddings for fairness
+      with GRACE, while normalized projected z embeddings are logged as
+      auxiliary diagnostics.
 
 variants:
   - id: A0
@@ -45,7 +51,7 @@ variants:
     residual_infonce_weight: 0.0
     semantic_infonce_weight: 0.0
     orthogonality: false
-    main_eval_embedding: z_sem
+    main_eval_embedding: h_sem
   - id: A3
     name: residual_only_infonce
     family: dsr
@@ -57,7 +63,7 @@ variants:
     residual_infonce_weight: 1.0
     semantic_infonce_weight: 0.0
     orthogonality: false
-    main_eval_embedding: z_res
+    main_eval_embedding: h_res
   - id: A9
     name: dsr_full_firewall
     family: dsr
@@ -69,7 +75,7 @@ variants:
     residual_infonce_weight: 1.0
     semantic_infonce_weight: 0.0
     orthogonality: true
-    main_eval_embedding: concat
+    main_eval_embedding: h_concat
   - id: A5
     name: dsr_no_firewall_semantic_receives_negative
     family: dsr
@@ -81,7 +87,7 @@ variants:
     residual_infonce_weight: 1.0
     semantic_infonce_weight: 1.0
     orthogonality: true
-    main_eval_embedding: concat
+    main_eval_embedding: h_concat
     audit_note: unfair_extra_semantic_infonce_budget
   - id: A5a
     name: semantic_infonce_only
@@ -94,7 +100,7 @@ variants:
     residual_infonce_weight: 0.0
     semantic_infonce_weight: 1.0
     orthogonality: false
-    main_eval_embedding: z_sem
+    main_eval_embedding: h_sem
   - id: A5b
     name: budget_matched_no_firewall
     family: dsr
@@ -106,7 +112,7 @@ variants:
     residual_infonce_weight: 0.5
     semantic_infonce_weight: 0.5
     orthogonality: true
-    main_eval_embedding: concat
+    main_eval_embedding: h_concat
   - id: A5c
     name: scaled_no_firewall
     family: dsr
@@ -119,13 +125,13 @@ variants:
     semantic_infonce_weight: 1.0
     orthogonality: true
     total_loss_scale_mode: match_a9_loss_scale
-    main_eval_embedding: concat
+    main_eval_embedding: h_concat
   - id: A4
     name: same_parameter_single_head_control
     family: single_head
     semantic_negative_free: true
     residual_infonce: true
-    main_eval_embedding: single
+    main_eval_embedding: h_single
     audit_note: not_strictly_parameter_matched_to_A9
   - id: A4b
     name: param_matched_single_head
@@ -133,7 +139,7 @@ variants:
     semantic_negative_free: true
     residual_infonce: true
     hidden_dim: param_match_dsr_full
-    main_eval_embedding: single
+    main_eval_embedding: h_single
 
 logreg_eval:
   inherit_from_grace: true

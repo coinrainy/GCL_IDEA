@@ -3,7 +3,7 @@
 status: active_candidate  
 decision: REVISE_IDEA  
 created_utc: 2026-06-26T09:21:55Z  
-updated_utc: 2026-06-26T10:11:03Z  
+updated_utc: 2026-06-26T10:26:55Z  
 source: `/idea-discovery` beyond IGT-GCL  
 task: node classification  
 method family: graph contrastive learning
@@ -157,6 +157,41 @@ Key audit-smoke results (`test@best`, percent):
 Final audit-smoke decision: **PIVOT_REQUIRED**.  
 Triggered rules: residual-only remains extremely low; A9 is below A4/A4b; fairer no-firewall A5b/A5c are above A9. Current evidence argues against continuing DSR-GCL formal under the present residual/firewall mechanism.
 
+## Fix Audit-Smoke Evidence: 2026-06-26 Cora Seed 0
+
+Stage: **fix-audit-smoke only**.  
+Purpose: check whether the previous failure was partly caused by implementation/formula mismatch before treating `PIVOT_REQUIRED` as final.
+
+Artifacts:
+
+- fix audit note: `refine-logs/DSR_FIX_AUDIT_NOTE_20260626_102655.md`
+- summary: `results/summary/dsr_fix_audit_smoke_Cora_seed0_20260626T102655Z_summary.md`
+- raw results: `results/raw/Cora/DSR_GCL_SMOKE/dsr_fix_audit_smoke_Cora_seed0_20260626T102655Z/`
+- logs: `logs/dsr_smoke/dsr_fix_audit_smoke_Cora_seed0_20260626T102655Z/`
+
+Implementation fixes:
+
+- VICReg alignment / variance / covariance now use raw projected `p_sem`, not L2-normalized `z_sem`.
+- InfoNCE receives raw projected features and normalizes internally.
+- DSR now reports `h_sem`, `h_res`, `h_concat`, `z_sem`, `z_res`, and `z_concat`.
+- Main DSR audit evaluation uses `h_concat`, because GRACE evaluates encoder output rather than projection head output.
+- `make_undirected_after_dropout` was enabled for DSR low-pass/residual input. The low-pass spectral interpretation remains risky if dropout produces asymmetric edges, so this is logged explicitly.
+
+Fix audit-smoke results (`test@best`, percent):
+
+| ID | Variant | Main embedding | Test@best |
+|---|---|---:|---:|
+| A0 | GRACE baseline | `grace` | 84.78 |
+| A2 | semantic-only fixed VICReg | `h_sem` | 68.68 |
+| A3 | residual-only | `h_res` | 29.94 |
+| A9 | fixed DSR-full | `h_concat` | 69.05 |
+| A5b | budget-matched no-firewall | `h_concat` | 76.57 |
+| A5c | scaled no-firewall | `h_concat` | 78.09 |
+| A4b | param-matched single-head | `h_single` | 81.96 |
+
+Current decision: **REVISE_IMPLEMENTATION_BEFORE_PIVOT**.  
+The previous `PIVOT_REQUIRED` is temporarily downgraded because the earlier run had VICReg-normalization, evaluation representation, and formula-code mismatch issues. However, the fixed single-seed audit-smoke still does not support formal experiments or performance claims.
+
 ## Files
 
 - `idea-stage/FN_IDEAS_BEYOND_IGT.md`
@@ -172,4 +207,6 @@ Triggered rules: residual-only remains extremely low; A9 is below A4/A4b; fairer
 - `results/summary/dsr_smoke_Cora_seed0_20260626T095525Z_summary.md`
 - `refine-logs/DSR_AUDIT_SMOKE_NOTE_20260626_101103.md`
 - `results/summary/dsr_audit_smoke_Cora_seed0_20260626T101103Z_summary.md`
+- `refine-logs/DSR_FIX_AUDIT_NOTE_20260626_102655.md`
+- `results/summary/dsr_fix_audit_smoke_Cora_seed0_20260626T102655Z_summary.md`
 - `.aris/traces/novelty-check/2026-06-26_run03/`

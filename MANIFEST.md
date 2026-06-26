@@ -81,3 +81,10 @@
 | 2026-06-26 10:11 | audit-smoke | results/raw/Cora/DSR_GCL_SMOKE/dsr_audit_smoke_Cora_seed0_20260626T101103Z/ | audit-smoke | raw JSON for Cora seed 0 audit-smoke variants |
 | 2026-06-26 10:11 | audit-smoke | logs/dsr_smoke/dsr_audit_smoke_Cora_seed0_20260626T101103Z/ | audit-smoke | JSONL training logs for Cora seed 0 audit-smoke |
 | 2026-06-26 10:11 | audit-smoke | results/summary/dsr_audit_smoke_Cora_seed0_20260626T101103Z_summary.md | audit-smoke | full audit-smoke summary with embedding, params, leakage, and kill-rule tables |
+| 2026-06-26 10:26 | fix-audit-smoke | refine-logs/DSR_FIX_AUDIT_NOTE_20260626_102655.md | fix-audit-smoke | implementation/formula consistency audit note downgrading prior pivot pending corrected implementation |
+| 2026-06-26 10:26 | fix-audit-smoke | refine-logs/DSR_MECHANISM_SPEC.md | fix-audit-smoke | updated DSR mechanism spec: raw projected VICReg, h/z evaluation split, low-pass symmetry risk |
+| 2026-06-26 10:26 | fix-audit-smoke | configs/dsr_smoke.yaml | fix-audit-smoke | updated config: h-level main eval and make_undirected_after_dropout |
+| 2026-06-26 10:26 | fix-audit-smoke | scripts/run_dsr_smoke.py | fix-audit-smoke | fixed runner: p-level VICReg, internal InfoNCE normalization, h/z embeddings |
+| 2026-06-26 10:26 | fix-audit-smoke | results/raw/Cora/DSR_GCL_SMOKE/dsr_fix_audit_smoke_Cora_seed0_20260626T102655Z/ | fix-audit-smoke | raw JSON for corrected DSR Cora seed 0 audit-smoke |
+| 2026-06-26 10:26 | fix-audit-smoke | logs/dsr_smoke/dsr_fix_audit_smoke_Cora_seed0_20260626T102655Z/ | fix-audit-smoke | JSONL logs for corrected DSR Cora seed 0 audit-smoke |
+| 2026-06-26 10:26 | fix-audit-smoke | results/summary/dsr_fix_audit_smoke_Cora_seed0_20260626T102655Z_summary.md | fix-audit-smoke | corrected DSR audit-smoke summary with h/z embedding-level table |

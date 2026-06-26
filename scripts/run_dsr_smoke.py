@@ -24,7 +24,7 @@ import torch.nn.functional as F
 import yaml
 from torch import nn
 from torch_geometric.nn import GCNConv
-from torch_geometric.utils import add_remaining_self_loops, degree
+from torch_geometric.utils import add_remaining_self_loops, degree, to_undirected
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
@@ -45,10 +45,22 @@ from run_grace_1_1_8 import (  # noqa: E402
 
 @dataclass
 class BranchOutput:
+    h_sem_1: torch.Tensor | None = None
+    h_sem_2: torch.Tensor | None = None
+    h_res_1: torch.Tensor | None = None
+    h_res_2: torch.Tensor | None = None
+    p_sem_1: torch.Tensor | None = None
+    p_sem_2: torch.Tensor | None = None
+    p_res_1: torch.Tensor | None = None
+    p_res_2: torch.Tensor | None = None
     z_sem_1: torch.Tensor | None = None
     z_sem_2: torch.Tensor | None = None
     z_res_1: torch.Tensor | None = None
     z_res_2: torch.Tensor | None = None
+    h_single_1: torch.Tensor | None = None
+    h_single_2: torch.Tensor | None = None
+    p_single_1: torch.Tensor | None = None
+    p_single_2: torch.Tensor | None = None
     z_single_1: torch.Tensor | None = None
     z_single_2: torch.Tensor | None = None
 
@@ -85,10 +97,17 @@ def grad_norm(params: list[torch.Tensor], loss: torch.Tensor) -> float:
     return float(torch.sqrt(total).item())
 
 
-def low_pass_features(x: torch.Tensor, edge_index: torch.Tensor, k: int) -> torch.Tensor:
+def low_pass_features(
+    x: torch.Tensor,
+    edge_index: torch.Tensor,
+    k: int,
+    make_undirected: bool = False,
+) -> torch.Tensor:
+    if make_undirected:
+        edge_index = to_undirected(edge_index, num_nodes=x.size(0))
     edge_index, _ = add_remaining_self_loops(edge_index, num_nodes=x.size(0))
     row, col = edge_index
-    deg = degree(row, x.size(0), dtype=x.dtype).clamp_min(1.0)
+    deg = degree(col, x.size(0), dtype=x.dtype).clamp_min(1.0)
     deg_inv_sqrt = deg.pow(-0.5)
     norm = deg_inv_sqrt[row] * deg_inv_sqrt[col]
     out = x
@@ -255,20 +274,29 @@ class DSRModel(nn.Module):
         x2: torch.Tensor,
         edge2: torch.Tensor,
         low_pass_k: int,
+        make_undirected_low_pass: bool,
     ) -> BranchOutput:
         out = BranchOutput()
         if self.use_semantic:
-            x1_sem = low_pass_features(x1, edge1, low_pass_k)
-            x2_sem = low_pass_features(x2, edge2, low_pass_k)
-            out.z_sem_1 = F.normalize(self.projector_sem(self.encoder_sem(x1_sem, edge1)), dim=1)
-            out.z_sem_2 = F.normalize(self.projector_sem(self.encoder_sem(x2_sem, edge2)), dim=1)
+            x1_sem = low_pass_features(x1, edge1, low_pass_k, make_undirected_low_pass)
+            x2_sem = low_pass_features(x2, edge2, low_pass_k, make_undirected_low_pass)
+            out.h_sem_1 = self.encoder_sem(x1_sem, edge1)
+            out.h_sem_2 = self.encoder_sem(x2_sem, edge2)
+            out.p_sem_1 = self.projector_sem(out.h_sem_1)
+            out.p_sem_2 = self.projector_sem(out.h_sem_2)
+            out.z_sem_1 = F.normalize(out.p_sem_1, dim=1)
+            out.z_sem_2 = F.normalize(out.p_sem_2, dim=1)
         if self.use_residual:
-            x1_low = low_pass_features(x1, edge1, low_pass_k).detach()
-            x2_low = low_pass_features(x2, edge2, low_pass_k).detach()
+            x1_low = low_pass_features(x1, edge1, low_pass_k, make_undirected_low_pass).detach()
+            x2_low = low_pass_features(x2, edge2, low_pass_k, make_undirected_low_pass).detach()
             x1_res = x1 - x1_low
             x2_res = x2 - x2_low
-            out.z_res_1 = F.normalize(self.projector_res(self.encoder_res(x1_res, edge1)), dim=1)
-            out.z_res_2 = F.normalize(self.projector_res(self.encoder_res(x2_res, edge2)), dim=1)
+            out.h_res_1 = self.encoder_res(x1_res, edge1)
+            out.h_res_2 = self.encoder_res(x2_res, edge2)
+            out.p_res_1 = self.projector_res(out.h_res_1)
+            out.p_res_2 = self.projector_res(out.h_res_2)
+            out.z_res_1 = F.normalize(out.p_res_1, dim=1)
+            out.z_res_2 = F.normalize(out.p_res_2, dim=1)
         return out
 
     @torch.no_grad()
@@ -277,24 +305,27 @@ class DSRModel(nn.Module):
         x: torch.Tensor,
         edge_index: torch.Tensor,
         low_pass_k: int,
+        make_undirected_low_pass: bool,
     ) -> dict[str, torch.Tensor]:
         self.eval()
         embeddings = {}
         if self.use_semantic:
-            x_sem = low_pass_features(x, edge_index, low_pass_k)
-            embeddings["z_sem"] = F.normalize(
-                self.projector_sem(self.encoder_sem(x_sem, edge_index)),
-                dim=1,
-            )
+            x_sem = low_pass_features(x, edge_index, low_pass_k, make_undirected_low_pass)
+            h_sem = self.encoder_sem(x_sem, edge_index)
+            p_sem = self.projector_sem(h_sem)
+            embeddings["h_sem"] = h_sem
+            embeddings["z_sem"] = F.normalize(p_sem, dim=1)
         if self.use_residual:
-            x_low = low_pass_features(x, edge_index, low_pass_k).detach()
+            x_low = low_pass_features(x, edge_index, low_pass_k, make_undirected_low_pass).detach()
             x_res = x - x_low
-            embeddings["z_res"] = F.normalize(
-                self.projector_res(self.encoder_res(x_res, edge_index)),
-                dim=1,
-            )
+            h_res = self.encoder_res(x_res, edge_index)
+            p_res = self.projector_res(h_res)
+            embeddings["h_res"] = h_res
+            embeddings["z_res"] = F.normalize(p_res, dim=1)
+        if "h_sem" in embeddings and "h_res" in embeddings:
+            embeddings["h_concat"] = torch.cat([embeddings["h_sem"], embeddings["h_res"].detach()], dim=1)
         if "z_sem" in embeddings and "z_res" in embeddings:
-            embeddings["concat"] = torch.cat([embeddings["z_sem"], embeddings["z_res"].detach()], dim=1)
+            embeddings["z_concat"] = torch.cat([embeddings["z_sem"], embeddings["z_res"].detach()], dim=1)
         return embeddings
 
 
@@ -311,12 +342,20 @@ class SingleHeadModel(nn.Module):
         self.projector = Projector(hidden_dim, hidden_dim)
 
     def forward(self, x: torch.Tensor, edge_index: torch.Tensor) -> torch.Tensor:
-        return F.normalize(self.projector(self.encoder(x, edge_index)), dim=1)
+        h = self.encoder(x, edge_index)
+        return F.normalize(self.projector(h), dim=1)
+
+    def encode_project(self, x: torch.Tensor, edge_index: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        h = self.encoder(x, edge_index)
+        p = self.projector(h)
+        z = F.normalize(p, dim=1)
+        return h, p, z
 
     @torch.no_grad()
     def encode_eval(self, x: torch.Tensor, edge_index: torch.Tensor) -> dict[str, torch.Tensor]:
         self.eval()
-        return {"single": self.forward(x, edge_index)}
+        h, _, z = self.encode_project(x, edge_index)
+        return {"h_single": h, "z_single": z}
 
 
 def resolve_single_head_hidden_dim(
@@ -456,7 +495,14 @@ def train_dsr_variant(
         edge2 = drop_edges(data.edge_index, float(pretrain_cfg["drop_edge_rate_2"]))
         x1 = drop_feature(data.x, float(pretrain_cfg["drop_feature_rate_1"]))
         x2 = drop_feature(data.x, float(pretrain_cfg["drop_feature_rate_2"]))
-        out = model.encode_views(x1, edge1, x2, edge2, int(pretrain_cfg["low_pass_k"]))
+        out = model.encode_views(
+            x1,
+            edge1,
+            x2,
+            edge2,
+            int(pretrain_cfg["low_pass_k"]),
+            bool(pretrain_cfg.get("make_undirected_after_dropout", False)),
+        )
 
         loss = data.x.new_tensor(0.0)
         a9_scale_reference = data.x.new_tensor(0.0)
@@ -466,10 +512,10 @@ def train_dsr_variant(
         residual_nce_value = None
         semantic_nce_value = None
         orth_value = None
-        if bool(variant_cfg.get("semantic_negative_free", False)) and out.z_sem_1 is not None:
+        if bool(variant_cfg.get("semantic_negative_free", False)) and out.p_sem_1 is not None:
             sem_loss, sem_diag = vicreg_loss(
-                out.z_sem_1,
-                out.z_sem_2,
+                out.p_sem_1,
+                out.p_sem_2,
                 float(pretrain_cfg["lambda_var"]),
                 float(pretrain_cfg["lambda_cov"]),
                 float(pretrain_cfg["variance_gamma"]),
@@ -479,8 +525,8 @@ def train_dsr_variant(
             a9_scale_reference = a9_scale_reference + sem_loss
             semantic_loss_value = sem_loss
             diag.update({f"semantic_{k}": v for k, v in sem_diag.items()})
-        if bool(variant_cfg.get("residual_infonce", False)) and out.z_res_1 is not None:
-            res_nce = info_nce_loss(out.z_res_1, out.z_res_2, float(pretrain_cfg["tau"]))
+        if bool(variant_cfg.get("residual_infonce", False)) and out.p_res_1 is not None:
+            res_nce = info_nce_loss(out.p_res_1, out.p_res_2, float(pretrain_cfg["tau"]))
             residual_weight = float(variant_cfg.get("residual_infonce_weight", pretrain_cfg["alpha_res"]))
             loss = loss + residual_weight * res_nce
             a9_scale_reference = a9_scale_reference + float(pretrain_cfg["alpha_res"]) * res_nce
@@ -489,8 +535,8 @@ def train_dsr_variant(
             residual_nce_value = res_nce
             diag["residual_infonce"] = float(res_nce.detach().item())
             diag["residual_infonce_weight"] = float(residual_weight)
-        if bool(variant_cfg.get("semantic_infonce", False)) and out.z_sem_1 is not None:
-            sem_nce = info_nce_loss(out.z_sem_1, out.z_sem_2, float(pretrain_cfg["tau"]))
+        if bool(variant_cfg.get("semantic_infonce", False)) and out.p_sem_1 is not None:
+            sem_nce = info_nce_loss(out.p_sem_1, out.p_sem_2, float(pretrain_cfg["tau"]))
             semantic_weight = float(variant_cfg.get("semantic_infonce_weight", 1.0))
             loss = loss + semantic_weight * sem_nce
             neg_component = semantic_weight * sem_nce
@@ -556,16 +602,29 @@ def train_dsr_variant(
                 flush=True,
             )
     log_path.write_text("\n".join(json.dumps(row, sort_keys=True) for row in logs) + "\n")
-    embeddings = model.encode_eval(data.x, data.edge_index, int(pretrain_cfg["low_pass_k"]))
+    embeddings = model.encode_eval(
+        data.x,
+        data.edge_index,
+        int(pretrain_cfg["low_pass_k"]),
+        bool(pretrain_cfg.get("make_undirected_after_dropout", False)),
+    )
     diagnostics = {
         **last_diag,
+        "effective_rank_h_sem": effective_rank(embeddings.get("h_sem")),
+        "effective_rank_h_res": effective_rank(embeddings.get("h_res")),
+        "effective_rank_h_concat": effective_rank(embeddings.get("h_concat")),
         "effective_rank_sem": effective_rank(embeddings.get("z_sem")),
         "effective_rank_res": effective_rank(embeddings.get("z_res")),
-        "effective_rank_concat": effective_rank(embeddings.get("concat")),
+        "effective_rank_concat": effective_rank(embeddings.get("z_concat")),
+        "branch_correlation_h": branch_corr(embeddings.get("h_sem"), embeddings.get("h_res")),
         "branch_correlation": branch_corr(embeddings.get("z_sem"), embeddings.get("z_res")),
         "uniformity_res": uniformity(embeddings.get("z_res")),
-        "uniformity_concat": uniformity(embeddings.get("concat")),
+        "uniformity_concat": uniformity(embeddings.get("z_concat")),
         "parameter_count": count_parameters(model),
+        "vicreg_input": "raw_projected_p_sem",
+        "info_nce_input": "raw_projected_p_then_internal_normalize",
+        "main_dsr_eval_default": "h_concat_for_two_branch_variants",
+        "make_undirected_after_dropout": bool(pretrain_cfg.get("make_undirected_after_dropout", False)),
     }
     leak = diagnostics.get("negative_gradient_leakage")
     diagnostics["firewall_pass"] = (
@@ -615,17 +674,17 @@ def train_single_head_variant(
         edge2 = drop_edges(data.edge_index, float(pretrain_cfg["drop_edge_rate_2"]))
         x1 = drop_feature(data.x, float(pretrain_cfg["drop_feature_rate_1"]))
         x2 = drop_feature(data.x, float(pretrain_cfg["drop_feature_rate_2"]))
-        z1 = model(x1, edge1)
-        z2 = model(x2, edge2)
+        h1, p1, z1 = model.encode_project(x1, edge1)
+        h2, p2, z2 = model.encode_project(x2, edge2)
         sem_loss, sem_diag = vicreg_loss(
-            z1,
-            z2,
+            p1,
+            p2,
             float(pretrain_cfg["lambda_var"]),
             float(pretrain_cfg["lambda_cov"]),
             float(pretrain_cfg["variance_gamma"]),
             float(pretrain_cfg["eps"]),
         )
-        neg = info_nce_loss(z1, z2, float(pretrain_cfg["tau"]))
+        neg = info_nce_loss(p1, p2, float(pretrain_cfg["tau"]))
         loss = sem_loss + neg
         loss.backward()
         optimizer.step()
@@ -639,9 +698,10 @@ def train_single_head_variant(
             print(f"[{dataset_name} seed={seed} A4 single-head] epoch={epoch:04d} loss={row['loss']:.4f}", flush=True)
     log_path.write_text("\n".join(json.dumps(row, sort_keys=True) for row in logs) + "\n")
     embeddings = model.encode_eval(data.x, data.edge_index)
-    z = embeddings["single"]
+    z = embeddings["z_single"]
     diagnostics = {
         **last_diag,
+        "effective_rank_h_single": effective_rank(embeddings.get("h_single")),
         "effective_rank_single": effective_rank(z),
         "uniformity_single": uniformity(z),
         "parameter_count": count_parameters(model),
@@ -694,11 +754,12 @@ def result_markdown(results: list[dict[str, Any]], summary_path: Path) -> None:
         "- A3 residual-only was almost ineffective, so residual utility is under question.",
         "- Previous A5 was unfair because it added semantic InfoNCE on top of residual InfoNCE.",
         "- Previous A4 was not strictly parameter-matched to A9; this run adds A4b.",
-        "- This summary explicitly reports embedding-level results, params, ranks, leakage, raw JSON, and logs.",
+        "- This summary explicitly reports encoder-level h and projected normalized z results, params, ranks, leakage, raw JSON, and logs.",
+        "- VICReg is applied to raw projected p features; InfoNCE normalizes internally.",
         "",
         "## Complete Result Table",
         "",
-        "| ID | Variant | main z | valid@best | test@best | final test | params | raw JSON | log |",
+        "| ID | Variant | main embedding | valid@best | test@best | final test | params | raw JSON | log |",
         "|---|---|---:|---:|---:|---:|---:|---|---|",
     ]
     for r in results:
@@ -721,19 +782,21 @@ def result_markdown(results: list[dict[str, Any]], summary_path: Path) -> None:
     lines.extend(["", "## Embedding-Level Table", ""])
     lines.extend(
         [
-            "| ID | z_sem test | z_res test | concat test | grace test | single test | rank_sem | rank_res | rank_concat | rank_single | branch_corr |",
-            "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+            "| ID | h_sem | h_res | h_concat | z_sem | z_res | z_concat | grace | h_single | z_single | rank_h_concat | rank_z_concat | corr_h | corr_z |",
+            "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
         ]
     )
     for r in results:
         d = r["diagnostics"]
         evals = r["evaluation"]["embedding_evals"]
         lines.append(
-            f"| {r['variant_id']} | {fmt(eval_metric(evals, 'z_sem'))} | {fmt(eval_metric(evals, 'z_res'))} | "
-            f"{fmt(eval_metric(evals, 'concat'))} | {fmt(eval_metric(evals, 'grace'))} | "
-            f"{fmt(eval_metric(evals, 'single'))} | {fmt(d.get('effective_rank_sem'))} | "
-            f"{fmt(d.get('effective_rank_res'))} | {fmt(d.get('effective_rank_concat'))} | "
-            f"{fmt(d.get('effective_rank_single'))} | {fmt(d.get('branch_correlation'))} |"
+            f"| {r['variant_id']} | {fmt(eval_metric(evals, 'h_sem'))} | {fmt(eval_metric(evals, 'h_res'))} | "
+            f"{fmt(eval_metric(evals, 'h_concat'))} | {fmt(eval_metric(evals, 'z_sem'))} | "
+            f"{fmt(eval_metric(evals, 'z_res'))} | {fmt(eval_metric(evals, 'z_concat'))} | "
+            f"{fmt(eval_metric(evals, 'grace'))} | {fmt(eval_metric(evals, 'h_single'))} | "
+            f"{fmt(eval_metric(evals, 'z_single'))} | {fmt(d.get('effective_rank_h_concat'))} | "
+            f"{fmt(d.get('effective_rank_concat'))} | {fmt(d.get('branch_correlation_h'))} | "
+            f"{fmt(d.get('branch_correlation'))} |"
         )
 
     lines.extend(["", "## Parameter Count Table", ""])
@@ -810,8 +873,11 @@ def result_markdown(results: list[dict[str, Any]], summary_path: Path) -> None:
     lines.extend(f"- {item}" for item in conclusions)
     lines.append(f"- Triggered rules: `{', '.join(triggered) if triggered else 'none'}`.")
     if len(triggered) >= 2:
-        decision = "`PIVOT_REQUIRED`"
-        recommendation = "不建议继续推进 DSR-GCL formal；应先重构 residual branch 或放弃当前 firewall 叙事。"
+        decision = "`REVISE_IMPLEMENTATION_BEFORE_PIVOT`"
+        recommendation = (
+            "上一轮 PIVOT_REQUIRED 暂时降级，因为发现 VICReg-normalization、"
+            "evaluation representation 和 formula-code mismatch；修复后本 seed 仍不支持 formal。"
+        )
     else:
         decision = "`REVISE`"
         recommendation = "只允许继续做更小范围机制修正，不进入 formal。"

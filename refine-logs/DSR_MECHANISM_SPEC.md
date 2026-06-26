@@ -3,8 +3,8 @@
 生成时间：2026-06-26T09:40:55Z  
 对象：DSR-GCL / Decoupled Semantic-Residual Graph Contrastive Learning  
 核心机制：Spectral Gradient Firewall  
-阶段：mechanism refinement only  
-状态：不实现代码、不跑实验、不产生性能 claim。
+阶段：mechanism refinement + fix-audit-smoke  
+状态：已完成 Cora seed=0 fix-audit-smoke；不进入 formal，不产生性能 claim。
 
 ## 1. Fixed Problem Anchor
 
@@ -56,6 +56,18 @@ S = D^{-1/2}(A + I)D^{-1/2}
 P_L(X, A; K) = S^K X
 ```
 
+Implementation audit note:
+
+- PyG edge dropout can remove only one direction of an originally undirected edge.
+- If the post-dropout `edge_index` is not symmetric, the spectral interpretation
+  of `S` as an undirected normalized adjacency is not strict.
+- The smoke runner therefore exposes `make_undirected_after_dropout` for the
+  DSR low-pass/residual input construction. When enabled, dropped edges are
+  symmetrized before self-loops and normalization.
+- The current implementation aggregates messages from source `row` to target
+  `col` and computes degrees on `col`, matching the source-to-target GCN
+  convention. With a symmetrized graph, row/col degree ambiguity disappears.
+
 Residual input:
 
 ```text
@@ -69,8 +81,10 @@ Channels:
 ```text
 h_sem^v = E_sem(P_L(X^v, A^v; K), A^v)
 h_res^v = E_res(P_R(X^v, A^v; K), A^v)
-z_sem^v = normalize(P_sem(h_sem^v))
-z_res^v = normalize(P_res(h_res^v))
+p_sem^v = P_sem(h_sem^v)
+p_res^v = P_res(h_res^v)
+z_sem^v = normalize(p_sem^v)
+z_res^v = normalize(p_res^v)
 ```
 
 where `v ∈ {1,2}`.
@@ -90,11 +104,22 @@ If `d_base` is odd, set `d_sem = ceil(d_base/2)` and `d_res = floor(d_base/2)`. 
 
 Semantic branch uses negative-free invariance plus collapse guard.
 
-Alignment:
+Important implementation rule:
 
 ```text
-L_align = (1/N) Σ_i || z_sem,i^1 - stopgrad(z_sem,i^2) ||_2^2
-        + (1/N) Σ_i || z_sem,i^2 - stopgrad(z_sem,i^1) ||_2^2
+VICReg-style alignment / variance / covariance are computed on raw projected
+features p_sem, not on L2-normalized unit vectors z_sem.
+```
+
+Reason: if `L_var` is applied to unit-normalized vectors, `γ=1.0` is almost
+unreachable for high-dimensional features and the variance regularizer becomes
+miscalibrated. Normalization is reserved for InfoNCE and auxiliary projected
+diagnostics.
+
+Symmetric alignment:
+
+```text
+L_align = (1/N) Σ_i || p_sem,i^1 - p_sem,i^2 ||_2^2
 ```
 
 Variance regularizer, VICReg-style:
@@ -102,7 +127,7 @@ Variance regularizer, VICReg-style:
 ```text
 std_j(Z) = sqrt(Var_i(Z_{ij}) + eps)
 L_var(Z) = (1/d) Σ_j max(0, γ - std_j(Z))
-L_var = L_var(z_sem^1) + L_var(z_sem^2)
+L_var = L_var(p_sem^1) + L_var(p_sem^2)
 ```
 
 Covariance regularizer:
@@ -110,7 +135,7 @@ Covariance regularizer:
 ```text
 C(Z) = (Z - mean(Z))^T (Z - mean(Z)) / (N - 1)
 L_cov(Z) = (1/d) Σ_{p≠q} C(Z)_{pq}^2
-L_cov = L_cov(z_sem^1) + L_cov(z_sem^2)
+L_cov = L_cov(p_sem^1) + L_cov(p_sem^2)
 ```
 
 Semantic loss:
@@ -132,13 +157,14 @@ These defaults may be tuned only on train/val during pilot; test cannot influenc
 
 ### 4.2 Residual Branch Loss
 
-Residual branch uses InfoNCE on `z_res` only.
+Residual branch uses InfoNCE on residual projected features. The implementation
+passes raw `p_res` to InfoNCE and InfoNCE normalizes internally:
 
 For anchor `i` in view 1:
 
 ```text
-ℓ_i^{1→2} = -log exp(sim(z_res,i^1, z_res,i^2)/τ)
-             / Σ_{j=1}^N exp(sim(z_res,i^1, z_res,j^2)/τ)
+ℓ_i^{1→2} = -log exp(sim(normalize(p_res,i^1), normalize(p_res,i^2))/τ)
+             / Σ_{j=1}^N exp(sim(normalize(p_res,i^1), normalize(p_res,j^2))/τ)
 ```
 
 Symmetric:
@@ -249,20 +275,28 @@ def train_step(data):
     x2_res = x2 - stopgrad(x2_sem)
 
     # 3. Parameter-isolated encoders.
-    z1_sem = normalize(P_sem(E_sem(x1_sem, edge1)))
-    z2_sem = normalize(P_sem(E_sem(x2_sem, edge2)))
+    h1_sem = E_sem(x1_sem, edge1)
+    h2_sem = E_sem(x2_sem, edge2)
+    p1_sem = P_sem(h1_sem)
+    p2_sem = P_sem(h2_sem)
+    z1_sem = normalize(p1_sem)
+    z2_sem = normalize(p2_sem)
 
-    z1_res = normalize(P_res(E_res(x1_res, edge1)))
-    z2_res = normalize(P_res(E_res(x2_res, edge2)))
+    h1_res = E_res(x1_res, edge1)
+    h2_res = E_res(x2_res, edge2)
+    p1_res = P_res(h1_res)
+    p2_res = P_res(h2_res)
+    z1_res = normalize(p1_res)
+    z2_res = normalize(p2_res)
 
     # 4. Semantic negative-free objective.
-    loss_align = mse(z1_sem, stopgrad(z2_sem)) + mse(z2_sem, stopgrad(z1_sem))
-    loss_var = vicreg_variance(z1_sem) + vicreg_variance(z2_sem)
-    loss_cov = vicreg_covariance(z1_sem) + vicreg_covariance(z2_sem)
+    loss_align = mse(p1_sem, p2_sem)
+    loss_var = vicreg_variance(p1_sem) + vicreg_variance(p2_sem)
+    loss_cov = vicreg_covariance(p1_sem) + vicreg_covariance(p2_sem)
     loss_sem = loss_align + lambda_var * loss_var + lambda_cov * loss_cov
 
     # 5. Residual contrast. This graph must not touch theta_sem.
-    loss_res = info_nce(z1_res, z2_res, tau)
+    loss_res = info_nce(p1_res, p2_res, tau)  # normalizes internally
 
     # 6. Branch orthogonality, default updates residual only.
     loss_orth = corr_frobenius(stopgrad(z1_sem), z1_res)
@@ -291,23 +325,29 @@ Practical note: to compute `firewall_leak_param`, run an auxiliary backward or `
 
 ## 7. Inference / Evaluation Definition
 
-Default evaluator embedding:
+Default DSR audit evaluator embedding:
 
 ```text
-z_eval = concat(z_sem, stopgrad(z_res))
+h_eval = concat(h_sem, stopgrad(h_res))
 ```
 
 Rationale:
 
-- `z_sem` is the protected class-semantic branch.
-- `z_res` may contain useful boundary signal.
+- GRACE baseline evaluates the encoder output, not the projection head.
+- Therefore DSR audit-smoke must report encoder-level `h_*` embeddings as the
+  primary fairness view.
+- Projected normalized `z_*` embeddings are still logged as auxiliary
+  diagnostics, but they are not the default main table setting.
 - `stopgrad` is irrelevant after pretraining but documents that evaluator must not fine-tune.
 
 Required diagnostics:
 
 ```text
-z_eval_sem = z_sem
-z_eval_res = z_res
+h_eval_sem = h_sem
+h_eval_res = h_res
+h_eval_concat = concat(h_sem, h_res)
+z_eval_sem = normalize(p_sem)
+z_eval_res = normalize(p_res)
 z_eval_concat = concat(z_sem, z_res)
 ```
 
@@ -326,7 +366,7 @@ low_pass_k: 1
 semantic_loss: vicreg
 residual_loss: infonce
 orth_updates: residual_only
-eval_embedding: concat
+eval_embedding: h_concat
 alpha_res: 1.0
 beta_orth: 0.01
 firewall: parameter_isolated
@@ -387,6 +427,12 @@ Before coding:
 
 ## 11. Current Decision
 
-**REVISE_IDEA**, but mechanism is now implementation-ready for a smoke-only request.
+**REVISE_IMPLEMENTATION_BEFORE_PIVOT**。
 
-This document does not authorize formal experiments. It only defines the method tightly enough that a future implementation can be audited.
+上一轮 `PIVOT_REQUIRED` 暂时降级，因为发现并修复了：
+
+- VICReg 作用在 L2-normalized unit vectors 上；
+- DSR 主评估使用 projector-level `z_concat`，而 GRACE 使用 encoder output；
+- 公式写了 stop-gradient alignment，但实现没有 predictor/target stop-gradient 结构。
+
+修复后的 Cora seed=0 audit-smoke 仍不支持 formal 或性能 claim；如果继续，只能先做更小范围的 residual / low-pass 实现审计。
