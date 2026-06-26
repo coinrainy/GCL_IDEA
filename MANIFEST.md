@@ -368,3 +368,13 @@
 | 2026-06-26 17:16 | /research-refine | refine-logs/PIPELINE_SUMMARY.md | refinement | latest ORBIT pipeline summary |
 | 2026-06-26 17:16 | /research-wiki | research-wiki/ideas/orbit_gcl.md | wiki | proposed ORBIT idea page with REVISE decision |
 | 2026-06-26 17:16 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of ORBIT-GCL idea report |
+| 2026-06-26 17:44 | /experiment-bridge | configs/orbit_smoke.yaml | implementation | ORBIT-GCL OR-M0 smoke config |
+| 2026-06-26 17:44 | /experiment-bridge | scripts/run_orbit_smoke.py | implementation | ORBIT-GCL OR-M0 smoke runner |
+| 2026-06-26 17:44 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_174425.md | experiment-bridge | timestamped local code review for ORBIT smoke |
+| 2026-06-26 17:44 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW.md | experiment-bridge | latest local code review for ORBIT smoke |
+| 2026-06-26 17:44 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS_20260626_174425.md | experiment-bridge | timestamped ORBIT OR-M0-001 result report |
+| 2026-06-26 17:44 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS.md | experiment-bridge | latest ORBIT OR-M0-001 result report |
+| 2026-06-26 17:44 | /experiment-bridge | refine-logs/EXPERIMENT_TRACKER_20260626_174425.md | experiment-bridge | timestamped ORBIT tracker after negative smoke |
+| 2026-06-26 17:44 | /experiment-bridge | refine-logs/EXPERIMENT_TRACKER.md | experiment-bridge | latest ORBIT tracker after negative smoke |
+| 2026-06-26 17:44 | /research-wiki | research-wiki/experiments/orbit_or_m0_001.md | wiki | ORBIT OR-M0-001 smoke experiment page |
+| 2026-06-26 17:44 | /research-wiki | research-wiki/ideas/orbit_gcl.md | wiki | updated ORBIT idea page after negative smoke |

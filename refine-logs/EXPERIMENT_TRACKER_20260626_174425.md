@@ -1,6 +1,6 @@
 # Experiment Tracker: ORBIT-GCL
 
-- 时间：2026-06-26T17:16:14Z
+- 时间：2026-06-26T17:44:25Z
 - 当前阶段：`SMOKE_NEGATIVE`
 - Decision：`KILL_OR_PIVOT_REQUIRED`
 - Claim status：Cora seed0 smoke negative；不得引用为性能提升证据。
@@ -16,20 +16,18 @@
 | Pilot-B | blocked | no path after negative smoke |
 | Formal | blocked | no path after negative smoke |
 
-## Planned Runs
+## Runs
 
 | ID | Dataset | Seed | Type | Status |
 |---|---|---:|---|---|
 | OR-M0-000 | Cora | 0 | dryrun | done |
 | OR-M0-001 | Cora | 0 | kill-smoke | done_negative |
 
-## Hard Stop Conditions
+## Hard Stop Conditions Triggered
 
-- ORBIT full does not beat strongest matched control.
-- Random/shuffled/shortcut response controls match ORBIT full.
-- Held-out operator response prediction fails.
-- Accuracy does not improve despite response diagnostics improving.
-- Any evaluator leakage or test-set tuning is detected.
+- `KILL_ORBIT_AS_WEAKER_THAN_MATCHED_CONTROL`
+- `KILL_ACCURACY_NOT_CONVERTED`
+- `BLOCK_PROVENANCE_BEFORE_PILOT`
 
 ## Notes
 
