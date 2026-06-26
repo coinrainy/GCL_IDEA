@@ -243,3 +243,7 @@
 | 2026-06-26 14:01 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest CAST Certificate Pilot-A plan |
 | 2026-06-26 14:01 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_140139.md | implementation | timestamped CAST Certificate Pilot-A tracker |
 | 2026-06-26 14:01 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest CAST Certificate Pilot-A tracker |
+| 2026-06-26 14:10 | sanity-run | scripts/run_cast_certificate_smoke.py | implementation | CAST certificate runner gate expanded to Pilot-A datasets/seeds |
+| 2026-06-26 14:10 | sanity-run | logs/cast_certificate/pa_m0_001_sanity_CiteSeer_seed0_20260626T140957Z/ | smoke | PA-M0-001 CiteSeer seed 0 sanity logs |
+| 2026-06-26 14:10 | sanity-run | results/summary/pa_m0_001_sanity_CiteSeer_seed0_20260626T140957Z_summary.md | smoke | PA-M0-001 sanity summary table |
+| 2026-06-26 14:10 | sanity-run | results/summary/pa_m0_001_sanity_CiteSeer_seed0_20260626T140957Z_summary.json | smoke | PA-M0-001 parseable sanity summary |

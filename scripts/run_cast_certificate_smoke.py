@@ -173,11 +173,11 @@ def certificate_energy(
     return energy
 
 
-def summarize_markdown(results: list[dict[str, Any]], path: Path) -> None:
+def summarize_markdown(results: list[dict[str, Any]], path: Path, dataset_name: str, seed: int) -> None:
     lines = [
         "# CAST Certificate Smoke Summary",
         "",
-        "本文件为 Cora seed=0 smoke/diagnostic 汇总，不支持 formal、SOTA 或 robust claim。",
+        f"本文件为 {dataset_name} seed={seed} smoke/diagnostic 汇总，不支持 formal、SOTA 或 robust claim。",
         "",
         "| ID | Variant | Test@best-val | Label agreement | FN mass after | kNN overlap | CAST overlap |",
         "|---|---|---:|---:|---:|---:|---:|",
@@ -202,8 +202,13 @@ def main() -> None:
     base_config = load_yaml(PROJECT_ROOT / args.base_config)
     dataset_name = args.dataset or config["dataset"]["name"]
     seed = int(args.seed if args.seed is not None else config["dataset"]["seed"])
-    if dataset_name != "Cora" or seed != 0:
-        raise ValueError("CAST certificate smoke gate currently allows only Cora seed=0.")
+    allowed_datasets = {"Cora", "CiteSeer", "PubMed"}
+    allowed_seeds = {0, 1, 2}
+    if dataset_name not in allowed_datasets or seed not in allowed_seeds:
+        raise ValueError(
+            "CAST certificate Pilot-A gate currently allows only "
+            "Cora/CiteSeer/PubMed seeds 0-2."
+        )
 
     device = torch.device(f"cuda:{args.gpu_id}" if torch.cuda.is_available() else "cpu")
     dataset = load_dataset(dataset_name, PROJECT_ROOT / args.data_root)
@@ -351,7 +356,7 @@ def main() -> None:
     summary_json = summary_dir / f"{run_name}_summary.json"
     summary_md = summary_dir / f"{run_name}_summary.md"
     summary_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
-    summarize_markdown(results, summary_md)
+    summarize_markdown(results, summary_md, dataset_name, seed)
     print(f"summary_json={summary_json}")
     print(f"summary_md={summary_md}")
 
