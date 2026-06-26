@@ -58,6 +58,18 @@
 3. Computers / Photo 关闭特征归一化后结果显著高于截图；若开启归一化可能会接近另一种协议，但必须另开 diagnostic 记录，不能覆盖本次 development 结果。
 4. 官方 `PetarV-/GAT` 仓库只提供 TensorFlow 1.x 的 Cora 示例。本次为项目内 PyG 统一实现，因此是“项目协议版复现”，不是逐行运行官方代码的全数据集复现。
 
+## 2026-06-26 异常诊断
+
+- 结论：当前 GAT 复现异常的主因是把截图 target 与项目 `stratified_random_1_1_8` 结果直接比较。截图中的 Cora/CiteSeer/PubMed GAT 数值更像 Planetoid public split / 原始 GAT 论文协议，而不是 10%/10%/80% random split。
+- split 泄漏检查：seed 0 的 train/val/test overlap 均为 0，未发现划分重叠。
+- 训练标签预算差异：
+  - Cora：`1:1:8` train 270；Planetoid public train 140，约 `1.9x`。
+  - CiteSeer：`1:1:8` train 332；Planetoid public train 120，约 `2.8x`。
+  - PubMed：`1:1:8` train 1971；Planetoid public train 60，约 `32.9x`。这解释了 PubMed 从截图约 `79%` 被推高到 `85.05%` 的主要原因。
+- PubMed public split 诊断：使用同一 PyG-GAT 架构、Planetoid public split、5 个 model seeds，`best val accuracy` checkpoint 得到 `77.40±0.22`；官方式 val loss + val accuracy checkpoint 得到 `77.66±0.29`。结果已回落到 79% 附近量级，说明 PubMed 异常不是模型泄漏，而是 split/标签预算协议不一致。
+- Amazon 特征归一化诊断：seed 0 下 Computers `NormalizeFeatures=False` 约 `90.08`，`NormalizeFeatures=True` 约 `37.50`；Photo `False` 约 `93.37`，`True` 约 `81.98`。因此 Amazon gap 不是简单开启 PyG `NormalizeFeatures()` 就能对齐，更可能涉及截图论文的数据版本、split、训练预算或 baseline 超参。
+- 当前决策保持 `REVISE`：项目 `1:1:8` 结果可作为项目协议下的 development baseline，但不能拿来与截图 target 直接判定复现成功/失败。后续应单独实现 `paper_target_protocol`，至少对 Planetoid 使用 public split，并为 Amazon 查明截图论文 split 和预处理。
+
 ## 已运行命令
 
 ```bash

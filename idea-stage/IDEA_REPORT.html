@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSR-GCL Idea Report</title>
+
+<meta name="generator" content="ARIS render-html (academic, v1)">
+<meta name="aris:source-path" content="idea-stage/IDEA_REPORT.md">
+<meta name="aris:source-sha256" content="0a51c0f705519e2cbb5103f66a1c270694f441cc3e5a2f47a771952f5d34aa8b">
+<meta name="aris:generated-at" content="2026-06-26 09:33 UTC">
+
+<!-- offline mode: MathJax + highlight.js skipped; math and code blocks render as plain text -->
+
+<style>
+:root {
+  --bg: #fdfcf7;
+  --bg-soft: #f4f1ea;
+  --bg-code: #f8f5ec;
+  --ink: #1a1a1a;
+  --ink-soft: #4a4a4a;
+  --ink-muted: #6b6b6b;
+  --primary: #1a4a8c;
+  --primary-soft: #2d6cb8;
+  --accent: #b8390e;
+  --warn: #b45309;
+  --warn-bg: #fef3c7;
+  --info-bg: #dbeafe;
+  --good-bg: #d1fae5;
+  --good: #065f46;
+  --bad-bg: #fee2e2;
+  --bad: #991b1b;
+  --border: #d6d0c0;
+  --border-soft: #e8e3d5;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Source Serif Pro", "Source Serif 4", "Crimson Pro", "Georgia", "Songti SC", "STSong", serif;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--bg);
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+.layout {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 48px;
+  padding: 40px 32px;
+}
+
+nav.toc {
+  position: sticky;
+  top: 24px;
+  align-self: start;
+  font-size: 13px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  border-right: 1px solid var(--border-soft);
+  padding-right: 16px;
+}
+nav.toc h3 {
+  margin: 0 0 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  font-weight: 600;
+}
+nav.toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc; }
+nav.toc ol li { margin: 5px 0; counter-increment: toc; }
+nav.toc ol li::before { content: counter(toc) ". "; color: var(--ink-muted); margin-right: 4px; }
+nav.toc a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px dotted transparent;
+}
+nav.toc a:hover { color: var(--primary); border-bottom-color: var(--primary); }
+nav.toc ul { list-style: none; padding-left: 14px; margin: 3px 0; font-size: 12px; }
+nav.toc ul li::before { content: "→ "; color: var(--border); }
+
+main { min-width: 0; }
+
+header.hero {
+  border-bottom: 3px double var(--primary);
+  padding-bottom: 24px;
+  margin-bottom: 32px;
+}
+header.hero .eyebrow {
+  color: var(--accent);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+header.hero h1 {
+  font-size: 32px;
+  line-height: 1.2;
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+header.hero .subtitle {
+  font-size: 16px;
+  color: var(--ink-soft);
+  margin: 0 0 8px;
+  font-style: italic;
+}
+header.hero .byline {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0 0 20px;
+}
+header.hero .byline strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+header.hero .meta {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--ink-muted);
+  border-top: 1px solid var(--border-soft);
+  padding-top: 14px;
+}
+header.hero .meta span strong { color: var(--ink-soft); }
+header.hero .meta code {
+  font-family: "JetBrains Mono", "SF Mono", "Menlo", "Consolas", monospace;
+  font-size: 11px;
+  background: var(--bg-soft);
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid var(--border-soft);
+}
+
+h2 {
+  font-size: 24px;
+  margin: 44px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+  font-weight: 700;
+}
+h2 .num { color: var(--primary); font-weight: 600; margin-right: 8px; }
+h3 { font-size: 19px; margin: 28px 0 10px; color: var(--primary); font-weight: 600; }
+h4 { font-size: 16px; margin: 20px 0 8px; color: var(--ink); font-weight: 600; }
+
+p { margin: 10px 0; }
+ul, ol { padding-left: 22px; margin: 10px 0; }
+ul li, ol li { margin: 4px 0; }
+ul li::marker { color: var(--primary); }
+
+strong { color: var(--accent); font-weight: 600; }
+em { color: var(--ink-soft); }
+
+a { color: var(--primary); }
+a:hover { color: var(--accent); }
+
+code:not(.hljs) {
+  font-family: "JetBrains Mono", "SF Mono", "Menlo", "Consolas", monospace;
+  font-size: 0.86em;
+  background: var(--bg-code);
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid var(--border-soft);
+  color: var(--accent);
+}
+
+pre {
+  background: #fafaf6;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  padding: 0;
+  overflow-x: auto;
+  border-radius: 4px;
+  margin: 14px 0;
+}
+pre code, pre code.hljs {
+  background: transparent !important;
+  display: block;
+  padding: 14px 18px !important;
+  font-size: 13px;
+  line-height: 1.55;
+  font-family: "JetBrains Mono", "SF Mono", "Menlo", monospace;
+  color: var(--ink);
+}
+pre.diagram {
+  background: #f9f6ed;
+  border-left: 4px solid var(--accent);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.callout {
+  margin: 16px 0;
+  padding: 12px 16px;
+  border-radius: 4px;
+  border-left: 4px solid;
+  font-size: 15px;
+}
+.callout-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.callout-info { background: var(--info-bg); border-left-color: var(--primary); }
+.callout-info .callout-title { color: var(--primary); }
+.callout-warn { background: var(--warn-bg); border-left-color: var(--warn); }
+.callout-warn .callout-title { color: var(--warn); }
+.callout-good { background: var(--good-bg); border-left-color: var(--good); }
+.callout-good .callout-title { color: var(--good); }
+.callout-bad { background: var(--bad-bg); border-left-color: var(--bad); }
+.callout-bad .callout-title { color: var(--bad); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+thead { background: var(--primary); color: white; }
+th, td {
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: top;
+}
+th { font-weight: 600; font-size: 13px; letter-spacing: 0.02em; }
+tr:last-child td { border-bottom: none; }
+tbody tr:nth-child(even) { background: var(--bg-soft); }
+
+details.qa, details {
+  background: white;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  margin: 10px 0;
+  padding: 0;
+}
+details summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--primary);
+  list-style: none;
+  user-select: none;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::before {
+  content: "▸ ";
+  margin-right: 4px;
+  display: inline-block;
+  transition: transform 0.15s;
+}
+details[open] summary::before { transform: rotate(90deg); }
+details[open] summary { border-bottom: 1px solid var(--border-soft); }
+details > :not(summary) { padding: 10px 14px; }
+details p:first-of-type { margin-top: 8px; }
+
+mjx-container[display="true"] { margin: 12px 0 !important; }
+
+footer.aris-footer {
+  margin-top: 60px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+footer.aris-footer a { color: var(--ink-muted); border-bottom: 1px dotted var(--border); }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; gap: 20px; padding: 20px 16px; }
+  nav.toc {
+    position: static;
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid var(--border-soft);
+    padding-right: 0;
+    padding-bottom: 14px;
+  }
+  header.hero h1 { font-size: 24px; }
+  h2 { font-size: 20px; }
+}
+@media print {
+  nav.toc { display: none; }
+  .layout { grid-template-columns: 1fr; padding: 0; }
+  body { background: white; }
+  header.hero { border-bottom-color: var(--ink); }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="toc">
+  <h3>Contents</h3>
+  <ol>
+<li><a href="#1-executive-summary">1. Executive Summary</a>
+</li>
+<li><a href="#2-protocol-constraints">2. Protocol Constraints</a>
+</li>
+<li><a href="#3-literature-landscape">3. Literature Landscape</a>
+</li>
+<li><a href="#4-ranked-ideas">4. Ranked Ideas</a>
+</li>
+<li><a href="#5-recommended-idea-dsr-gcl">5. Recommended Idea: DSR-GCL</a>
+<ul>
+<li><a href="#problem-anchor">Problem Anchor</a></li>
+<li><a href="#mechanism">Mechanism</a></li>
+<li><a href="#dominant-contribution">Dominant Contribution</a></li>
+</ul>
+</li>
+<li><a href="#6-novelty-review">6. Novelty Review</a>
+</li>
+<li><a href="#7-required-ablations">7. Required Ablations</a>
+</li>
+<li><a href="#8-experiment-plan-summary">8. Experiment Plan Summary</a>
+</li>
+<li><a href="#9-research-wiki-updates">9. Research Wiki Updates</a>
+</li>
+<li><a href="#10-final-decision">10. Final Decision</a>
+</li>
+</ol>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">Idea Discovery Beyond IGT</div>
+  <h1>DSR-GCL Idea Report</h1>
+  
+  
+  <div class="meta">
+    <span><strong>Source:</strong> <code>idea-stage/IDEA_REPORT.md</code></span>
+    <span><strong>SHA256:</strong> <code>0a51c0f70551</code></span>
+    <span><strong>Rendered:</strong> 2026-06-26 09:33 UTC</span>
+    
+  </div>
+</header>
+
+<h1 id="ideareport-false-negative-gcl-beyond-igt">IDEA_REPORT: False-Negative GCL Beyond IGT</h1>
+<p>生成时间：2026-06-26T09:24:55Z 工作流：<code>/idea-discovery</code> 方向：图对比学习中的假负样本问题，用于节点分类 目标：寻找比 IGT-GCL 新颖性更强、机制更清晰、可在当前仓库落地、具有 2026 顶会/顶刊投稿潜力的方法 idea。 最终 decision：<strong>REVISE_IDEA</strong></p>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<p>本轮不继续推进 IGT-GCL。IGT-GCL 的 novelty score 为 <code>5.5/10</code>，低新颖性风险来自 point posterior / interval / abstention / sample reweighting 邻域。</p>
+<p>新的主候选是：</p>
+<p><strong>DSR-GCL / Decoupled Semantic-Residual Graph Contrastive Learning</strong> 核心机制：<strong>Spectral Gradient Firewall</strong></p>
+<p>DSR-GCL 不再判断哪个 pair 是 false negative，而是将表示分成 semantic channel 与 residual channel：semantic channel 不接收 node-node negative repulsion；residual channel 承担 InfoNCE/rank-style uniformity 和边界压力。fresh <code>gcl_scientific_reviewer</code> verdict 为 <strong>REVISE_IDEA</strong>，novelty score <strong>6.2/10</strong>。它小幅强于 IGT-GCL，但还不能进入 <code>GO_TO_EXPERIMENT_BRIDGE</code>。</p>
+<p>本轮未实现代码、未跑 smoke/pilot/formal 实验、未产生任何性能 claim。</p>
+<h2 id="2-protocol-constraints">2. Protocol Constraints</h2>
+<ul><li>同配图：stratified random <code>1:1:8</code> split。</li><li>异配图：官方或公认 fixed split。</li><li>GCL：frozen encoder + Logistic Regression evaluator。</li><li>Logistic Regression 超参只能由 train/val 或 train-only CV 决定。</li><li>formal 默认 10 seeds，但本阶段没有 formal。</li><li>smoke/pilot/development 不支持 SOTA、robust、comprehensive claim。</li><li>不混 split，不用 pilot/development 结果做论文 claim。</li></ul>
+<h2 id="3-literature-landscape">3. Literature Landscape</h2>
+<p>本轮基于已有 <code>literature/</code> 和补充检索，得到以下边界：</p>
+<table><thead><tr><th>Prior line</th><th>Boundary</th></tr></thead><tbody><tr><td>ProGCL / AUHNM / NML-GCL</td><td>false negative / hard negative 分离、true-negative probability、uncertainty negative mining 已拥挤。</td></tr><tr><td>Node Similarity / IFL-GCL</td><td>point posterior、node similarity distribution、PU-GCL 已覆盖大量 pair scoring 空间。</td></tr><tr><td>IGT-GCL</td><td>interval / lower-upper target 仍被 reviewer 判为类似双阈值 reweighting。</td></tr><tr><td>BGRL / CCA-SSG / Graph Barlow Twins</td><td>negative-free 目标已能绕开 negatives，DSR 必须证明 residual contrast 有额外价值。</td></tr><tr><td>ReGCL</td><td>已从 InfoNCE gradient conflict 角度分析 GCL，DSR 必须区别于 gradient-weighted InfoNCE。</td></tr><tr><td>SPGCL 2026</td><td>Dirichlet energy + positive pre-alignment 是强近邻，DSR 必须强调 negative repulsion leakage。</td></tr><tr><td>ASPECT 2026</td><td>spectral low/high fusion 是强近邻，DSR 必须强调 loss/gradient routing 而非 spectral view fusion。</td></tr><tr><td>GraphRank</td><td>margin/rank loss 已缓解 excessive negative separation，DSR 不能只改成 rank loss。</td></tr></tbody></table>
+<p>核心 gap 从“识别 false-negative pair”转移为：</p>
+<blockquote><p>如何阻止 false-negative repulsive gradients 破坏节点分类需要的语义子空间，同时保留 contrastive objective 的 uniformity / boundary 好处？</p></blockquote>
+<h2 id="4-ranked-ideas">4. Ranked Ideas</h2>
+<table><thead><tr><th>Rank</th><th>Idea</th><th>Status</th><th>Why</th></tr></thead><tbody><tr><td>1</td><td><strong>DSR-GCL / Spectral Gradient Firewall</strong></td><td><strong>REVISE_IDEA, recommended for refinement</strong></td><td>跳出 IGT 的 pair scoring/interval 路线，从表示子空间和梯度权限处理 false-negative damage。</td></tr><tr><td>2</td><td>CNG-GCL / Conflict-Negative Graph Selection</td><td>Backup</td><td>把 negative mining 改成 anchor-local conflict graph 的组合选择，不做 pair posterior；但 E2Neg 近邻风险较高。</td></tr><tr><td>3</td><td>MPC-GCL / Masked Positive Completion</td><td>Backup</td><td>用 masked context completion 增加非平凡 positives，缓解 positive scarcity；但 GraphMAE/GCMAE 近邻强。</td></tr><tr><td>4</td><td>ROT-GCL / Regularized OT Assignment</td><td>Backup</td><td>用 balanced prototype assignment 替代 instance-level all-vs-all repulsion；但 SwAV/PCL/LR-GCL 覆盖风险高。</td></tr><tr><td>5</td><td>GO-GCL / Gradient Orthogonalization</td><td>High-risk backup</td><td>更直接的梯度正交化版本，工程复杂、稳定性风险高。</td></tr></tbody></table>
+<p>已排除为主 idea：</p>
+<ul><li>point posterior GCL；</li><li>interval / ambiguity-set GCL；</li><li>abstention / sample reweighting 变体；</li><li>simple positive expansion；</li><li>ordinary false-negative filtering；</li><li>rank loss alone；</li><li>spectral fusion alone；</li><li>GraphMAE + GRACE 简单加权 hybrid。</li></ul>
+<h2 id="5-recommended-idea-dsr-gcl">5. Recommended Idea: DSR-GCL</h2>
+<h3 id="problem-anchor">Problem Anchor</h3>
+<p>在节点级 GCL 中，false negatives 可能仍会存在于 denominator。与其尝试识别每个 false-negative pair，不如限制它们能破坏的表示方向：不允许 negative repulsion 更新 semantic channel。</p>
+<h3 id="mechanism">Mechanism</h3>
+<p>DSR-GCL 使用参数隔离双通道：</p>
+<pre><code class="language-text">h_sem = GNN_sem(X_sem, A)
+h_res = GNN_res(X_res, A)
+z_sem = P_sem(h_sem)
+z_res = P_res(h_res)
+z_eval = concat(z_sem, stopgrad(z_res))</code></pre>
+<ul><li><code>L_sem</code>: negative-free alignment + variance/covariance guard。</li><li><code>L_res</code>: InfoNCE / rank-style residual contrast。</li><li><code>L_orth</code>: 降低 <code>z_sem</code> 与 <code>z_res</code> 的冗余。</li><li>negative loss 只更新 residual channel，不更新 semantic channel。</li></ul>
+<p>这比 shared encoder + two heads 更严格，直接回应 reviewer 的主要弱点。</p>
+<h3 id="dominant-contribution">Dominant Contribution</h3>
+<p><strong>Repulsive-gradient containment</strong>：把 false-negative problem 从 sample decision 转为 gradient permission / representation channel design。</p>
+<h2 id="6-novelty-review">6. Novelty Review</h2>
+<p>fresh <code>gcl_scientific_reviewer</code> 结论：</p>
+<ul><li>Verdict：<strong>REVISE_IDEA</strong></li><li>Novelty score：<strong>6.2/10</strong></li><li>相对 IGT-GCL：小幅强于 <code>5.5/10</code>，但不安全强于。</li><li>Confidence：<strong>0.72</strong></li></ul>
+<p>Reviewer 认为 DSR 的优点是跳出 pair posterior / interval / reweighting；主要问题是若使用 shared encoder，negative gradient 仍会污染 semantic branch。因此最终 proposal 改为参数隔离双通道，并把 <code>||Proj_sem(g_neg)||</code> 写成必须诊断。</p>
+<h2 id="7-required-ablations">7. Required Ablations</h2>
+<table><thead><tr><th>Variant</th><th>Purpose</th></tr></thead><tbody><tr><td>GRACE / GCA</td><td>contrastive baseline</td></tr><tr><td>BGRL / CCA-SSG / Graph Barlow Twins</td><td>negative-free baseline</td></tr><tr><td>same-parameter single-head</td><td>排除参数量和双 head 优势</td></tr><tr><td>pure semantic-only</td><td>检查 residual 是否必要</td></tr><tr><td>residual-only InfoNCE</td><td>检查 semantic 是否必要</td></tr><tr><td>semantic branch receives negatives</td><td>检查 firewall 是否必要</td></tr><tr><td>no orthogonality</td><td>检查 branch leakage</td></tr><tr><td>random branch split</td><td>检查 spectral/residual split 是否有效</td></tr><tr><td>GraphRank residual loss</td><td>检查是否只是 rank loss</td></tr><tr><td>SPGCL/ASPECT-style spectral fusion control</td><td>检查是否只是 spectral fusion</td></tr></tbody></table>
+<h2 id="8-experiment-plan-summary">8. Experiment Plan Summary</h2>
+<p>详见：</p>
+<ul><li><code>refine-logs/FINAL_PROPOSAL.md</code></li><li><code>refine-logs/EXPERIMENT_PLAN.md</code></li><li><code>refine-logs/EXPERIMENT_TRACKER.md</code></li></ul>
+<p>计划只定义未来 smoke/pilot，不启动实验。核心 gate：</p>
+<ul><li>leakage diagnostic 必须能记录；</li><li>pure negative-free baseline 不能匹配 full DSR；</li><li>semantic branch receives negatives 必须显著伤害机制诊断；</li><li>same-parameter single-head 不能匹配 full DSR；</li><li>random split 不能匹配 spectral/residual split。</li></ul>
+<h2 id="9-research-wiki-updates">9. Research Wiki Updates</h2>
+<p>本轮同步：</p>
+<ul><li><code>research-wiki/ideas/dsr_gcl.md</code></li><li><code>research-wiki/ideas/cng_gcl.md</code></li><li><code>research-wiki/log.md</code></li><li><code>AGENTS.md</code></li><li><code>MANIFEST.md</code></li></ul>
+<h2 id="10-final-decision">10. Final Decision</h2>
+<p><strong>Final decision: REVISE_IDEA.</strong></p>
+<p>DSR-GCL 比 IGT-GCL 更值得继续 refinement，但当前还不能进入 <code>GO_TO_EXPERIMENT_BRIDGE</code>。主要原因：novelty 只有 <code>6.2/10</code>，强近邻包括 BGRL/CCA/Barlow、ReGCL、SPGCL、ASPECT、GraphRank 和 low-rank/spectral GCL。下一步应先进一步打磨 gradient firewall 的理论/实现定义，或在明确获得用户批准后做极小 smoke/pilot；不得直接实现 full method、不得跑 formal、不得产生性能 claim。</p>
+
+<footer class="aris-footer">
+  Generated by <a href="https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep/blob/main/skills/render-html/SKILL.md">ARIS <code>/render-html</code></a> ·
+  source path <code>idea-stage/IDEA_REPORT.md</code> ·
+  SHA256 <code>0a51c0f70551</code> ·
+  generated at 2026-06-26 09:33 UTC.
+  This is a generated view — edit the source Markdown, then re-render.
+</footer>
+</main>
+
+</div>
+</body>
+</html>

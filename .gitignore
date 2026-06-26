@@ -1,5 +1,7 @@
 # 本机工具链接与运行缓存
 .agents/skills/
+.aris/traces/
+.aris/meta/
 __pycache__/
 *.py[cod]
 

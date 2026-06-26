@@ -5,14 +5,16 @@
 
 ## GPT 下一步应读取的文件
 
-1. `literature/LIT_REVIEW_GCL_CORE.md`
-2. `literature/LIT_REVIEW_TRANSFERABLE_METHODS.md`
-3. `literature/GAP_MAP_FOR_GPT_IDEA_CREATOR.md`
-4. `AGENTS.md`
-5. `research-wiki/log.md`
-6. `research-wiki/experiments/grace_baseline_1_1_8.md`
-7. `research-wiki/experiments/gcn_baseline_1_1_8.md`
-8. `research-wiki/experiments/gat_baseline_1_1_8.md`
+1. `literature/LIT_REVIEW_GCL_FALSE_NEGATIVES.md`
+2. `literature/FALSE_NEGATIVE_GAP_MAP_FOR_GPT_IDEA_CREATOR.md`
+3. `literature/LIT_REVIEW_GCL_CORE.md`
+4. `literature/LIT_REVIEW_TRANSFERABLE_METHODS.md`
+5. `literature/GAP_MAP_FOR_GPT_IDEA_CREATOR.md`
+6. `AGENTS.md`
+7. `research-wiki/log.md`
+8. `research-wiki/experiments/grace_baseline_1_1_8.md`
+9. `research-wiki/experiments/gcn_baseline_1_1_8.md`
+10. `research-wiki/experiments/gat_baseline_1_1_8.md`
 
 ## 项目边界
 
@@ -27,6 +29,7 @@
 
 - GCL / Graph SSL 直接相关论文：21 篇。
 - 外部可迁移方法论文：18 篇。
+- 假负样本专题新增聚焦论文：24 篇，其中图/GCL 直接相关 12 篇，通用 false-negative / hard-negative / PU learning 机制 12 篇。
 
 ## 最重要的 5 个 gap
 
@@ -40,11 +43,11 @@
 
 优先生成 3-5 个轻量、可证伪、可在当前仓库实现的 idea。推荐排序：
 
-1. False-negative-aware GRACE/GCA loss weighting。
-2. Prototype-guided positive expansion。
-3. Feature-space semantic augmentation。
-4. Masked-contrastive node pretraining。
-5. Degree/class-aware hardness reweighting。
+1. Reliability-weighted InfoNCE for GRACE/GCA。
+2. Curriculum false-negative filter。
+3. Joint positive expansion and negative debias。
+4. Reliability-gated hard true negative mining。
+5. Feature-space semantic augmentation。
 
 ## GPT 输出格式建议
 
@@ -68,3 +71,10 @@
 - 不要跑 pilot 或 GPU 实验。
 - 不要把文献中的 SOTA 数字当成本仓库 claim。
 - 不要使用 test set 选择 evaluator 或方法超参。
+
+## 假负样本方向新增约束
+
+- 必须把 `hardness` 与 `true-negative reliability` 分开定义。
+- 必须说明 pair 处理策略属于过滤、降权、转正、生成，还是概率建模。
+- 若使用 train/val 标签校准 false-negative detector，方法必须诚实标注为 semi-supervised auxiliary。
+- 首轮优先做 GRACE/GCA loss 插件，不优先做 KAN、LLM 或复杂反事实生成器。

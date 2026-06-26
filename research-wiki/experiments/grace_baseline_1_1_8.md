@@ -47,8 +47,8 @@
 | CiteSeer | `logreg_val` | development | 10 | 71.59±0.52 | 72.1±1.51 | -0.51 |
 | PubMed | `logreg_val` | smoke | 1 | 83.33，2 epoch smoke only | 86.7±0.19 | 不可比 |
 | DBLP | `logreg_val` | smoke | 1 | 77.49，2 epoch smoke only | 84.1±0.34 | 不可比 |
-| Amazon-Computers | `logreg_val` | development-partial | 6 | 84.06±0.96 | 86.8±0.32 | -2.74 |
-| Amazon-Photo | `logreg_val` | smoke | 1 | 92.35，2 epoch smoke only | 91.8±0.15 | 不可比 |
+| Amazon-Computers | `logreg_val` | development | 10 | 86.63±0.49 | 86.8±0.32 | -0.17 |
+| Amazon-Photo | `logreg_val` | development | 10 | 91.93±0.54 | 91.8±0.15 | +0.13 |
 
 ## Amazon Candidate Search
 
@@ -85,6 +85,15 @@
 
 当前 Photo 主配置已更新为 `lr=0.001, hidden=256, proj=256, activation=prelu, drop_edge=(0.2,0.4), drop_feature=(0.1,0.0), tau=0.4, epochs=1000`。
 
+`2026-06-26T06:48:01Z` 使用更新后的 Amazon 主配置完成 10 seeds development 复现：
+
+| Dataset | Per-seed test@best-val / % | Mean±Std / % | Target / % | Gap |
+| --- | --- | ---: | ---: | ---: |
+| Amazon-Computers | 86.58, 87.28, 86.93, 86.77, 87.24, 86.61, 86.18, 86.22, 86.92, 85.61 | 86.63±0.49 | 86.8±0.32 | -0.17 |
+| Amazon-Photo | 92.11, 91.62, 92.30, 91.78, 92.27, 92.04, 90.47, 92.37, 91.99, 92.30 | 91.93±0.54 | 91.8±0.15 | +0.13 |
+
+判断：Amazon 结果已基本贴近截图目标；Photo 方差大于截图，主要来自 seed6 低点 `90.47`。这些仍标记为 `development`，不能作为 formal claim。
+
 ## 历史 PyTorch Linear 诊断结果
 
 | Dataset | Evaluator | Status | Seeds | 本地结果 / % | 截图目标 / % | Gap |
@@ -104,6 +113,12 @@ CUDA_VISIBLE_DEVICES=0 python scripts/run_grace_1_1_8.py --datasets PubMed --see
 CUDA_VISIBLE_DEVICES=0 python scripts/run_grace_1_1_8.py --datasets DBLP,Computers,Photo --seeds 0 --epochs 2 --status smoke --evaluator logreg_val --log-every 1
 CUDA_VISIBLE_DEVICES=0 python scripts/run_grace_1_1_8.py --datasets Computers,Photo --seeds 0,1,2,3,4,5,6,7,8,9 --status development --evaluator logreg_val --log-every 250
 # 上一条命令在 Computers seed 6 期间人工中断，原因：前 6 seeds 已显示 Amazon-Computers 配置明显低于截图目标。
+CUDA_VISIBLE_DEVICES=0 python scripts/run_amazon_candidate_search.py --candidates computers_tau02_500,computers_aug_balanced_500,computers_dim128_500,computers_relu_500 --seeds 0,1 --log-every 250
+CUDA_VISIBLE_DEVICES=0 python scripts/run_amazon_candidate_search.py --candidates computers_tau02_lr0005_500,computers_tau02_lr002_500,computers_tau02_edge03_04_500 --seeds 0,1 --log-every 250
+CUDA_VISIBLE_DEVICES=0 python scripts/run_amazon_candidate_search.py --candidates computers_tau02_lr0005_1000 --seeds 0,1 --log-every 500
+CUDA_VISIBLE_DEVICES=0 python scripts/run_amazon_candidate_search.py --candidates photo_current_500,photo_tau02_500,photo_aug_balanced_500,photo_dim128_500,photo_relu_500 --seeds 0,1 --log-every 250
+CUDA_VISIBLE_DEVICES=0 python scripts/run_amazon_candidate_search.py --candidates photo_current_1000 --seeds 0,1 --log-every 500
+CUDA_VISIBLE_DEVICES=0 python scripts/run_grace_1_1_8.py --datasets Computers,Photo --seeds 0,1,2,3,4,5,6,7,8,9 --status development --evaluator logreg_val --log-every 500
 ```
 
 ## Gap 判断
@@ -153,6 +168,5 @@ CUDA_VISIBLE_DEVICES=0 python scripts/run_grace_1_1_8.py --datasets Computers,Ph
 
 1. 增加对照协议 `official_grace_logreg_cv`，核对截图目标是否来自 GRACE 官方 10% label + sklearn CV 口径。
 2. 为 Amazon-Computers/Photo 建立明确的配置候选表，至少包括当前初始配置、GCA 官方 Amazon 参数迁移版、UGCL/近年论文若公开代码中的 GRACE baseline 参数。
-3. 使用更新后的 Amazon 主配置启动 10 seeds development 验证；若 seed0/1 的优势不能保持，则回退到候选搜索阶段。
-4. 对 PubMed/DBLP 启动全量长跑前，先确认 evaluator 协议和 epoch/loss-batch-size 设置，否则会消耗数小时 GPU 但仍可能与目标不可比。
-5. 若目标必须严格复现截图数值，则将 `strict_project_1_1_8` 和 `paper_target_protocol` 分成两张表，禁止混用。
+3. 对 PubMed/DBLP 启动全量长跑前，先确认 evaluator 协议和 epoch/loss-batch-size 设置，否则会消耗数小时 GPU 但仍可能与目标不可比。
+4. 若目标必须严格复现截图数值，则将 `strict_project_1_1_8` 和 `paper_target_protocol` 分成两张表，禁止混用。

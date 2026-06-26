@@ -8,6 +8,8 @@ Decision: `READY_FOR_GPT_IDEA_CREATOR`
 
 Read first:
 
+- `literature/LIT_REVIEW_GCL_FALSE_NEGATIVES.md`
+- `literature/FALSE_NEGATIVE_GAP_MAP_FOR_GPT_IDEA_CREATOR.md`
 - `idea-stage/GPT_IDEA_CREATOR_CONTEXT.md`
 - `literature/GAP_MAP_FOR_GPT_IDEA_CREATOR.md`
 - `literature/LIT_REVIEW_GCL_CORE.md`
@@ -30,8 +32,9 @@ Top gaps:
 
 Promising directions:
 
-- False-negative-aware GRACE/GCA loss weighting.
-- Prototype-guided positive expansion.
+- Reliability-weighted InfoNCE.
+- Curriculum false-negative filter.
+- Joint positive expansion and negative debias.
+- Reliability-gated hard true negative mining.
 - Feature-space semantic augmentation.
-- Masked-contrastive node pretraining.
 - Degree/class-aware hardness reweighting.
