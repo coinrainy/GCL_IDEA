@@ -1,0 +1,74 @@
+meta:
+  method: IRIS-GCL
+  status_default: smoke
+  split_type: stratified_random_1_1_8
+  evaluator: logreg_val
+  note: >
+    Minimal Cora seed=0 relation-diagnostic smoke for IRIS-GCL. This runner
+    freezes a GRACE encoder, constructs planned positive-relation variants,
+    applies relation smoothing for diagnostic evaluation, and records mining
+    diagnostics. It is not a formal multi-seed result.
+
+dataset:
+  name: Cora
+  seed: 0
+
+pretrain:
+  Cora:
+    num_epochs: 200
+
+iris:
+  positive_budget: 10
+  relation_smoothing_weight: 1.0
+  candidate_pool_size: 128
+  anti_proximity:
+    embedding_near_quantile: 0.8
+    graph_near_quantile: 0.8
+  diffusion:
+    alpha: 0.2
+    steps: 3
+  response:
+    feature_mask_rate: 0.3
+    edge_drop_rate: 0.3
+    high_frequency_scale: 0.5
+    local_smoothness_weight: 1.0
+    ego_consistency_weight: 1.0
+  diagnostics:
+    partial_corr_max_pairs: 250000
+    gmm_sample_pairs: 200000
+    tau_for_repulsion_mass: 0.4
+
+variants:
+  - id: I0
+    name: GRACE
+    family: grace_base
+  - id: I1
+    name: knn_multi_positive
+    family: embedding_knn
+  - id: I2
+    name: ppr_diffusion_positive
+    family: graph_diffusion
+  - id: I3
+    name: pmgcl_lite_bmm
+    family: probabilistic_mining
+    implementation_note: "GMM-on-similarity proxy for the smoke-stage BMM-style probabilistic miner."
+  - id: I4
+    name: cast_one_step_proxy
+    family: cast_proxy
+    implementation_note: "One-step CAST-style proxy using feature, embedding, and structural agreement; not a full CAST implementation."
+  - id: I5
+    name: iris_full
+    family: iris_full
+  - id: I6
+    name: iris_response_shuffled
+    family: iris_response_shuffled
+  - id: I7
+    name: iris_no_anti_proximity
+    family: iris_no_anti_proximity
+  - id: I8
+    name: iris_structural_signature_only
+    family: iris_structural_only
+  - id: I9
+    name: iris_no_gradient_proxy
+    family: iris_no_gradient_proxy
+    implementation_note: "Equivalent to the current minimal IRIS response because positive-gradient proxy was removed before smoke."

@@ -195,3 +195,13 @@
 | 2026-06-26 13:06 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of IRIS-GCL idea report |
 | 2026-06-26 13:15 | /idea-discovery | idea-stage/BEST_IDEA_DECISION_20260626_131500.md | idea-discovery | timestamped final best-idea decision audit selecting IRIS-GCL |
 | 2026-06-26 13:15 | /idea-discovery | idea-stage/BEST_IDEA_DECISION.md | idea-discovery | latest final best-idea decision audit selecting IRIS-GCL |
+| 2026-06-26 12:23 | /experiment-bridge | configs/iris_smoke.yaml | smoke | IRIS-GCL Cora seed 0 smoke config |
+| 2026-06-26 12:23 | /experiment-bridge | scripts/run_iris_smoke.py | smoke | IRIS-GCL relation-diagnostic smoke runner |
+| 2026-06-26 12:23 | /experiment-bridge | results/raw/Cora/IRIS_GCL_SMOKE/iris_smoke_Cora_seed0_20260626T121843Z/ | smoke | raw JSON results for I0-I9 IRIS smoke variants |
+| 2026-06-26 12:23 | /experiment-bridge | logs/iris_smoke/iris_smoke_Cora_seed0_20260626T121843Z/ | smoke | GRACE warmup JSONL log for IRIS smoke |
+| 2026-06-26 12:23 | /experiment-bridge | results/summary/iris_smoke_Cora_seed0_20260626T121843Z_summary.md | smoke | IRIS smoke summary table |
+| 2026-06-26 12:23 | /experiment-bridge | results/summary/iris_smoke_Cora_seed0_20260626T121843Z_summary.json | smoke | parseable IRIS smoke summary JSON |
+| 2026-06-26 12:23 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS_20260626_122250.md | experiment-bridge | timestamped IRIS smoke bridge result summary |
+| 2026-06-26 12:23 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS.md | experiment-bridge | fixed entry for latest IRIS smoke bridge results |
+| 2026-06-26 12:23 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_122250.md | experiment-bridge | timestamped IRIS smoke code and integrity review |
+| 2026-06-26 12:23 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW.md | experiment-bridge | fixed entry for latest IRIS smoke code review |
