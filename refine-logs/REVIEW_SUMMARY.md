@@ -1,24 +1,21 @@
-# Review Summary: SIVA-GCL-positive-core
+# Review Summary: WILLOW-GCL
 
-**Problem**：BOND-GCL 太像 loss trick，需要更有创新性的 false-negative GCL idea。  
-**Initial Approach**：SIVA-GCL full version with critic, intervention positives, and virtual negatives。  
-**Date**：2026-06-26  
-**Final Score**：6.7 / 10  
-**Final Verdict**：REVISE
+## Reviewer Verdict
 
-## Resolution
+- Role：fresh `gcl_scientific_reviewer`
+- Verdict：`REVISE`
+- Novelty：`7.0/10`
+- Confidence：`0.68`
+- Recommendation：replace SIVA fixed report with revised WILLOW mainline; keep SIVA as mandatory baseline/control.
 
-fresh `gcl_scientific_reviewer` 认为 SIVA 比 BOND 更有论文形态，但原始三模块版本有拼装风险。最终收缩为：
+## Key Reviewer Message
 
-```text
-semantic stability critic + intervention-positive search
-```
+WILLOW 的可取之处不是“做一个 world model”，而是把 latent context-target prediction error 变成 semantic certificate，再约束 GCL positive view search。该组合目前比 BOND/SIVA 更强，但仍需要 smoke 证明 certificate 与 positive-signal 机制不可替代。
 
-virtual-negative 被降级为 late ablation；BOND 被降级为 loss-side baseline/ablation。
+## Required Controls
 
-## Remaining Risks
+Graph-JEPA-only、SIVA reconstruction-critic positive、edit-distance matched random hard positive、certificate-shuffled WILLOW。
 
-- semantic critic 可能学到 degree / identity shortcut。
-- SIVA 可能被 GraphMAE-only 或 random intervention 解释。
-- 如果没有 positive informativeness 指标，SPGCL prior 会压住贡献。
+## Decision
 
+`REVISE_TO_WILLOW_SMOKE_PLANNING`

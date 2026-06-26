@@ -41,3 +41,9 @@ _Append-only timeline._
 - `2026-06-26T11:23:43Z` upsert_idea: updated idea:bond_gcl [stage=archived outcome=unknown]
 - `2026-06-26T11:23:43Z` upsert_idea: added idea:siva_gcl [stage=proposed outcome=pending]
 - `2026-06-26T11:23:43Z` 2026-06-26T11:16:23Z：用户反馈 BOND-GCL 太像 loss trick、创新性不足；已按 /idea-discovery corrective rerun 重新生成非 loss-only 假负样本方向。BOND-GCL 降级为 archived/mainline-baseline；新 Top1 为 SIVA-GCL-positive-core / Semantic Stability Critic constrained Semantic-Preserving Intervention Positive。fresh gcl_scientific_reviewer 给出 REVISE、novelty 6.7/10、confidence 0.70，建议只保留 semantic stability critic + intervention-positive search，将 virtual-negative 降级为 late ablation。已更新 IDEA_REPORT、FINAL_PROPOSAL、EXPERIMENT_PLAN 与 siva_gcl wiki 页。本轮未实现代码、未跑新实验、未产生性能 claim。当前 decision：REVISE_TO_SIVA_POSITIVE_SMOKE_PLANNING。
+- `2026-06-26T11:27:25Z` upsert_idea: updated idea:siva_gcl [stage=archived outcome=unknown]
+- `2026-06-26T11:27:25Z` upsert_idea: added idea:willow_gcl [stage=proposed outcome=pending]
+- `2026-06-26T11:27:25Z` 用户继续要求 idea 足够创新，不能只是 loss 或普通 critic。已将当前主线从 SIVA-GCL 切换为 WILLOW-GCL / Latent Ego Target-Prediction Certified Views。fresh gcl_scientific_reviewer 给出 REVISE、novelty 7.0/10、confidence 0.68，认为 WILLOW 是当前 BOND/SIVA/WILLOW 中最强候选，但必须收缩为 latent ego target-prediction certificate + certified intervention positive search，并用 Graph-JEPA-only、SIVA reconstruction-critic、matched random positive、certificate-shuffled controls 证明不可替代。SIVA 已降为 mandatory control。本轮未实现代码、未跑 smoke/pilot/formal 实验、未产生性能 claim。当前 decision：REVISE_TO_WILLOW_SMOKE_PLANNING。
+- `2026-06-26T11:28:00Z` Rendered `idea-stage/IDEA_REPORT.html` from the WILLOW-GCL Markdown report. HTML is a generated reading view only; Markdown remains canonical and no claim status changed.
+- `2026-06-26T11:36:56Z` upsert_idea: added idea:willow_gcl [stage=proposed outcome=pending]
+- `2026-06-26T11:36:56Z` upsert_idea: updated idea:siva_gcl [stage=archived outcome=unknown]

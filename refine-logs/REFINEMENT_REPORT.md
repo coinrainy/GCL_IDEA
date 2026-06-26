@@ -1,33 +1,17 @@
-# Refinement Report: SIVA-GCL-positive-core
+# Refinement Report: WILLOW-GCL
 
-**Problem**：find a sufficiently innovative non-loss-only false-negative GCL idea  
-**Date**：2026-06-26  
-**Final Score**：6.7 / 10  
-**Final Verdict**：REVISE
+## What Changed
 
-## Output Files
+SIVA-GCL was demoted from active mainline to mandatory control because its semantic critic can be read as GraphMAE-like reconstruction plus intervention augmentation. WILLOW keeps the positive-view direction but replaces the reconstruction critic with a latent ego target-prediction certificate.
 
-- Candidate brief: `idea-stage/NON_LOSS_FN_CANDIDATES_20260626_111623.md`
-- Novelty check: `idea-stage/SIVA_GCL_NOVELTY_CHECK.md`
-- Idea report: `idea-stage/IDEA_REPORT.md`
-- Final proposal: `refine-logs/FINAL_PROPOSAL.md`
-- Experiment plan: `refine-logs/EXPERIMENT_PLAN.md`
-- Experiment tracker: `refine-logs/EXPERIMENT_TRACKER.md`
+## Main Refinement
 
-## Score Evolution
+- Replace "world model" overclaim with "latent ego target-prediction certificate"。
+- Delete virtual negatives from the mainline。
+- Require fixed intervention budget and matched random controls。
+- Add Graph-JEPA-only and certificate-shuffled controls as kill gates。
+- Keep the paper narrative inside GCL positive signal and false-negative exposure。
 
-| Round | Idea | Novelty | Confidence | Verdict |
-|---:|---|---:|---:|---|
-| BOND | loss-side aggregation | 5.8 | 0.76 | DEPRIORITIZE |
-| SIVA | intervention-positive core | 6.7 | 0.70 | REVISE_TO_SMOKE |
+## Current State
 
-## Method Evolution Highlights
-
-1. Rejected BOND as current mainline because it remains loss-side。
-2. Rejected virtual-negative as dominant contribution due CGC/BalanceGCL risk。
-3. Preserved SIVA-positive core as a non-loss view-generation mechanism。
-
-## Remaining Weaknesses
-
-No smoke evidence yet. SIVA remains conditional; it must pass strong controls before pilot。
-
+Ready only for smoke implementation planning. No code or experiment was run in this refinement.

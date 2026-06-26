@@ -17,17 +17,3 @@
 | W3 | edit-distance matched random hard positive | not_started | - | required |
 | W4 | certificate-shuffled WILLOW | not_started | - | required |
 | W5 | WILLOW-certified positive | not_started | - | main |
-
-## Reviewer Gate
-
-Fresh `gcl_scientific_reviewer` verdict：`REVISE`。Novelty：`7.0/10`，confidence：`0.68`。
-
-Reviewer recommendation：replace SIVA fixed report with WILLOW mainline, but keep SIVA as mandatory baseline/control. Do not regenerate. Do not mark GO before smoke evidence.
-
-## Evidence Status
-
-- Code implemented：no。
-- Smoke run：no。
-- Pilot run：no。
-- Formal run：no。
-- Claim support：none。

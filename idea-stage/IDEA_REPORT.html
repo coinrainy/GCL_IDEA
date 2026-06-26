@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIVA-GCL Idea Discovery Report</title>
+<title>WILLOW-GCL Idea Discovery Report</title>
 
 <meta name="generator" content="ARIS render-html (academic, v1)">
 <meta name="aris:source-path" content="idea-stage/IDEA_REPORT.md">
-<meta name="aris:source-sha256" content="f1246689f91715d32b247013e0855ec44c5a48cc8562e988a6152eb523e16bad">
-<meta name="aris:generated-at" content="2026-06-26 11:24 UTC">
+<meta name="aris:source-sha256" content="351f7cebe5af152d61994813d1bc52273250cf01a06dff5ff15940b23baf9a1c">
+<meta name="aris:generated-at" content="2026-06-26 11:37 UTC">
 
 <!-- offline mode: MathJax + highlight.js skipped; math and code blocks render as plain text -->
 
@@ -312,12 +312,16 @@ footer.aris-footer a { color: var(--ink-muted); border-bottom: 1px dotted var(--
   <ol>
 <li><a href="#executive-summary">Executive Summary</a>
 </li>
-<li><a href="#literature-landscape">Literature Landscape</a>
+<li><a href="#prior-boundary">Prior Boundary</a>
 </li>
 <li><a href="#recommended-idea">Recommended Idea</a>
 <ul>
-<li><a href="#idea-1-siva-gcl-positive-core">Idea 1: SIVA-GCL-positive-core</a></li>
+<li><a href="#willow-gcl-latent-certificate-driven-hard-positive-views">WILLOW-GCL: Latent Certificate Driven Hard Positive Views</a></li>
 </ul>
+</li>
+<li><a href="#why-willow-is-stronger-than-siva">Why WILLOW Is Stronger Than SIVA</a>
+</li>
+<li><a href="#mandatory-kill-rules">Mandatory Kill Rules</a>
 </li>
 <li><a href="#deprioritized-ideas">Deprioritized Ideas</a>
 </li>
@@ -331,43 +335,53 @@ footer.aris-footer a { color: var(--ink-muted); border-bottom: 1px dotted var(--
 <main>
 <header class="hero">
   
-  <h1>SIVA-GCL Idea Discovery Report</h1>
+  <h1>WILLOW-GCL Idea Discovery Report</h1>
   
   
   <div class="meta">
     <span><strong>Source:</strong> <code>idea-stage/IDEA_REPORT.md</code></span>
-    <span><strong>SHA256:</strong> <code>f1246689f917</code></span>
-    <span><strong>Rendered:</strong> 2026-06-26 11:24 UTC</span>
+    <span><strong>SHA256:</strong> <code>351f7cebe5af</code></span>
+    <span><strong>Rendered:</strong> 2026-06-26 11:37 UTC</span>
     
   </div>
 </header>
 
-<h1 id="idea-discovery-report-siva-gcl-positive-core">Idea Discovery Report: SIVA-GCL-positive-core</h1>
-<p><strong>方向</strong>：图对比学习假负样本方向，面向普通节点分类，要求避免 loss-only trick，追求更有创新性的 2026 论文机制 <strong>日期</strong>：2026-06-26 <strong>Pipeline</strong>：research-lit → idea-creator → novelty-check → research-review → research-refine-pipeline <strong>阶段结论</strong>：<code>REVISE_TO_SIVA_POSITIVE_SMOKE_PLANNING</code></p>
+<h1 id="idea-discovery-report-willow-gcl">Idea Discovery Report: WILLOW-GCL</h1>
+<p><strong>方向</strong>：图对比学习假负样本方向，面向普通节点分类，继续避开 loss-only trick，追求更有 2026 投稿潜力的机制创新 <strong>日期</strong>：2026-06-26 <strong>Pipeline</strong>：research-lit → idea-creator → novelty-check → research-review → research-refine-pipeline <strong>阶段结论</strong>：<code>REVISE_TO_WILLOW_SMOKE_PLANNING</code></p>
 <h2 id="executive-summary">Executive Summary</h2>
-<p>用户指出 BOND-GCL “只是在 loss 上做文章”，该判断成立。BOND 已降级为 loss-side baseline / ablation，不再作为当前主线。本轮新的推荐方向是 <strong>SIVA-GCL-positive-core / Semantic Stability Critic constrained Semantic-Preserving Intervention Positive</strong>。</p>
-<p>SIVA 的主贡献不是生成 hard negatives，也不是改 InfoNCE loss，而是为每个 anchor 搜索 <strong>尽可能不同但语义稳定的 node-local intervention positive</strong>。这直接回应 SPGCL 2026 提出的 positive pre-alignment 问题：普通 GCL 的 positive pair 在 message passing 后可能已经过度相似，导致正样本学习信号弱；SIVA 试图主动制造更有信息量的 positives，从源头减少对真实节点 hard negatives 的依赖。</p>
-<p>fresh <code>gcl_scientific_reviewer</code> 给出 <code>REVISE</code>、novelty <code>6.7/10</code>、confidence <code>0.70</code>。结论：SIVA 比 BOND 更有论文形态，但必须收缩为 <code>semantic stability critic + intervention-positive search</code>，virtual-negative 只能作为 late ablation。</p>
-<h2 id="literature-landscape">Literature Landscape</h2>
-<p>当前 false-negative / graph SSL 相关 prior 已经覆盖：</p>
-<ul><li>CGC：counterfactual hard negatives。</li><li>BalanceGCL：graph-level balanced hard negatives + semantic positives。</li><li>RGCL/GCA/ACGA：learned / rationale-aware / adversarial graph augmentation。</li><li>DoG：graph diffusion 生成 synthetic graph structures，用于 node classification 和 GCL。</li><li>SPGCL 2026：message passing 导致 positive pre-alignment，需恢复 positive learning signal。</li><li>GraphMAE / masked graph modeling：masked reconstruction 可做 generative self-supervision。</li></ul>
-<p>因此新方法不能主打“生成 hard negatives”或“learned augmentation”。SIVA 的差异化应落在：<strong>critic-constrained maximal semantic-preserving intervention positive</strong>。</p>
+<p>用户进一步指出 SIVA-GCL 虽然不再是 loss trick，但仍像在 GraphMAE / GCA / RGCL 的边界上组合组件，创新力度不够。这个判断也成立。因此本轮把主线从 <strong>SIVA-GCL-positive-core</strong> 推进到 <strong>WILLOW-GCL / World-model Intervention Learning for Latent-node cOntrastive vieWs</strong>。</p>
+<p>WILLOW 不把贡献放在 denominator、pair weight 或新 loss 上，也不把 GraphMAE 式重构 critic 当核心。它的最小不可替代机制是：</p>
+<pre><code class="language-text">latent ego target-prediction certificate
+        +
+certified intervention positive search for GCL</code></pre>
+<p>也就是说，先训练一个 JEPA-like 的 node-local latent target prediction module，用 context ego view 预测 masked target ego views 的 latent embedding；再把预测误差作为语义证书，搜索“尽可能远但仍被预测证书接受”的正视图。最终仍服务 GCL：用 certified hard positive 替代普通随机增强 positive，从 positive signal 端减少对真实节点 hard negatives 的依赖。</p>
+<p>fresh <code>gcl_scientific_reviewer</code> 给出 <code>REVISE</code>、novelty <code>7.0/10</code>、confidence <code>0.68</code>。它是当前 BOND/SIVA/WILLOW 三者中最强候选，但仍不能写成 <code>GO</code>，也不能进入 formal 或性能 claim。</p>
+<h2 id="prior-boundary">Prior Boundary</h2>
+<p>当前必须正面避开的 prior：</p>
+<ul><li><strong>Graph-JEPA / Predict, Cluster, Refine</strong>：已有 latent context-target prediction；WILLOW 不能只是 Graph-JEPA 预训练，必须证明 certificate 对 GCL view generation 有贡献。</li><li><strong>GraphMAE</strong>：已有 masked feature reconstruction；WILLOW 不能靠 raw feature decoder 或 reconstruction loss 定义语义。</li><li><strong>SPGCL 2026</strong>：指出 message passing 导致 positive pre-alignment；WILLOW 必须证明生成的 positive 更能恢复 positive learning signal。</li><li><strong>CGC / BalanceGCL / ACGA</strong>：已有 counterfactual / hard negative / positive-negative graph generation；WILLOW 主线删除 virtual negatives。</li><li><strong>RGCL / GCA / AutoGCL</strong>：已有 rationale-aware 或 learned augmentation；WILLOW 必须证明 latent target-prediction certificate 不是普通 augmentation scorer。</li><li><strong>DoG</strong>：已有 graph diffusion synthetic structures；WILLOW 只生成 training views，不向原图注入 synthetic nodes/edges。</li></ul>
 <h2 id="recommended-idea">Recommended Idea</h2>
-<h3 id="idea-1-siva-gcl-positive-core">Idea 1: SIVA-GCL-positive-core</h3>
-<ul><li><strong>Method (what we actually do)</strong>：训练轻量 masked-context semantic stability critic；对每个 anchor 的 ego-context 搜索 feature/edge/neighbor intervention；选择 view distance 最大但 critic 仍判定语义稳定的 positive view；用它替代普通随机增强 positive 进入 GRACE/GCA 训练框架。</li><li><strong>Hypothesis</strong>：比随机增强更远、但语义稳定的 positives 能缓解 message-passing pre-alignment，使 positive gradient 更有信息量，并降低模型对真实节点 hard negatives 的依赖。</li><li><strong>Minimum experiment</strong>：Cora seed=0 smoke；对照 GRACE、GCA-style aug、GraphMAE-only/critic-only、random intervention positive、SIVA-positive core。</li><li><strong>Expected outcome</strong>：SIVA-positive 的 view distance 高于 GRACE/GCA，semantic stability 不崩，post-GNN positive similarity / positive gradient 更 informative，LogReg 不低于 GRACE。</li><li><strong>Novelty</strong>：6.7/10；closest prior 是 SPGCL、RGCL、GraphMAE、CGC、BalanceGCL、ACGA、DoG。</li><li><strong>Feasibility</strong>：中等；首版用 greedy / differentiable mask search，不训练复杂 generator。</li><li><strong>Risk</strong>：MEDIUM-HIGH；critic 可能学到 identity/degree shortcut，或 random intervention 就能匹配 SIVA。</li><li><strong>Contribution type</strong>：view generation / intervention mechanism。</li><li><strong>Pilot result</strong>：SKIPPED；本轮未跑新实验。</li><li><strong>Reviewer likely objection</strong>：SIVA 可能只是 GraphMAE + GCA/RGCL 拼装；必须用 critic-shuffled、GraphMAE-only、random intervention 对照证明 intervention-positive 不可替代。</li></ul>
+<h3 id="willow-gcl-latent-certificate-driven-hard-positive-views">WILLOW-GCL: Latent Certificate Driven Hard Positive Views</h3>
+<ul><li><strong>Method</strong>：对每个 anchor 采样 context ego-subgraph 与多个 masked target ego-subgraphs；online encoder 预测 EMA target encoder 的 latent target embedding；用 target-prediction error 作为 semantic certificate；在固定 intervention budget 下搜索 view distance 最大且 certificate error 低的 positive view；用该 view 训练 GRACE/GCA-style encoder。</li><li><strong>Hypothesis</strong>：如果 certified positive 比普通增强更远，但仍保持 latent semantic stability，那么它能缓解 positive pre-alignment，并降低训练对真实节点 hard negatives 的依赖。</li><li><strong>Minimum experiment</strong>：只允许 Cora seed=0 smoke；对照 GRACE、Graph-JEPA-only、SIVA reconstruction-critic positive、edit-distance matched random hard positive、certificate-shuffled WILLOW、WILLOW-certified positive。</li><li><strong>Diagnostics</strong>：world prediction error、view edit distance、post-GNN positive similarity、positive gradient norm、offline label-agreement diagnostic、false-negative repulsion mass。</li><li><strong>Novelty</strong>：7.0/10；当前强于 SIVA 6.7/10 与 BOND 5.8-6.0/10。</li><li><strong>Risk</strong>：HIGH；<code>world_error &lt;= epsilon</code> 可能只学习 degree/homophily/feature smoothness，而不是节点分类语义。</li><li><strong>Contribution type</strong>：view generation / latent certificate / positive-signal mechanism。</li><li><strong>Pilot result</strong>：SKIPPED；本轮未实现代码、未跑新实验。</li></ul>
+<h2 id="why-willow-is-stronger-than-siva">Why WILLOW Is Stronger Than SIVA</h2>
+<p>SIVA 的 critic 是 masked-context semantic stability critic，容易被 reviewer 归入 GraphMAE-like reconstruction + learned augmentation。WILLOW 把稳定性判据从 raw reconstruction 改为 latent context-target prediction，并把该模块限制为 <strong>certificate</strong>，而不是最终 SSL objective。</p>
+<p>关键区别：</p>
+<ul><li>SIVA：critic 约束干预正样本，风险是 reconstruction shortcut。</li><li>WILLOW：latent target-prediction certificate 约束干预正样本，风险转为 Graph-JEPA collision，但更有机制新意。</li><li>WILLOW 的贡献不在“我也做 world model”，而在“用 latent target prediction error 认证 hard positive view”。</li></ul>
+<h2 id="mandatory-kill-rules">Mandatory Kill Rules</h2>
+<p>WILLOW 只有在以下规则不触发时才允许继续：</p>
+<table><thead><tr><th>Kill rule</th><th>解释</th></tr></thead><tbody><tr><td>Graph-JEPA-only 匹配 WILLOW</td><td>说明 view generation 没有贡献，kill WILLOW</td></tr><tr><td>SIVA reconstruction critic 匹配 WILLOW</td><td>说明 latent certificate 不必要，降回 SIVA</td></tr><tr><td>edit-distance matched random positive 匹配 WILLOW</td><td>说明 certificate 无效</td></tr><tr><td>certificate-shuffled WILLOW 匹配 WILLOW</td><td>说明 prediction certificate 没有语义信息</td></tr><tr><td>world_error 与 offline label agreement / semantic stability 无相关</td><td>说明 certificate 学到非任务语义，kill</td></tr><tr><td>WILLOW 只因更大 search/compute budget 获益</td><td>不算机制证据</td></tr></tbody></table>
 <h2 id="deprioritized-ideas">Deprioritized Ideas</h2>
-<table><thead><tr><th>Idea</th><th>Reason</th></tr></thead><tbody><tr><td>BOND-GCL</td><td>用户与 reviewer 均认为 loss-side trick 风险过高，降为 baseline/ablation</td></tr><tr><td>SIVA virtual-negative</td><td>与 CGC / ACGA / BalanceGCL 过近，不作为主贡献</td></tr><tr><td>MINT-GCL</td><td>容易被 prototype / tokenizer / VQ-MAE 吸收</td></tr><tr><td>DoCI-GCL</td><td>与 DoG 太近，且 diffusion 成本过高</td></tr><tr><td>ORBIT-GCL</td><td>结构角色解释性强，但普通节点分类普适性不足</td></tr></tbody></table>
+<table><thead><tr><th>Idea</th><th>Current role</th></tr></thead><tbody><tr><td>BOND-GCL</td><td>archived baseline / ablation；loss-side 风险过高</td></tr><tr><td>SIVA-GCL-positive-core</td><td>mandatory control；如果 WILLOW 不优于 SIVA，降回 SIVA 或继续 pivot</td></tr><tr><td>DSR-GCL</td><td>已有 Cora seed=0 audit-smoke 弱信号，不作为当前主线</td></tr><tr><td>IGT-GCL</td><td>novelty 较低，作为反例保留</td></tr></tbody></table>
 <h2 id="refined-proposal">Refined Proposal</h2>
-<ul><li>Proposal: <code>refine-logs/FINAL_PROPOSAL.md</code></li><li>Experiment plan: <code>refine-logs/EXPERIMENT_PLAN.md</code></li><li>Tracker: <code>refine-logs/EXPERIMENT_TRACKER.md</code></li><li>Novelty trace: <code>.aris/traces/novelty-check/2026-06-26_run05/</code></li></ul>
+<ul><li>Proposal: <code>refine-logs/FINAL_PROPOSAL.md</code></li><li>Experiment plan: <code>refine-logs/EXPERIMENT_PLAN.md</code></li><li>Tracker: <code>refine-logs/EXPERIMENT_TRACKER.md</code></li><li>Novelty report: <code>idea-stage/WILLOW_GCL_NOVELTY_CHECK.md</code></li><li>Reviewer trace: <code>.aris/traces/novelty-check/2026-06-26_run06/</code></li></ul>
 <h2 id="decision">Decision</h2>
-<p><code>REVISE_TO_SIVA_POSITIVE_SMOKE_PLANNING</code>.</p>
-<p>不允许直接做 formal 或性能 claim。下一步只允许 Cora seed=0 smoke，且必须包含 GraphMAE-only、critic-only、random intervention、critic-shuffled 等强对照。</p>
+<p><code>REVISE_TO_WILLOW_SMOKE_PLANNING</code>.</p>
+<p>当前只允许规划最小 smoke。不得进入 formal，不得写 SOTA/robust/comprehensive，不得把 reviewer novelty <code>7.0/10</code> 当成论文可接收证据。</p>
 
 <footer class="aris-footer">
   Generated by <a href="https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep/blob/main/skills/render-html/SKILL.md">ARIS <code>/render-html</code></a> ·
   source path <code>idea-stage/IDEA_REPORT.md</code> ·
-  SHA256 <code>f1246689f917</code> ·
-  generated at 2026-06-26 11:24 UTC.
+  SHA256 <code>351f7cebe5af</code> ·
+  generated at 2026-06-26 11:37 UTC.
   This is a generated view — edit the source Markdown, then re-render.
 </footer>
 </main>

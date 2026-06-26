@@ -2,25 +2,25 @@
 type: idea
 node_id: idea:siva_gcl
 title: "SIVA-GCL-positive-core: Semantic Intervention View Augmentation"
-stage: proposed
-outcome: pending
-added: 2026-06-26T11:23:43Z
+stage: archived
+outcome: unknown
+added: 2026-06-26T11:36:56Z
 based_on: []
 target_gaps: ["gap:FN-G2", "gap:FN-G3", "gap:FN-G4", "gap:FN-G8"]
-tags: ["gcl", "false-negative", "node-classification", "siva", "view-generation", "smoke-planning"]
+tags: ["gcl", "false-negative", "node-classification", "siva", "view-generation", "control", "archived"]
 ---
 
 # SIVA-GCL-positive-core: Semantic Intervention View Augmentation
 
-**stage:** `proposed`  ·  **outcome:** `pending`
+**stage:** `archived`  ·  **outcome:** `unknown`
 
-Non-loss false-negative GCL direction: critic-constrained semantic-preserving intervention positives for node classification.
+Archived mainline; retained as mandatory WILLOW reconstruction-critic control.
 
 ## Thesis
-Graph contrastive learning can reduce false-negative dependence by generating informative node-local positive views: interventions should be maximally different from the original ego view while remaining stable under a masked-context semantic critic.
+SIVA searches semantic-stability-critic constrained intervention positives, but is no longer the active mainline after WILLOW review.
 
 ## Key risks
-Fresh reviewer verdict REVISE, novelty 6.7/10. Risks: GraphMAE/critic-only may explain gains, random intervention may match SIVA, semantic critic may learn identity/degree shortcuts, and SPGCL prior requires positive prealignment diagnostics.
+Fresh reviewer judged SIVA less novel than WILLOW; GraphMAE/GCA/RGCL composition risk remains. Keep as mandatory control, not paper mainline.
 
 ## Connections
 _Edges are recorded in `graph/edges.jsonl`; summarize here for human readers._

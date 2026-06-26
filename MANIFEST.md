@@ -134,3 +134,21 @@
 | 2026-06-26 11:16 | /research-refine-pipeline | refine-logs/PIPELINE_SUMMARY.md | implementation | latest SIVA-GCL pipeline summary |
 | 2026-06-26 11:16 | /research-wiki | research-wiki/ideas/siva_gcl.md | wiki | proposed SIVA-GCL-positive-core idea page |
 | 2026-06-26 11:17 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of SIVA-GCL idea report |
+| 2026-06-26 11:27 | /idea-discovery | idea-stage/WORLD_MODEL_FN_CANDIDATES_20260626_112725.md | idea-discovery | world-model / latent-certificate false-negative GCL candidate brief |
+| 2026-06-26 11:27 | /idea-discovery | literature/WILLOW_WORLD_MODEL_LANDSCAPE_20260626_112725.md | idea-discovery | WILLOW prior boundary and literature collision map |
+| 2026-06-26 11:27 | /idea-discovery | literature/WILLOW_WORLD_MODEL_LANDSCAPE.md | idea-discovery | fixed entry for WILLOW prior boundary |
+| 2026-06-26 11:27 | /novelty-check | idea-stage/WILLOW_GCL_NOVELTY_CHECK_20260626_112725.md | novelty-check | timestamped WILLOW reviewer report, verdict REVISE, novelty 7.0 |
+| 2026-06-26 11:27 | /novelty-check | idea-stage/WILLOW_GCL_NOVELTY_CHECK.md | novelty-check | latest WILLOW reviewer report |
+| 2026-06-26 11:27 | /idea-discovery | idea-stage/IDEA_CANDIDATES_20260626_112725.md | idea-discovery | timestamped WILLOW pivot candidate ranking |
+| 2026-06-26 11:27 | /idea-discovery | idea-stage/IDEA_CANDIDATES.md | idea-discovery | latest WILLOW pivot candidate ranking |
+| 2026-06-26 11:27 | /idea-discovery | idea-stage/IDEA_REPORT_20260626_112725.md | idea-discovery | timestamped WILLOW idea discovery report |
+| 2026-06-26 11:27 | /idea-discovery | idea-stage/IDEA_REPORT.md | idea-discovery | latest WILLOW idea discovery report |
+| 2026-06-26 11:27 | /research-refine-pipeline | refine-logs/FINAL_PROPOSAL_20260626_112725.md | refinement | timestamped WILLOW final proposal |
+| 2026-06-26 11:27 | /research-refine-pipeline | refine-logs/FINAL_PROPOSAL.md | refinement | latest WILLOW final proposal |
+| 2026-06-26 11:27 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260626_112725.md | experiment-planning | timestamped WILLOW smoke experiment plan |
+| 2026-06-26 11:27 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | experiment-planning | latest WILLOW smoke experiment plan |
+| 2026-06-26 11:27 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_112725.md | experiment-planning | timestamped WILLOW experiment tracker |
+| 2026-06-26 11:27 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | latest WILLOW experiment tracker |
+| 2026-06-26 11:27 | /research-wiki | research-wiki/ideas/willow_gcl.md | wiki | proposed WILLOW active candidate idea page |
+| 2026-06-26 11:27 | /research-wiki | research-wiki/ideas/siva_gcl.md | wiki | SIVA demoted to mandatory control for WILLOW |
+| 2026-06-26 11:28 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of WILLOW-GCL idea report |
