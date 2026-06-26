@@ -253,3 +253,13 @@
 | 2026-06-26 14:19 | /experiment-bridge | results/summary/pa_m0_001_sanity_v3_CiteSeer_seed0_20260626T141904Z_summary.md | smoke | PA-M0-001b diagnostic sanity summary table |
 | 2026-06-26 14:19 | /experiment-bridge | results/summary/pa_m0_001_sanity_v3_CiteSeer_seed0_20260626T141904Z_summary.json | smoke | PA-M0-001b parseable diagnostic sanity summary |
 | 2026-06-26 14:19 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_141946.md | experiment-bridge | local code/integrity review for Pilot-A diagnostics |
+| 2026-06-26 14:49 | /experiment-bridge | logs/cast_certificate/pa_m1_cora_Cora_seed0_20260626T142147Z/ | pilot | PA-M1-CORA seed0 logs |
+| 2026-06-26 14:49 | /experiment-bridge | logs/cast_certificate/pa_m1_cora_Cora_seed1_20260626T142213Z/ | pilot | PA-M1-CORA seed1 logs |
+| 2026-06-26 14:49 | /experiment-bridge | logs/cast_certificate/pa_m1_cora_Cora_seed2_20260626T142240Z/ | pilot | PA-M1-CORA seed2 logs |
+| 2026-06-26 14:49 | /experiment-bridge | logs/cast_certificate/pa_m1_cite_CiteSeer_seed0_20260626T142421Z/ | pilot | PA-M1-CITE seed0 logs |
+| 2026-06-26 14:49 | /experiment-bridge | logs/cast_certificate/pa_m1_cite_CiteSeer_seed1_20260626T142458Z/ | pilot | PA-M1-CITE seed1 logs |
+| 2026-06-26 14:49 | /experiment-bridge | logs/cast_certificate/pa_m1_cite_CiteSeer_seed2_20260626T142537Z/ | pilot | PA-M1-CITE seed2 logs |
+| 2026-06-26 14:49 | /experiment-bridge | logs/cast_certificate/pa_m1_pub_PubMed_seed0_20260626T142701Z/ | pilot | PA-M1-PUB seed0 logs; PubMed seeds1-2 stopped |
+| 2026-06-26 14:49 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS_20260626_144910.md | pilot | aggregate CAST Certificate Pilot-A result report |
+| 2026-06-26 14:49 | /experiment-bridge | refine-logs/EXPERIMENT_RESULTS.md | pilot | fixed latest CAST Certificate Pilot-A result report |
+| 2026-06-26 14:49 | /research-wiki | research-wiki/ideas/cast_gcl.md | wiki | CAST-GCL downgraded to pilot_a_negative / revise_or_pivot |

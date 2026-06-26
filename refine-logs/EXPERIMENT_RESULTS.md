@@ -1,11 +1,11 @@
-# Experiment Results: CAST Certificate Smoke
+# Experiment Results: CAST Certificate Pilot-A
 
 Fixed entry for the latest experiment result.
 
-- Timestamped source: `refine-logs/CAST_CERTIFICATE_RESULTS_20260626_135504.md`
-- Summary JSON: `results/summary/cast_cert_clean_smoke_Cora_seed0_20260626T135413Z_summary.json`
-- Summary Markdown: `results/summary/cast_cert_clean_smoke_Cora_seed0_20260626T135413Z_summary.md`
-- Decision: `GO_TO_PILOT_PLANNING_WITH_CAUTION`
+- Timestamped source: `refine-logs/EXPERIMENT_RESULTS_20260626_144910.md`
+- Stage: Pilot-A / diagnostic, not formal.
+- Decision: `REVISE_OR_PIVOT_BEFORE_ANY_MORE_PILOT`
 
-The real latent target-prediction CAST certificate produced the first positive smoke signal: C5 reached `86.16` test@best-val and label agreement `0.7886`, compared with CAST proxy `85.70` / `0.7548`. This supports narrow Pilot-A planning only.
+Pilot-A checked Cora seeds 0-2, CiteSeer seeds 0-2, and PubMed seed 0. C4 latent certificate shows low overlap with kNN/PPR/CAST, so it is not simply the same mining rule, but C4/C5 do not produce stable accuracy gains over kNN or CAST proxy. PubMed seeds 1-2 were stopped by the no-go signal.
 
+No formal, SOTA, robust, comprehensive, or final performance claim is supported.
