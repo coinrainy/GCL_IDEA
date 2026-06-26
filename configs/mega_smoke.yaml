@@ -1,0 +1,118 @@
+meta:
+  method: MEGA-GCL
+  smoke_id: ME-M0-001
+  status_default: smoke
+  split_type: stratified_random_1_1_8
+  evaluator: frozen_encoder_logistic_regression
+  method_status: label-free masked discriminative graph SSL
+  note: >
+    Cora seed0 kill-smoke only. Evidence groups are generated without labels.
+    Test labels are used only for final evaluator reporting after train/val
+    selection is complete.
+
+dataset: Cora
+seed: 0
+
+pretrain_overrides:
+  Cora:
+    num_epochs: 200
+
+mega:
+  learning_rate: 0.0005
+  weight_decay: 0.00001
+  mask_rate: 0.35
+  edge_drop_rate: 0.2
+  projector_hidden_dim: 128
+  projector_out_dim: 128
+  decoder_hidden_dim: 128
+  num_feature_groups: 16
+  num_structure_groups: 8
+  num_residual_groups: 8
+  num_degree_groups: 8
+  num_mint_groups: 16
+  num_codebook_entries: 32
+  num_prototypes: 32
+  matched_grace_proj_hidden: 1120
+  lambda_recon: 1.0
+  lambda_latent: 1.0
+  lambda_contrast: 0.25
+  lambda_evidence: 1.0
+  lambda_view: 0.25
+  lambda_vq: 0.25
+  lambda_balance: 0.02
+  max_grad_norm: 5.0
+  diagnostics_max_pairs: 200000
+
+variants:
+  - id: M0
+    name: GRACE
+    type: grace
+  - id: M1
+    name: GraphMAE-style reconstruction
+    type: graphmae_recon
+  - id: M2
+    name: GraphMAE2-lite latent-remask
+    type: latent_remask
+  - id: M3
+    name: GCMAE-style MAE+CL hybrid
+    type: gcmae_hybrid
+  - id: M4
+    name: VQ-codebook autoencoder
+    type: vq_codebook
+  - id: M5
+    name: SwAV-prototype assignment
+    type: swav_proto
+  - id: M6
+    name: MINT token-corruption contrast
+    type: mint_token
+  - id: M7
+    name: MEGA feature-only
+    type: mega_feature
+  - id: M8
+    name: MEGA structure-only
+    type: mega_structure
+  - id: M9
+    name: MEGA degree-only
+    type: mega_degree
+  - id: M10
+    name: MEGA full
+    type: mega_full
+  - id: M11
+    name: random-permuted evidence groups
+    type: random_evidence
+  - id: M12
+    name: no-mask evidence classifier
+    type: no_mask_evidence
+  - id: M13
+    name: matched-parameter GRACE
+    type: grace_matched
+
+logreg_eval:
+  solver: liblinear
+  penalty: l2
+  tol: 0.0001
+  max_iter: 5000
+  fit_intercept: true
+  class_weight:
+  normalize_embeddings: true
+  c_values:
+    - 0.0009765625
+    - 0.001953125
+    - 0.00390625
+    - 0.0078125
+    - 0.015625
+    - 0.03125
+    - 0.0625
+    - 0.125
+    - 0.25
+    - 0.5
+    - 1.0
+    - 2.0
+    - 4.0
+    - 8.0
+    - 16.0
+    - 32.0
+    - 64.0
+    - 128.0
+    - 256.0
+    - 512.0
