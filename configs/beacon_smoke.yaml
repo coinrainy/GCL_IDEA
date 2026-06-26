@@ -1,0 +1,73 @@
+meta:
+  method: BEACON-GCL
+  status_default: smoke
+  split_type: stratified_random_1_1_8
+  evaluator: logreg_val
+  note: >
+    BE-M0-001 smoke for Boundary-Eligibility Aware Contrastive
+    Neutralization after CAST Pilot-A no-go. This config is for Cora seed0
+    sanity only and does not support formal or performance claims.
+
+dataset:
+  name: Cora
+  seed: 0
+
+pretrain:
+  Cora:
+    num_epochs: 200
+
+certificate:
+  hidden_dim: 256
+  output_normalize: true
+  train_epochs: 300
+  learning_rate: 0.001
+  weight_decay: 0.00001
+  batch_edges: 8192
+  alpha_values: [0.0, 0.25, 0.5]
+  candidate_pool_size: 128
+  positive_budget: 10
+  relation_smoothing_weight: 1.0
+
+beacon:
+  edit_eta: 0.20
+  positive_budget: 10
+  utility_quantile: 0.50
+  boundary_risk_quantile: 0.75
+  boundary_weight: 1.0
+  geometry_weight: 0.75
+  degree_gap_weight: 0.25
+  uniformity_sample_pairs: 250000
+  rank_center: true
+
+diagnostics:
+  graph_diffusion_steps: 3
+  graph_diffusion_decay: 0.6
+
+variants:
+  - id: B0
+    name: GRACE
+    family: grace_base
+  - id: B1
+    name: embedding_knn
+    family: embedding_knn
+  - id: B2
+    name: cast_proxy
+    family: cast_proxy
+  - id: B3
+    name: c4_latent_certificate
+    family: latent_certificate
+  - id: B4
+    name: all_candidate_neutralization
+    family: all_candidate
+  - id: B5
+    name: beacon_full_gate
+    family: beacon_full
+  - id: B6
+    name: shuffled_utility_gate
+    family: shuffled_utility
+  - id: B7
+    name: no_boundary_gate
+    family: no_boundary
+  - id: B8
+    name: no_geometry_gate
+    family: no_geometry

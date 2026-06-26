@@ -275,3 +275,7 @@
 | 2026-06-26 15:04 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | fixed latest BEACON-GCL tracker |
 | 2026-06-26 15:04 | /research-wiki | research-wiki/ideas/beacon_gcl.md | wiki | new BEACON-GCL idea page |
 | 2026-06-26 15:04 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | offline HTML view of BEACON-GCL idea report |
+| 2026-06-26 15:33 | /experiment-bridge | configs/beacon_smoke.yaml | smoke | BEACON-GCL BE-M0 smoke config |
+| 2026-06-26 15:33 | /experiment-bridge | scripts/run_beacon_smoke.py | smoke | BEACON-GCL BE-M0 smoke runner |
+| 2026-06-26 15:33 | /experiment-bridge | logs/beacon_smoke/be_m0_dryrun_Cora_seed0_20260626T153303Z/ | smoke | BEACON dryrun logs, 1+1 epoch chain check |
+| 2026-06-26 15:33 | /experiment-bridge | refine-logs/EXPERIMENT_CODE_REVIEW_20260626_153338.md | experiment-bridge | local BEACON code review and dryrun record |
