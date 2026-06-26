@@ -348,3 +348,23 @@
 | 2026-06-26 16:40 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | fixed latest MEGA-GCL tracker |
 | 2026-06-26 16:40 | /research-wiki | research-wiki/ideas/mega_gcl.md | wiki | new MEGA-GCL idea page |
 | 2026-06-26 16:40 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of MEGA-GCL idea report |
+| 2026-06-26 17:16 | /idea-discovery | literature/ORBIT_GCL_LANDSCAPE_20260626_171614.md | idea-discovery | timestamped ORBIT literature boundary and gap map |
+| 2026-06-26 17:16 | /idea-discovery | literature/ORBIT_GCL_LANDSCAPE.md | idea-discovery | latest ORBIT literature boundary and gap map |
+| 2026-06-26 17:16 | /idea-discovery | idea-stage/OPERATOR_RESPONSE_CANDIDATES_20260626_171614.md | idea-discovery | timestamped operator-response candidate ranking |
+| 2026-06-26 17:16 | /idea-discovery | idea-stage/OPERATOR_RESPONSE_CANDIDATES.md | idea-discovery | latest operator-response candidate ranking |
+| 2026-06-26 17:16 | /novelty-check | idea-stage/ORBIT_GCL_NOVELTY_CHECK_20260626_171614.md | novelty-check | timestamped ORBIT fresh reviewer report |
+| 2026-06-26 17:16 | /novelty-check | idea-stage/ORBIT_GCL_NOVELTY_CHECK.md | novelty-check | latest ORBIT fresh reviewer report |
+| 2026-06-26 17:16 | /idea-discovery | idea-stage/IDEA_CANDIDATES_20260626_171614.md | idea-discovery | timestamped ORBIT candidate summary |
+| 2026-06-26 17:16 | /idea-discovery | idea-stage/IDEA_CANDIDATES.md | idea-discovery | latest ORBIT candidate summary |
+| 2026-06-26 17:16 | /idea-discovery | idea-stage/IDEA_REPORT_20260626_171614.md | idea-discovery | timestamped ORBIT idea discovery report |
+| 2026-06-26 17:16 | /idea-discovery | idea-stage/IDEA_REPORT.md | idea-discovery | latest ORBIT idea discovery report |
+| 2026-06-26 17:16 | /research-refine | refine-logs/FINAL_PROPOSAL_20260626_171614.md | refinement | timestamped ORBIT final proposal |
+| 2026-06-26 17:16 | /research-refine | refine-logs/FINAL_PROPOSAL.md | refinement | latest ORBIT final proposal |
+| 2026-06-26 17:16 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260626_171614.md | experiment-planning | timestamped ORBIT kill-smoke plan |
+| 2026-06-26 17:16 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | experiment-planning | latest ORBIT kill-smoke plan |
+| 2026-06-26 17:16 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_171614.md | experiment-planning | timestamped ORBIT experiment tracker |
+| 2026-06-26 17:16 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | latest ORBIT experiment tracker |
+| 2026-06-26 17:16 | /research-refine | refine-logs/PIPELINE_SUMMARY_20260626_171614.md | refinement | timestamped ORBIT pipeline summary |
+| 2026-06-26 17:16 | /research-refine | refine-logs/PIPELINE_SUMMARY.md | refinement | latest ORBIT pipeline summary |
+| 2026-06-26 17:16 | /research-wiki | research-wiki/ideas/orbit_gcl.md | wiki | proposed ORBIT idea page with REVISE decision |
+| 2026-06-26 17:16 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of ORBIT-GCL idea report |
