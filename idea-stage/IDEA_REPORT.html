@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BOND-GCL Idea Discovery Report</title>
+<title>SIVA-GCL Idea Discovery Report</title>
 
 <meta name="generator" content="ARIS render-html (academic, v1)">
 <meta name="aris:source-path" content="idea-stage/IDEA_REPORT.md">
-<meta name="aris:source-sha256" content="585d3d4483fca2acdde447063c20efacf7135634fc21d6090beeea29d6cfcc96">
-<meta name="aris:generated-at" content="2026-06-26 10:58 UTC">
+<meta name="aris:source-sha256" content="f1246689f91715d32b247013e0855ec44c5a48cc8562e988a6152eb523e16bad">
+<meta name="aris:generated-at" content="2026-06-26 11:24 UTC">
 
 <!-- offline mode: MathJax + highlight.js skipped; math and code blocks render as plain text -->
 
@@ -314,14 +314,12 @@ footer.aris-footer a { color: var(--ink-muted); border-bottom: 1px dotted var(--
 </li>
 <li><a href="#literature-landscape">Literature Landscape</a>
 </li>
-<li><a href="#ranked-ideas">Ranked Ideas</a>
+<li><a href="#recommended-idea">Recommended Idea</a>
 <ul>
-<li><a href="#idea-1-bond-gcl--basin-capped-objective-for-negative-debiasing">Idea 1: BOND-GCL / Basin-capped Objective for Negative Debiasing</a></li>
-<li><a href="#idea-2-pearl-gcl">Idea 2: PEARL-GCL</a></li>
-<li><a href="#idea-3-cng-gcl-v2">Idea 3: CNG-GCL v2</a></li>
+<li><a href="#idea-1-siva-gcl-positive-core">Idea 1: SIVA-GCL-positive-core</a></li>
 </ul>
 </li>
-<li><a href="#eliminated-ideas">Eliminated Ideas</a>
+<li><a href="#deprioritized-ideas">Deprioritized Ideas</a>
 </li>
 <li><a href="#refined-proposal">Refined Proposal</a>
 </li>
@@ -333,46 +331,43 @@ footer.aris-footer a { color: var(--ink-muted); border-bottom: 1px dotted var(--
 <main>
 <header class="hero">
   
-  <h1>BOND-GCL Idea Discovery Report</h1>
+  <h1>SIVA-GCL Idea Discovery Report</h1>
   
   
   <div class="meta">
     <span><strong>Source:</strong> <code>idea-stage/IDEA_REPORT.md</code></span>
-    <span><strong>SHA256:</strong> <code>585d3d4483fc</code></span>
-    <span><strong>Rendered:</strong> 2026-06-26 10:58 UTC</span>
+    <span><strong>SHA256:</strong> <code>f1246689f917</code></span>
+    <span><strong>Rendered:</strong> 2026-06-26 11:24 UTC</span>
     
   </div>
 </header>
 
-<h1 id="idea-discovery-report-false-negative-gcl-toward-bond-gcl">Idea Discovery Report: False-Negative GCL Toward BOND-GCL</h1>
-<p><strong>方向</strong>：图对比学习假负样本方向，面向普通节点分类，优先考虑 2026 年论文潜力和实验提升可能性 <strong>日期</strong>：2026-06-26 <strong>Pipeline</strong>：research-lit → idea-creator → novelty-check → research-review → research-refine-pipeline <strong>阶段结论</strong>：<code>REVISE_TO_SMOKE_PLANNING</code></p>
+<h1 id="idea-discovery-report-siva-gcl-positive-core">Idea Discovery Report: SIVA-GCL-positive-core</h1>
+<p><strong>方向</strong>：图对比学习假负样本方向，面向普通节点分类，要求避免 loss-only trick，追求更有创新性的 2026 论文机制 <strong>日期</strong>：2026-06-26 <strong>Pipeline</strong>：research-lit → idea-creator → novelty-check → research-review → research-refine-pipeline <strong>阶段结论</strong>：<code>REVISE_TO_SIVA_POSITIVE_SMOKE_PLANNING</code></p>
 <h2 id="executive-summary">Executive Summary</h2>
-<p>本轮重新审视 false-negative GCL 方向后，不建议继续 DSR-GCL：已有 Cora seed=0 fix-audit-smoke 显示 DSR-full 明显低于 GRACE 与公平控制。新的推荐方向是 <strong>BOND-GCL / Basin-capped Objective for Negative Debiasing</strong>，它把问题从“每个 pair 是不是假负”改写为“同一语义盆地在 denominator 中被重复计数并产生过量排斥”。</p>
-<p>fresh <code>gcl_scientific_reviewer</code> 对 BOND 给出 <code>REVISE</code>、novelty <code>6.0/10</code>、confidence <code>0.74</code>。结论是：BOND 有可救的新颖性空间，但不能直接实现 full pilot；必须先把方法压成单一机制 <code>basin-level negative mass aggregation</code>，并用反事实实验打掉 “只是 pair reweighting / E2Neg-style sampling” 的解释。</p>
+<p>用户指出 BOND-GCL “只是在 loss 上做文章”，该判断成立。BOND 已降级为 loss-side baseline / ablation，不再作为当前主线。本轮新的推荐方向是 <strong>SIVA-GCL-positive-core / Semantic Stability Critic constrained Semantic-Preserving Intervention Positive</strong>。</p>
+<p>SIVA 的主贡献不是生成 hard negatives，也不是改 InfoNCE loss，而是为每个 anchor 搜索 <strong>尽可能不同但语义稳定的 node-local intervention positive</strong>。这直接回应 SPGCL 2026 提出的 positive pre-alignment 问题：普通 GCL 的 positive pair 在 message passing 后可能已经过度相似，导致正样本学习信号弱；SIVA 试图主动制造更有信息量的 positives，从源头减少对真实节点 hard negatives 的依赖。</p>
+<p>fresh <code>gcl_scientific_reviewer</code> 给出 <code>REVISE</code>、novelty <code>6.7/10</code>、confidence <code>0.70</code>。结论：SIVA 比 BOND 更有论文形态，但必须收缩为 <code>semantic stability critic + intervention-positive search</code>，virtual-negative 只能作为 late ablation。</p>
 <h2 id="literature-landscape">Literature Landscape</h2>
-<p>现有假负样本 GCL 文献已经覆盖了几条主路：</p>
-<ul><li>ProGCL / AUGCL：从 hard-negative mining 失败出发，估计 true-negative probability 或 affinity uncertainty。</li><li>KDD 2024 Node Similarity：把相似节点纳入更接近 ideal objective 的 soft target。</li><li>E2Neg：反对大规模 negatives，强调少量有效 negatives / cluster-center 风格采样。</li><li>SPGCL 2026：指出 message passing 会导致 positive pre-alignment，使正样本学习信号变弱。</li><li>Khan-GCL：生成 semantic hard negatives，但换 KAN encoder 且复杂度较重。</li></ul>
-<p>这些 prior 意味着：普通 pair reweighting、双阈值/interval、small-negative sampling、或生成式 hard negatives 都不是当前项目最优首选。更合理的切口是保留 GRACE/GCA 的轻量性，在 loss 聚合层做可证伪改动。</p>
-<h2 id="ranked-ideas">Ranked Ideas</h2>
-<h3 id="idea-1-bond-gcl--basin-capped-objective-for-negative-debiasing">Idea 1: BOND-GCL / Basin-capped Objective for Negative Debiasing</h3>
-<ul><li><strong>Method (what we actually do)</strong>：先为每个 anchor 构造一个低成本 anchor-local basin 划分；再把 InfoNCE denominator 从 pair-wise sum 改成 basin-wise negative mass aggregation；每个 basin 的 repulsive mass 有上限；overflow / boundary replacement 作为可关闭模块单独消融。</li><li><strong>Hypothesis</strong>：节点级 GCL 中 false negatives 的核心伤害之一是同一语义盆地被重复计入 denominator，导致类内或近类区域被过度推远。</li><li><strong>Minimum experiment</strong>：Cora seed=0 smoke，GRACE baseline + pair reweight proxy + E2Neg-style center + random basin + BOND-cap-only + overflow-only。</li><li><strong>Expected outcome</strong>：BOND-cap-only 至少不低于 GRACE，并在 offline false-negative mass exposure、denominator effective number、uniformity 上优于 pair/random controls。</li><li><strong>Novelty</strong>：6.0/10；closest prior 是 ProGCL、AUGCL、NodeSim、E2Neg、SPGCL。</li><li><strong>Feasibility</strong>：中等；只改 loss / sampler，不换 encoder。</li><li><strong>Risk</strong>：MEDIUM；最主要风险是数学上退化为 basin-level pair reweighting。</li><li><strong>Contribution type</strong>：method + diagnostic。</li><li><strong>Pilot result</strong>：SKIPPED；本轮未跑新实验。</li><li><strong>Reviewer likely objection</strong>：Basin cap 可能只是 shared pair weight，overflow 可能才是真正提升来源。</li><li><strong>Why we should do this</strong>：它比 DSR 更贴近 GRACE/GCA 插件，工程上更可能快速看到信号；同时比单纯 pair posterior 多一个可审查的 distribution-level failure mode。</li></ul>
-<h3 id="idea-2-pearl-gcl">Idea 2: PEARL-GCL</h3>
-<ul><li><strong>Method</strong>：用 Dirichlet-energy / positive informativeness 构建 positive signal，再用 low false-negative-risk local negatives 做对比。</li><li><strong>Novelty</strong>：5.7/10。</li><li><strong>Status</strong>：backup。受 SPGCL + ProGCL 夹击严重，除非 BOND smoke 失败且 SPGCL 差异化查新通过，否则不主推。</li></ul>
-<h3 id="idea-3-cng-gcl-v2">Idea 3: CNG-GCL v2</h3>
-<ul><li><strong>Method</strong>：使用 anchor-local conflict graph 选择低冲突、多 basin 覆盖的小 denominator。</li><li><strong>Novelty</strong>：5.2/10。</li><li><strong>Status</strong>：backup / ablation。太接近 E2Neg 或 diversity small-negative set，不建议作为主论文贡献。</li></ul>
-<h2 id="eliminated-ideas">Eliminated Ideas</h2>
-<table><thead><tr><th>Idea</th><th>Reason eliminated or deprioritized</th></tr></thead><tbody><tr><td>DSR-GCL</td><td>smoke/fix-audit-smoke 未显示机制优势，当前不支持继续主线</td></tr><tr><td>IGT-GCL</td><td>reviewer 认为低新颖性，易被视为 posterior / interval 包装</td></tr><tr><td>SAFE-GCL</td><td>conservative filter / reweighting 风险过高</td></tr><tr><td>LITE-SHELL</td><td>synthetic hard negative prior 拥挤，工程风险高</td></tr></tbody></table>
+<p>当前 false-negative / graph SSL 相关 prior 已经覆盖：</p>
+<ul><li>CGC：counterfactual hard negatives。</li><li>BalanceGCL：graph-level balanced hard negatives + semantic positives。</li><li>RGCL/GCA/ACGA：learned / rationale-aware / adversarial graph augmentation。</li><li>DoG：graph diffusion 生成 synthetic graph structures，用于 node classification 和 GCL。</li><li>SPGCL 2026：message passing 导致 positive pre-alignment，需恢复 positive learning signal。</li><li>GraphMAE / masked graph modeling：masked reconstruction 可做 generative self-supervision。</li></ul>
+<p>因此新方法不能主打“生成 hard negatives”或“learned augmentation”。SIVA 的差异化应落在：<strong>critic-constrained maximal semantic-preserving intervention positive</strong>。</p>
+<h2 id="recommended-idea">Recommended Idea</h2>
+<h3 id="idea-1-siva-gcl-positive-core">Idea 1: SIVA-GCL-positive-core</h3>
+<ul><li><strong>Method (what we actually do)</strong>：训练轻量 masked-context semantic stability critic；对每个 anchor 的 ego-context 搜索 feature/edge/neighbor intervention；选择 view distance 最大但 critic 仍判定语义稳定的 positive view；用它替代普通随机增强 positive 进入 GRACE/GCA 训练框架。</li><li><strong>Hypothesis</strong>：比随机增强更远、但语义稳定的 positives 能缓解 message-passing pre-alignment，使 positive gradient 更有信息量，并降低模型对真实节点 hard negatives 的依赖。</li><li><strong>Minimum experiment</strong>：Cora seed=0 smoke；对照 GRACE、GCA-style aug、GraphMAE-only/critic-only、random intervention positive、SIVA-positive core。</li><li><strong>Expected outcome</strong>：SIVA-positive 的 view distance 高于 GRACE/GCA，semantic stability 不崩，post-GNN positive similarity / positive gradient 更 informative，LogReg 不低于 GRACE。</li><li><strong>Novelty</strong>：6.7/10；closest prior 是 SPGCL、RGCL、GraphMAE、CGC、BalanceGCL、ACGA、DoG。</li><li><strong>Feasibility</strong>：中等；首版用 greedy / differentiable mask search，不训练复杂 generator。</li><li><strong>Risk</strong>：MEDIUM-HIGH；critic 可能学到 identity/degree shortcut，或 random intervention 就能匹配 SIVA。</li><li><strong>Contribution type</strong>：view generation / intervention mechanism。</li><li><strong>Pilot result</strong>：SKIPPED；本轮未跑新实验。</li><li><strong>Reviewer likely objection</strong>：SIVA 可能只是 GraphMAE + GCA/RGCL 拼装；必须用 critic-shuffled、GraphMAE-only、random intervention 对照证明 intervention-positive 不可替代。</li></ul>
+<h2 id="deprioritized-ideas">Deprioritized Ideas</h2>
+<table><thead><tr><th>Idea</th><th>Reason</th></tr></thead><tbody><tr><td>BOND-GCL</td><td>用户与 reviewer 均认为 loss-side trick 风险过高，降为 baseline/ablation</td></tr><tr><td>SIVA virtual-negative</td><td>与 CGC / ACGA / BalanceGCL 过近，不作为主贡献</td></tr><tr><td>MINT-GCL</td><td>容易被 prototype / tokenizer / VQ-MAE 吸收</td></tr><tr><td>DoCI-GCL</td><td>与 DoG 太近，且 diffusion 成本过高</td></tr><tr><td>ORBIT-GCL</td><td>结构角色解释性强，但普通节点分类普适性不足</td></tr></tbody></table>
 <h2 id="refined-proposal">Refined Proposal</h2>
-<ul><li>Proposal: <code>refine-logs/FINAL_PROPOSAL.md</code></li><li>Experiment plan: <code>refine-logs/EXPERIMENT_PLAN.md</code></li><li>Tracker: <code>refine-logs/EXPERIMENT_TRACKER.md</code></li><li>Pipeline summary: <code>refine-logs/PIPELINE_SUMMARY.md</code></li><li>Novelty trace: <code>.aris/traces/novelty-check/2026-06-26_run04/</code></li></ul>
+<ul><li>Proposal: <code>refine-logs/FINAL_PROPOSAL.md</code></li><li>Experiment plan: <code>refine-logs/EXPERIMENT_PLAN.md</code></li><li>Tracker: <code>refine-logs/EXPERIMENT_TRACKER.md</code></li><li>Novelty trace: <code>.aris/traces/novelty-check/2026-06-26_run05/</code></li></ul>
 <h2 id="decision">Decision</h2>
-<p><code>REVISE_TO_SMOKE_PLANNING</code>.</p>
-<p>不允许直接做 formal 或性能 claim。下一步只允许 smoke implementation，并且必须将 <code>BOND-cap-only</code>、<code>random basins</code>、<code>same pair weights</code>、<code>E2Neg-style center negatives</code> 和 <code>overflow-only</code> 放在同一 Cora seed=0 审计表中。</p>
+<p><code>REVISE_TO_SIVA_POSITIVE_SMOKE_PLANNING</code>.</p>
+<p>不允许直接做 formal 或性能 claim。下一步只允许 Cora seed=0 smoke，且必须包含 GraphMAE-only、critic-only、random intervention、critic-shuffled 等强对照。</p>
 
 <footer class="aris-footer">
   Generated by <a href="https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep/blob/main/skills/render-html/SKILL.md">ARIS <code>/render-html</code></a> ·
   source path <code>idea-stage/IDEA_REPORT.md</code> ·
-  SHA256 <code>585d3d4483fc</code> ·
-  generated at 2026-06-26 10:58 UTC.
+  SHA256 <code>f1246689f917</code> ·
+  generated at 2026-06-26 11:24 UTC.
   This is a generated view — edit the source Markdown, then re-render.
 </footer>
 </main>

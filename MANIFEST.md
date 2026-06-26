@@ -115,3 +115,22 @@
 | 2026-06-26 10:49 | /research-refine-pipeline | refine-logs/PIPELINE_SUMMARY.md | implementation | latest BOND-GCL pipeline summary |
 | 2026-06-26 10:49 | /research-wiki | research-wiki/ideas/bond_gcl.md | wiki | proposed BOND-GCL idea page with REVISE_TO_SMOKE_PLANNING status |
 | 2026-06-26 10:50 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of BOND-GCL idea report |
+| 2026-06-26 11:16 | /idea-discovery | idea-stage/NON_LOSS_FN_CANDIDATES_20260626_111623.md | idea-discovery | non-loss false-negative GCL candidate brief after user feedback |
+| 2026-06-26 11:16 | /idea-discovery | literature/NON_LOSS_FN_LANDSCAPE_20260626_111623.md | idea-discovery | timestamped non-loss false-negative GCL literature boundary |
+| 2026-06-26 11:16 | /idea-discovery | literature/NON_LOSS_FN_LANDSCAPE.md | idea-discovery | latest non-loss false-negative GCL literature boundary |
+| 2026-06-26 11:16 | /novelty-check | idea-stage/SIVA_GCL_NOVELTY_CHECK_20260626_111623.md | novelty-check | timestamped SIVA-GCL novelty and reviewer report |
+| 2026-06-26 11:16 | /novelty-check | idea-stage/SIVA_GCL_NOVELTY_CHECK.md | novelty-check | latest SIVA-GCL novelty and reviewer report |
+| 2026-06-26 11:16 | /idea-discovery | idea-stage/IDEA_CANDIDATES_20260626_111623.md | idea-discovery | timestamped non-loss candidate ranking after reviewer |
+| 2026-06-26 11:16 | /idea-discovery | idea-stage/IDEA_CANDIDATES.md | idea-discovery | latest non-loss candidate ranking after reviewer |
+| 2026-06-26 11:16 | /idea-discovery | idea-stage/IDEA_REPORT_20260626_111623.md | idea-discovery | timestamped SIVA-GCL idea discovery report |
+| 2026-06-26 11:16 | /idea-discovery | idea-stage/IDEA_REPORT.md | idea-discovery | latest SIVA-GCL idea discovery report |
+| 2026-06-26 11:16 | /research-refine-pipeline | refine-logs/FINAL_PROPOSAL_20260626_111623.md | implementation | timestamped SIVA-GCL final proposal |
+| 2026-06-26 11:16 | /research-refine-pipeline | refine-logs/FINAL_PROPOSAL.md | implementation | latest SIVA-GCL final proposal |
+| 2026-06-26 11:16 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260626_111623.md | experiment-planning | timestamped SIVA-GCL smoke experiment plan |
+| 2026-06-26 11:16 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | experiment-planning | latest SIVA-GCL smoke experiment plan |
+| 2026-06-26 11:16 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_111623.md | experiment-planning | timestamped SIVA-GCL experiment tracker |
+| 2026-06-26 11:16 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | latest SIVA-GCL experiment tracker |
+| 2026-06-26 11:16 | /research-refine-pipeline | refine-logs/PIPELINE_SUMMARY_20260626_111623.md | implementation | timestamped SIVA-GCL pipeline summary |
+| 2026-06-26 11:16 | /research-refine-pipeline | refine-logs/PIPELINE_SUMMARY.md | implementation | latest SIVA-GCL pipeline summary |
+| 2026-06-26 11:16 | /research-wiki | research-wiki/ideas/siva_gcl.md | wiki | proposed SIVA-GCL-positive-core idea page |
+| 2026-06-26 11:17 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered offline HTML view of SIVA-GCL idea report |
