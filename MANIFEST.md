@@ -75,3 +75,9 @@
 | 2026-06-26 10:02 | manual-smoke | results/raw/Cora/DSR_GCL_SMOKE/dsr_smoke_Cora_seed0_20260626T095525Z/ | smoke | raw JSON results for A0/A2/A3/A4/A5/A9 |
 | 2026-06-26 10:02 | manual-smoke | logs/dsr_smoke/dsr_smoke_Cora_seed0_20260626T095525Z/ | smoke | training JSONL logs for DSR-GCL smoke |
 | 2026-06-26 10:02 | manual-smoke | results/summary/dsr_smoke_Cora_seed0_20260626T095525Z_summary.md | smoke | DSR-GCL smoke result and mechanism diagnostic table |
+| 2026-06-26 10:11 | audit-smoke | refine-logs/DSR_AUDIT_SMOKE_NOTE_20260626_101103.md | audit-smoke | concise audit note for failed DSR-GCL smoke and unfair ablations |
+| 2026-06-26 10:11 | audit-smoke | configs/dsr_smoke.yaml | audit-smoke | updated DSR-GCL config with A5a/A5b/A5c and A4b controls |
+| 2026-06-26 10:11 | audit-smoke | scripts/run_dsr_smoke.py | audit-smoke | updated smoke runner with embedding-level tables, parameter proof, and fair no-firewall controls |
+| 2026-06-26 10:11 | audit-smoke | results/raw/Cora/DSR_GCL_SMOKE/dsr_audit_smoke_Cora_seed0_20260626T101103Z/ | audit-smoke | raw JSON for Cora seed 0 audit-smoke variants |
+| 2026-06-26 10:11 | audit-smoke | logs/dsr_smoke/dsr_audit_smoke_Cora_seed0_20260626T101103Z/ | audit-smoke | JSONL training logs for Cora seed 0 audit-smoke |
+| 2026-06-26 10:11 | audit-smoke | results/summary/dsr_audit_smoke_Cora_seed0_20260626T101103Z_summary.md | audit-smoke | full audit-smoke summary with embedding, params, leakage, and kill-rule tables |

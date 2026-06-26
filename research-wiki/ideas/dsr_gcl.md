@@ -3,7 +3,7 @@
 status: active_candidate  
 decision: REVISE_IDEA  
 created_utc: 2026-06-26T09:21:55Z  
-updated_utc: 2026-06-26T10:02:00Z  
+updated_utc: 2026-06-26T10:11:03Z  
 source: `/idea-discovery` beyond IGT-GCL  
 task: node classification  
 method family: graph contrastive learning
@@ -122,6 +122,41 @@ Smoke interpretation:
 **REVISE/PIVOT_REQUIRED**.  
 The firewall diagnostic itself is valid, but the current DSR-full objective does not show smoke-level mechanism advantage. Do not proceed to formal experiments or paper claims unless a revised mechanism first passes additional pilot gates.
 
+## Audit-Smoke Evidence: 2026-06-26 Cora Seed 0
+
+Stage: **audit-smoke only**.  
+Purpose: audit the failed smoke and correct unfair ablations, not improve results.
+
+Artifacts:
+
+- audit note: `refine-logs/DSR_AUDIT_SMOKE_NOTE_20260626_101103.md`
+- summary: `results/summary/dsr_audit_smoke_Cora_seed0_20260626T101103Z_summary.md`
+- raw results: `results/raw/Cora/DSR_GCL_SMOKE/dsr_audit_smoke_Cora_seed0_20260626T101103Z/`
+- logs: `logs/dsr_smoke/dsr_audit_smoke_Cora_seed0_20260626T101103Z/`
+
+Audit additions:
+
+- A5a: semantic InfoNCE only, no residual InfoNCE.
+- A5b: budget-matched no-firewall, semantic/residual InfoNCE each weighted `0.5`.
+- A5c: scaled no-firewall, loss scale matched to A9 as closely as possible.
+- A4b: parameter-matched single-head control (`402120` parameters vs A9 `400256`, relative gap about `0.47%`).
+
+Key audit-smoke results (`test@best`, percent):
+
+| ID | Variant | Test@best |
+|---|---|---:|
+| A0 | GRACE baseline | 84.78 |
+| A2 | semantic-only negative-free | 78.27 |
+| A3 | residual-only InfoNCE | 30.21 |
+| A9 | DSR-full firewall | 78.69 |
+| A5b | budget-matched no-firewall | 79.57 |
+| A5c | scaled no-firewall | 81.00 |
+| A4 | original same-head | 83.63 |
+| A4b | parameter-matched single-head | 80.81 |
+
+Final audit-smoke decision: **PIVOT_REQUIRED**.  
+Triggered rules: residual-only remains extremely low; A9 is below A4/A4b; fairer no-firewall A5b/A5c are above A9. Current evidence argues against continuing DSR-GCL formal under the present residual/firewall mechanism.
+
 ## Files
 
 - `idea-stage/FN_IDEAS_BEYOND_IGT.md`
@@ -135,4 +170,6 @@ The firewall diagnostic itself is valid, but the current DSR-full objective does
 - `configs/dsr_smoke.yaml`
 - `scripts/run_dsr_smoke.py`
 - `results/summary/dsr_smoke_Cora_seed0_20260626T095525Z_summary.md`
+- `refine-logs/DSR_AUDIT_SMOKE_NOTE_20260626_101103.md`
+- `results/summary/dsr_audit_smoke_Cora_seed0_20260626T101103Z_summary.md`
 - `.aris/traces/novelty-check/2026-06-26_run03/`

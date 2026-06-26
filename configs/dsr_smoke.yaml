@@ -42,6 +42,8 @@ variants:
     semantic_negative_free: true
     residual_infonce: false
     semantic_infonce: false
+    residual_infonce_weight: 0.0
+    semantic_infonce_weight: 0.0
     orthogonality: false
     main_eval_embedding: z_sem
   - id: A3
@@ -52,6 +54,8 @@ variants:
     semantic_negative_free: false
     residual_infonce: true
     semantic_infonce: false
+    residual_infonce_weight: 1.0
+    semantic_infonce_weight: 0.0
     orthogonality: false
     main_eval_embedding: z_res
   - id: A9
@@ -62,6 +66,8 @@ variants:
     semantic_negative_free: true
     residual_infonce: true
     semantic_infonce: false
+    residual_infonce_weight: 1.0
+    semantic_infonce_weight: 0.0
     orthogonality: true
     main_eval_embedding: concat
   - id: A5
@@ -72,13 +78,61 @@ variants:
     semantic_negative_free: true
     residual_infonce: true
     semantic_infonce: true
+    residual_infonce_weight: 1.0
+    semantic_infonce_weight: 1.0
     orthogonality: true
+    main_eval_embedding: concat
+    audit_note: unfair_extra_semantic_infonce_budget
+  - id: A5a
+    name: semantic_infonce_only
+    family: dsr
+    use_semantic: true
+    use_residual: false
+    semantic_negative_free: true
+    residual_infonce: false
+    semantic_infonce: true
+    residual_infonce_weight: 0.0
+    semantic_infonce_weight: 1.0
+    orthogonality: false
+    main_eval_embedding: z_sem
+  - id: A5b
+    name: budget_matched_no_firewall
+    family: dsr
+    use_semantic: true
+    use_residual: true
+    semantic_negative_free: true
+    residual_infonce: true
+    semantic_infonce: true
+    residual_infonce_weight: 0.5
+    semantic_infonce_weight: 0.5
+    orthogonality: true
+    main_eval_embedding: concat
+  - id: A5c
+    name: scaled_no_firewall
+    family: dsr
+    use_semantic: true
+    use_residual: true
+    semantic_negative_free: true
+    residual_infonce: true
+    semantic_infonce: true
+    residual_infonce_weight: 1.0
+    semantic_infonce_weight: 1.0
+    orthogonality: true
+    total_loss_scale_mode: match_a9_loss_scale
     main_eval_embedding: concat
   - id: A4
     name: same_parameter_single_head_control
     family: single_head
     semantic_negative_free: true
     residual_infonce: true
+    main_eval_embedding: single
+    audit_note: not_strictly_parameter_matched_to_A9
+  - id: A4b
+    name: param_matched_single_head
+    family: single_head
+    semantic_negative_free: true
+    residual_infonce: true
+    hidden_dim: param_match_dsr_full
     main_eval_embedding: single
 
 logreg_eval:

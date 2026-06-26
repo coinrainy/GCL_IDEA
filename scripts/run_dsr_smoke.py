@@ -319,6 +319,41 @@ class SingleHeadModel(nn.Module):
         return {"single": self.forward(x, edge_index)}
 
 
+def resolve_single_head_hidden_dim(
+    in_dim: int,
+    activation_name: str,
+    num_layers: int,
+    target_params: int,
+    requested: int | str | None,
+) -> tuple[int, dict[str, int | float | str]]:
+    if requested is None:
+        return target_params, {"match_mode": "default_base_hidden"}
+    if isinstance(requested, int):
+        return requested, {"match_mode": "explicit_hidden_dim"}
+    if str(requested) != "param_match_dsr_full":
+        raise ValueError(f"Unsupported hidden_dim request: {requested}")
+
+    best_hidden = None
+    best_params = None
+    best_abs_diff = None
+    for hidden_dim in range(1, 513):
+        probe = SingleHeadModel(in_dim, hidden_dim, activation_name, num_layers)
+        params = count_parameters(probe)
+        abs_diff = abs(params - target_params)
+        if best_abs_diff is None or abs_diff < best_abs_diff:
+            best_hidden = hidden_dim
+            best_params = params
+            best_abs_diff = abs_diff
+    assert best_hidden is not None and best_params is not None and best_abs_diff is not None
+    return int(best_hidden), {
+        "match_mode": "closest_single_head_hidden_dim_to_dsr_full",
+        "target_parameter_count": int(target_params),
+        "actual_parameter_count": int(best_params),
+        "absolute_parameter_gap": int(best_abs_diff),
+        "relative_parameter_gap": float(best_abs_diff / max(target_params, 1)),
+    }
+
+
 def train_grace_variant(
     dataset_name: str,
     seed: int,
@@ -424,8 +459,13 @@ def train_dsr_variant(
         out = model.encode_views(x1, edge1, x2, edge2, int(pretrain_cfg["low_pass_k"]))
 
         loss = data.x.new_tensor(0.0)
+        a9_scale_reference = data.x.new_tensor(0.0)
         neg_loss = None
         diag: dict[str, float | None] = {}
+        semantic_loss_value = None
+        residual_nce_value = None
+        semantic_nce_value = None
+        orth_value = None
         if bool(variant_cfg.get("semantic_negative_free", False)) and out.z_sem_1 is not None:
             sem_loss, sem_diag = vicreg_loss(
                 out.z_sem_1,
@@ -436,24 +476,52 @@ def train_dsr_variant(
                 float(pretrain_cfg["eps"]),
             )
             loss = loss + sem_loss
+            a9_scale_reference = a9_scale_reference + sem_loss
+            semantic_loss_value = sem_loss
             diag.update({f"semantic_{k}": v for k, v in sem_diag.items()})
         if bool(variant_cfg.get("residual_infonce", False)) and out.z_res_1 is not None:
             res_nce = info_nce_loss(out.z_res_1, out.z_res_2, float(pretrain_cfg["tau"]))
-            loss = loss + float(pretrain_cfg["alpha_res"]) * res_nce
-            neg_loss = res_nce if neg_loss is None else neg_loss + res_nce
+            residual_weight = float(variant_cfg.get("residual_infonce_weight", pretrain_cfg["alpha_res"]))
+            loss = loss + residual_weight * res_nce
+            a9_scale_reference = a9_scale_reference + float(pretrain_cfg["alpha_res"]) * res_nce
+            neg_component = residual_weight * res_nce
+            neg_loss = neg_component if neg_loss is None else neg_loss + neg_component
+            residual_nce_value = res_nce
             diag["residual_infonce"] = float(res_nce.detach().item())
+            diag["residual_infonce_weight"] = float(residual_weight)
         if bool(variant_cfg.get("semantic_infonce", False)) and out.z_sem_1 is not None:
             sem_nce = info_nce_loss(out.z_sem_1, out.z_sem_2, float(pretrain_cfg["tau"]))
-            loss = loss + sem_nce
-            neg_loss = sem_nce if neg_loss is None else neg_loss + sem_nce
+            semantic_weight = float(variant_cfg.get("semantic_infonce_weight", 1.0))
+            loss = loss + semantic_weight * sem_nce
+            neg_component = semantic_weight * sem_nce
+            neg_loss = neg_component if neg_loss is None else neg_loss + neg_component
+            semantic_nce_value = sem_nce
             diag["semantic_infonce"] = float(sem_nce.detach().item())
+            diag["semantic_infonce_weight"] = float(semantic_weight)
         if bool(variant_cfg.get("orthogonality", False)) and out.z_sem_1 is not None and out.z_res_1 is not None:
             orth = corr_frobenius(out.z_sem_1.detach(), out.z_res_1) + corr_frobenius(
                 out.z_sem_2.detach(),
                 out.z_res_2,
             )
             loss = loss + float(pretrain_cfg["beta_orth"]) * orth
+            a9_scale_reference = a9_scale_reference + float(pretrain_cfg["beta_orth"]) * orth
+            orth_value = orth
             diag["orthogonality"] = float(orth.detach().item())
+
+        loss_scale = 1.0
+        if variant_cfg.get("total_loss_scale_mode") == "match_a9_loss_scale":
+            raw_loss_for_scale = float(loss.detach().abs().item())
+            ref_loss_for_scale = float(a9_scale_reference.detach().abs().item())
+            if raw_loss_for_scale > 0:
+                loss_scale = ref_loss_for_scale / raw_loss_for_scale
+                loss = loss * loss_scale
+            diag["loss_scale_mode"] = "match_a9_loss_scale"
+            diag["loss_scale"] = float(loss_scale)
+            diag["a9_reference_loss_scale"] = float(ref_loss_for_scale)
+            diag["raw_unscaled_loss"] = float(raw_loss_for_scale)
+        else:
+            diag["loss_scale_mode"] = "none"
+            diag["loss_scale"] = float(loss_scale)
 
         if neg_loss is not None and model.sem_params() and model.res_params():
             sem_grad = grad_norm(model.sem_params(), neg_loss)
@@ -475,6 +543,10 @@ def train_dsr_variant(
                 "epoch": epoch,
                 "loss": float(loss.detach().item()),
                 "elapsed_sec": time.time() - start,
+                "semantic_loss": float(semantic_loss_value.detach().item()) if semantic_loss_value is not None else None,
+                "residual_infonce_loss": float(residual_nce_value.detach().item()) if residual_nce_value is not None else None,
+                "semantic_infonce_loss": float(semantic_nce_value.detach().item()) if semantic_nce_value is not None else None,
+                "orthogonality_loss": float(orth_value.detach().item()) if orth_value is not None else None,
                 **diag,
             }
             logs.append(row)
@@ -507,14 +579,23 @@ def train_single_head_variant(
     seed: int,
     data,
     dataset,
+    variant_cfg: dict[str, Any],
     pretrain_cfg: dict[str, Any],
+    target_params: int,
     device: torch.device,
     log_path: Path,
 ) -> tuple[nn.Module, dict[str, Any], dict[str, torch.Tensor]]:
     set_seed(seed)
+    hidden_dim, match_info = resolve_single_head_hidden_dim(
+        int(dataset.num_features),
+        str(pretrain_cfg["activation"]),
+        int(pretrain_cfg["num_layers"]),
+        target_params,
+        variant_cfg.get("hidden_dim", int(pretrain_cfg["num_hidden"])),
+    )
     model = SingleHeadModel(
         dataset.num_features,
-        int(pretrain_cfg["num_hidden"]),
+        int(hidden_dim),
         str(pretrain_cfg["activation"]),
         int(pretrain_cfg["num_layers"]),
     ).to(device)
@@ -564,6 +645,8 @@ def train_single_head_variant(
         "effective_rank_single": effective_rank(z),
         "uniformity_single": uniformity(z),
         "parameter_count": count_parameters(model),
+        "single_head_hidden_dim": int(hidden_dim),
+        **match_info,
         "negative_gradient_leakage": None,
         "firewall_pass": None,
     }
@@ -592,64 +675,98 @@ def evaluate_embeddings(
     }
 
 
+def eval_metric(evals: dict[str, Any], key: str, metric: str = "test_at_best") -> float | None:
+    if key not in evals:
+        return None
+    return float(evals[key][metric])
+
+
 def result_markdown(results: list[dict[str, Any]], summary_path: Path) -> None:
     lines = [
-        "# DSR-GCL Smoke Summary",
+        "# DSR-GCL Audit-Smoke Summary",
         "",
         "Scope: Cora seed=0 only, stratified random 1:1:8, frozen encoder + Logistic Regression.",
-        "Status: smoke/pilot diagnostic only; no formal result and no performance claim.",
+        "Status: audit-smoke diagnostic only; no formal result and no performance claim.",
         "",
-        "## Smoke Result Table",
+        "## Audit Notes",
         "",
-        "| ID | Variant | main z | valid@best | test@best | final test | z_sem | z_res | concat |",
-        "|---|---|---:|---:|---:|---:|---:|---:|---:|",
+        "- Previous A9 DSR-full result was poor relative to A2/A5/A4/A0.",
+        "- A3 residual-only was almost ineffective, so residual utility is under question.",
+        "- Previous A5 was unfair because it added semantic InfoNCE on top of residual InfoNCE.",
+        "- Previous A4 was not strictly parameter-matched to A9; this run adds A4b.",
+        "- This summary explicitly reports embedding-level results, params, ranks, leakage, raw JSON, and logs.",
+        "",
+        "## Complete Result Table",
+        "",
+        "| ID | Variant | main z | valid@best | test@best | final test | params | raw JSON | log |",
+        "|---|---|---:|---:|---:|---:|---:|---|---|",
     ]
     for r in results:
-        evals = r["evaluation"]["embedding_evals"]
-
-        def fmt_eval(name: str) -> str:
-            if name not in evals:
-                return "NA"
-            return f"{evals[name]['test_at_best']:.2f}"
-
         lines.append(
             f"| {r['variant_id']} | {r['variant_name']} | {r['evaluation']['main_eval_embedding']} | "
             f"{r['evaluation']['valid_at_best']:.2f} | {r['evaluation']['test_at_best']:.2f} | "
-            f"{r['evaluation']['final_test']:.2f} | {fmt_eval('z_sem')} | {fmt_eval('z_res')} | "
-            f"{fmt_eval('concat')} |"
+            f"{r['evaluation']['final_test']:.2f} | {r['diagnostics'].get('parameter_count')} | "
+            f"`{r['result_path']}` | `{r['train_log_path']}` |"
         )
+
+    def fmt(value: Any) -> str:
+        if value is None:
+            return "NA"
+        if isinstance(value, bool):
+            return str(value)
+        if isinstance(value, (float, int)):
+            return f"{value:.4g}"
+        return str(value)
+
+    lines.extend(["", "## Embedding-Level Table", ""])
     lines.extend(
         [
-            "",
-            "## Mechanism Diagnostics",
-            "",
-            "| ID | leak | firewall pass | rank_sem | rank_res | rank_concat | branch_corr | params |",
-            "|---|---:|---|---:|---:|---:|---:|---:|",
+            "| ID | z_sem test | z_res test | concat test | grace test | single test | rank_sem | rank_res | rank_concat | rank_single | branch_corr |",
+            "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
         ]
     )
     for r in results:
         d = r["diagnostics"]
+        evals = r["evaluation"]["embedding_evals"]
+        lines.append(
+            f"| {r['variant_id']} | {fmt(eval_metric(evals, 'z_sem'))} | {fmt(eval_metric(evals, 'z_res'))} | "
+            f"{fmt(eval_metric(evals, 'concat'))} | {fmt(eval_metric(evals, 'grace'))} | "
+            f"{fmt(eval_metric(evals, 'single'))} | {fmt(d.get('effective_rank_sem'))} | "
+            f"{fmt(d.get('effective_rank_res'))} | {fmt(d.get('effective_rank_concat'))} | "
+            f"{fmt(d.get('effective_rank_single'))} | {fmt(d.get('branch_correlation'))} |"
+        )
 
-        def fmt(value: Any) -> str:
-            if value is None:
-                return "NA"
-            if isinstance(value, bool):
-                return str(value)
-            if isinstance(value, (float, int)):
-                return f"{value:.4g}"
-            return str(value)
+    lines.extend(["", "## Parameter Count Table", ""])
+    lines.extend(["| ID | Variant | params | target params | abs gap | rel gap | hidden dim | note |", "|---|---|---:|---:|---:|---:|---:|---|"])
+    for r in results:
+        d = r["diagnostics"]
+        lines.append(
+            f"| {r['variant_id']} | {r['variant_name']} | {fmt(d.get('parameter_count'))} | "
+            f"{fmt(d.get('target_parameter_count'))} | {fmt(d.get('absolute_parameter_gap'))} | "
+            f"{fmt(d.get('relative_parameter_gap'))} | {fmt(d.get('single_head_hidden_dim'))} | "
+            f"{r['variant_config'].get('audit_note', '')} |"
+        )
 
+    lines.extend(["", "## Leakage Table", ""])
+    lines.extend(["| ID | leak | sem grad | res grad | firewall pass | res weight | sem weight | loss scale |", "|---|---:|---:|---:|---|---:|---:|---:|"])
+    for r in results:
+        d = r["diagnostics"]
         lines.append(
             f"| {r['variant_id']} | {fmt(d.get('negative_gradient_leakage'))} | "
-            f"{fmt(d.get('firewall_pass'))} | {fmt(d.get('effective_rank_sem'))} | "
-            f"{fmt(d.get('effective_rank_res'))} | {fmt(d.get('effective_rank_concat'))} | "
-            f"{fmt(d.get('branch_correlation'))} | {fmt(d.get('parameter_count'))} |"
+            f"{fmt(d.get('negative_grad_norm_sem'))} | {fmt(d.get('negative_grad_norm_res'))} | "
+            f"{fmt(d.get('firewall_pass'))} | {fmt(d.get('residual_infonce_weight'))} | "
+            f"{fmt(d.get('semantic_infonce_weight'))} | {fmt(d.get('loss_scale'))} |"
         )
     full = next((r for r in results if r["variant_id"] == "A9"), None)
-    no_firewall = next((r for r in results if r["variant_id"] == "A5"), None)
     sem_only = next((r for r in results if r["variant_id"] == "A2"), None)
+    residual_only = next((r for r in results if r["variant_id"] == "A3"), None)
     same_head = next((r for r in results if r["variant_id"] == "A4"), None)
+    matched_same_head = next((r for r in results if r["variant_id"] == "A4b"), None)
+    no_firewall = next((r for r in results if r["variant_id"] == "A5"), None)
+    budget_no_firewall = next((r for r in results if r["variant_id"] == "A5b"), None)
+    scaled_no_firewall = next((r for r in results if r["variant_id"] == "A5c"), None)
     conclusions = []
+    triggered = []
     if full:
         leak = full["diagnostics"].get("negative_gradient_leakage")
         conclusions.append(
@@ -666,16 +783,40 @@ def result_markdown(results: list[dict[str, Any]], summary_path: Path) -> None:
     if full and sem_only:
         gap = full["evaluation"]["test_at_best"] - sem_only["evaluation"]["test_at_best"]
         conclusions.append(f"A2 semantic-only vs A9 full smoke gap: {gap:.2f} points; single seed only.")
+        if gap < 0:
+            triggered.append("A9_below_A2_semantic_only")
+    if full and residual_only:
+        res_value = residual_only["evaluation"]["test_at_best"]
+        conclusions.append(f"A3 residual-only test@best: {res_value:.2f}; single seed only.")
+        if res_value < 40.0:
+            triggered.append("A3_residual_only_near_random_or_extremely_low")
     if full and same_head:
         gap = full["evaluation"]["test_at_best"] - same_head["evaluation"]["test_at_best"]
         conclusions.append(f"A4 same-head vs A9 full smoke gap: {gap:.2f} points; single seed only.")
+        if gap < 0:
+            triggered.append("A9_below_A4_same_head")
+    if full and matched_same_head:
+        gap = full["evaluation"]["test_at_best"] - matched_same_head["evaluation"]["test_at_best"]
+        conclusions.append(f"A4b param-matched same-head vs A9 full smoke gap: {gap:.2f} points; single seed only.")
+        if gap < 0:
+            triggered.append("A9_below_A4b_param_matched_single_head")
+    for candidate, label in [(budget_no_firewall, "A5b"), (scaled_no_firewall, "A5c")]:
+        if full and candidate:
+            gap = full["evaluation"]["test_at_best"] - candidate["evaluation"]["test_at_best"]
+            conclusions.append(f"{label} fairer no-firewall vs A9 full smoke gap: {gap:.2f} points; single seed only.")
+            if gap < 0:
+                triggered.append(f"{label}_above_A9_firewall_claim_not_supported")
     lines.extend(["", "## Kill Rule Readout", ""])
     lines.extend(f"- {item}" for item in conclusions)
+    lines.append(f"- Triggered rules: `{', '.join(triggered) if triggered else 'none'}`.")
+    if len(triggered) >= 2:
+        decision = "`PIVOT_REQUIRED`"
+        recommendation = "不建议继续推进 DSR-GCL formal；应先重构 residual branch 或放弃当前 firewall 叙事。"
+    else:
+        decision = "`REVISE`"
+        recommendation = "只允许继续做更小范围机制修正，不进入 formal。"
     lines.append("")
-    lines.append(
-        "Decision: `REVISE/PIVOT_REQUIRED` at smoke level; future pilots must first show "
-        "stable mechanism advantage before any formal run."
-    )
+    lines.append(f"Decision: {decision}. {recommendation}")
     summary_path.write_text("\n".join(lines) + "\n")
 
 
@@ -712,6 +853,15 @@ def main() -> None:
     summary_dir.mkdir(parents=True, exist_ok=True)
 
     results = []
+    dsr_target_probe = DSRModel(
+        dataset.num_features,
+        max(int(pretrain_cfg["num_hidden"]) // 2, 1),
+        str(pretrain_cfg["activation"]),
+        int(pretrain_cfg["num_layers"]),
+        True,
+        True,
+    )
+    dsr_target_params = count_parameters(dsr_target_probe)
     for variant_cfg in config["variants"]:
         variant_id = variant_cfg["id"]
         variant_name = variant_cfg["name"]
@@ -727,7 +877,7 @@ def main() -> None:
             )
         elif variant_cfg["family"] == "single_head":
             _, diagnostics, embeddings = train_single_head_variant(
-                dataset_name, seed, data, dataset, pretrain_cfg, device, log_path
+                dataset_name, seed, data, dataset, variant_cfg, pretrain_cfg, dsr_target_params, device, log_path
             )
         else:
             raise ValueError(f"Unknown variant family: {variant_cfg['family']}")
