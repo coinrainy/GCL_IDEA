@@ -1,0 +1,1 @@
+{"elapsed_sec": 0.045011281967163086, "epoch": 1, "loss": 1.9975569248199463, "negative_grad_norm_res": null, "negative_grad_norm_sem": null, "negative_gradient_leakage": null, "semantic_alignment": 5.889029353056685e-07, "semantic_covariance": 2.7105579065989094e-12, "semantic_variance": 1.9975563287734985}

@@ -1,0 +1,9 @@
+{"elapsed_sec": 0.0163576602935791, "epoch": 1, "loss": 8.596923828125, "negative_grad_norm_res": null, "negative_grad_norm_sem": null, "negative_gradient_leakage": null, "residual_infonce": 8.596923828125}
+{"elapsed_sec": 0.5505416393280029, "epoch": 25, "loss": 8.581314086914062, "negative_grad_norm_res": null, "negative_grad_norm_sem": null, "negative_gradient_leakage": null, "residual_infonce": 8.581314086914062}
+{"elapsed_sec": 1.1386363506317139, "epoch": 50, "loss": 8.309224128723145, "negative_grad_norm_res": null, "negative_grad_norm_sem": null, "negative_gradient_leakage": null, "residual_infonce": 8.309224128723145}
+{"elapsed_sec": 1.705887794494629, "epoch": 75, "loss": 8.274980545043945, "negative_grad_norm_res": null, "negative_grad_norm_sem": null, "negative_gradient_leakage": null, "residual_infonce": 8.274980545043945}
+{"elapsed_sec": 2.264422655105591, "epoch": 100, "loss": 8.289329528808594, "negative_grad_norm_res": null, "negative_grad_norm_sem": null, "negative_gradient_leakage": null, "residual_infonce": 8.289329528808594}
+{"elapsed_sec": 2.8281779289245605, "epoch": 125, "loss": 8.2860746383667, "negative_grad_norm_res": null, "negative_grad_norm_sem": null, "negative_gradient_leakage": null, "residual_infonce": 8.2860746383667}
+{"elapsed_sec": 3.407592535018921, "epoch": 150, "loss": 8.273046493530273, "negative_grad_norm_res": null, "negative_grad_norm_sem": null, "negative_gradient_leakage": null, "residual_infonce": 8.273046493530273}
+{"elapsed_sec": 3.9723057746887207, "epoch": 175, "loss": 8.277669906616211, "negative_grad_norm_res": null, "negative_grad_norm_sem": null, "negative_gradient_leakage": null, "residual_infonce": 8.277669906616211}
+{"elapsed_sec": 4.537277460098267, "epoch": 200, "loss": 8.255348205566406, "negative_grad_norm_res": null, "negative_grad_norm_sem": null, "negative_gradient_leakage": null, "residual_infonce": 8.255348205566406}

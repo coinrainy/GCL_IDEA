@@ -1,0 +1,85 @@
+meta:
+  method: DSR-GCL-smoke
+  base_config: configs/grace_1_1_8.yaml
+  split_type: stratified_random_1_1_8
+  metric: accuracy_percent
+  status_default: smoke
+  default_eval_embedding: concat_stopgrad_res
+  note: >
+    Minimal DSR-GCL smoke/pilot config. This file is for mechanism checking only:
+    no formal runs, no SOTA or performance claim.
+
+datasets:
+  - Cora
+
+seeds:
+  - 0
+
+pretrain:
+  Cora:
+    source: grace_1_1_8.Cora
+    num_epochs: 200
+    log_every: 25
+    low_pass_k: 1
+    alpha_res: 1.0
+    beta_orth: 0.01
+    lambda_var: 1.0
+    lambda_cov: 1.0
+    variance_gamma: 1.0
+    eps: 0.000001
+    firewall_threshold: 0.00000001
+
+variants:
+  - id: A0
+    name: grace_baseline
+    family: grace
+    main_eval_embedding: grace
+  - id: A2
+    name: semantic_only_negative_free
+    family: dsr
+    use_semantic: true
+    use_residual: false
+    semantic_negative_free: true
+    residual_infonce: false
+    semantic_infonce: false
+    orthogonality: false
+    main_eval_embedding: z_sem
+  - id: A3
+    name: residual_only_infonce
+    family: dsr
+    use_semantic: false
+    use_residual: true
+    semantic_negative_free: false
+    residual_infonce: true
+    semantic_infonce: false
+    orthogonality: false
+    main_eval_embedding: z_res
+  - id: A9
+    name: dsr_full_firewall
+    family: dsr
+    use_semantic: true
+    use_residual: true
+    semantic_negative_free: true
+    residual_infonce: true
+    semantic_infonce: false
+    orthogonality: true
+    main_eval_embedding: concat
+  - id: A5
+    name: dsr_no_firewall_semantic_receives_negative
+    family: dsr
+    use_semantic: true
+    use_residual: true
+    semantic_negative_free: true
+    residual_infonce: true
+    semantic_infonce: true
+    orthogonality: true
+    main_eval_embedding: concat
+  - id: A4
+    name: same_parameter_single_head_control
+    family: single_head
+    semantic_negative_free: true
+    residual_infonce: true
+    main_eval_embedding: single
+
+logreg_eval:
+  inherit_from_grace: true

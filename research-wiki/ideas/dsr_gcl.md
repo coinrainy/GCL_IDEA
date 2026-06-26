@@ -3,7 +3,7 @@
 status: active_candidate  
 decision: REVISE_IDEA  
 created_utc: 2026-06-26T09:21:55Z  
-updated_utc: 2026-06-26T09:24:55Z  
+updated_utc: 2026-06-26T10:02:00Z  
 source: `/idea-discovery` beyond IGT-GCL  
 task: node classification  
 method family: graph contrastive learning
@@ -18,7 +18,7 @@ IGT-GCL uses lower/upper interval pair targets and was reviewed at novelty `5.5/
 
 ## Refined Mechanism
 
-Default revised version uses parameter-isolated channels:
+Default revised version uses **parameter-isolated two-channel firewall**. Shared trunk is explicitly excluded from the default because residual InfoNCE would otherwise update shared encoder parameters and indirectly contaminate the semantic branch.
 
 ```text
 h_sem = GNN_sem(X_sem, A)
@@ -32,6 +32,20 @@ z_eval = concat(z_sem, stopgrad(z_res))
 - `L_res`: InfoNCE or rank-style residual contrast。
 - `L_orth`: branch redundancy control。
 - negative loss updates only residual parameters, not semantic parameters。
+
+Mathematical firewall condition:
+
+```text
+|| grad(theta_sem; L_res) ||_2 = 0
+firewall_leak_param =
+  || grad(theta_sem; L_res) ||_2 / (|| grad(theta_res; L_res) ||_2 + eps)
+```
+
+Default pass threshold:
+
+```text
+firewall_leak_param < 1e-8
+```
 
 ## Reviewer Verdict
 
@@ -66,14 +80,47 @@ The reviewer judged DSR-GCL slightly stronger than IGT-GCL but not ready for `GO
 - `z_sem`, `z_res`, fixed concat evaluator。
 - negative-gradient leakage diagnostic。
 
-## Evidence Status
+## Smoke Evidence: 2026-06-26 Cora Seed 0
 
-No smoke, pilot, development, or formal experiment has been run for DSR-GCL. Current evidence is literature review, idea generation, novelty review, and experiment planning only.
+Stage: **smoke only**.  
+Dataset / split: Cora, stratified random `1:1:8`, seed `0`.  
+Evaluator: frozen encoder + Logistic Regression; evaluator `C` selected by validation accuracy, not test.
+
+Artifacts:
+
+- summary: `results/summary/dsr_smoke_Cora_seed0_20260626T095525Z_summary.md`
+- raw results: `results/raw/Cora/DSR_GCL_SMOKE/dsr_smoke_Cora_seed0_20260626T095525Z/`
+- logs: `logs/dsr_smoke/dsr_smoke_Cora_seed0_20260626T095525Z/`
+- config: `configs/dsr_smoke.yaml`
+- runner: `scripts/run_dsr_smoke.py`
+
+Smoke table (`test@best`, percent):
+
+| ID | Variant | Main embedding | Test@best |
+|---|---|---:|---:|
+| A0 | GRACE baseline | `grace` | 84.78 |
+| A2 | semantic-only negative-free | `z_sem` | 78.27 |
+| A3 | residual-only InfoNCE | `z_res` | 30.12 |
+| A9 | DSR-full firewall | `concat(z_sem, stopgrad(z_res))` | 77.08 |
+| A5 | DSR-no-firewall | `concat` | 81.13 |
+| A4 | same-parameter single-head | `single` | 83.63 |
+
+Mechanism diagnostics:
+
+- A9 `negative_gradient_leakage = 0.0`, so the parameter-isolated firewall is measurable and passes the mechanical leakage threshold in this implementation.
+- A5 `negative_gradient_leakage = 1.2867` at the final logged epoch, confirming the diagnostic detects semantic-channel negative gradients when semantic InfoNCE is enabled.
+- A9 rank/correlation diagnostics: `rank_sem=6.83`, `rank_res=7.22`, `rank_concat=13.36`, `branch_correlation=0.1168`.
+
+Smoke interpretation:
+
+- C1 is mechanically supported: negative loss can be kept out of semantic parameters in A9.
+- C2/C3/C4 are not supported by this smoke: DSR-full does not beat semantic-only, no-firewall, same-head, or GRACE on Cora seed 0.
+- This is not a formal result and cannot support SOTA, robustness, or comprehensive performance claims.
 
 ## Decision
 
-**REVISE_IDEA**.  
-Do not proceed to experiment bridge until the revised firewall definition is accepted and a smoke/pilot plan is explicitly approved.
+**REVISE/PIVOT_REQUIRED**.  
+The firewall diagnostic itself is valid, but the current DSR-full objective does not show smoke-level mechanism advantage. Do not proceed to formal experiments or paper claims unless a revised mechanism first passes additional pilot gates.
 
 ## Files
 
@@ -81,7 +128,11 @@ Do not proceed to experiment bridge until the revised firewall definition is acc
 - `idea-stage/IDEA_CANDIDATES.md`
 - `idea-stage/DSR_GCL_NOVELTY_BRIEF.md`
 - `idea-stage/IDEA_REPORT.md`
+- `refine-logs/DSR_MECHANISM_SPEC.md`
 - `refine-logs/FINAL_PROPOSAL.md`
 - `refine-logs/EXPERIMENT_PLAN.md`
 - `refine-logs/EXPERIMENT_TRACKER.md`
+- `configs/dsr_smoke.yaml`
+- `scripts/run_dsr_smoke.py`
+- `results/summary/dsr_smoke_Cora_seed0_20260626T095525Z_summary.md`
 - `.aris/traces/novelty-check/2026-06-26_run03/`

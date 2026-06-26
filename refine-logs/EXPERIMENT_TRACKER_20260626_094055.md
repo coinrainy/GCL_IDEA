@@ -2,13 +2,13 @@
 
 生成时间：2026-06-26T09:40:55Z  
 方法：DSR-GCL  
-阶段：smoke completed for Cora seed 0 only  
-当前 decision：**REVISE/PIVOT_REQUIRED**  
-说明：已有一次最小 smoke；无 pilot/formal 结果，无性能 claim。
+阶段：planned only  
+当前 decision：**REVISE_IDEA**  
+说明：当前没有运行任何实验。
 
 | ID | Stage | Dataset | Split | Seeds | Variants | Status | Gate |
 |---|---|---|---|---|---|---|---|
-| DSR-A0 | smoke | Cora | `1:1:8` | 0 | A0,A2,A3,A4,A5,A9 | DONE_REVISE | no NaN, leakage diagnostic recorded, but DSR-full lacks mechanism advantage |
+| DSR-A0 | smoke | Cora | `1:1:8` | 0 | A0,A2,A5,A9 | TODO | no NaN, leakage diagnostic, non-collapse |
 | DSR-B1 | pilot | Cora | `1:1:8` | 0,1,2 | A0,A1,A2,A3,A4,A5,A6,A7,A9,A11 | TODO | mechanism screening |
 | DSR-B2 | pilot | CiteSeer | `1:1:8` | 0,1,2 | A0,A1,A2,A3,A4,A5,A6,A7,A9,A11 | TODO | mechanism screening |
 | DSR-B3 | pilot | PubMed | `1:1:8` | 0,1,2 | A0,A1,A2,A3,A4,A5,A6,A7,A9,A11 | TODO | mechanism screening |
@@ -33,11 +33,6 @@
 
 ## Current Notes
 
-- Smoke result exists for Cora seed=0 only:
-  - summary: `results/summary/dsr_smoke_Cora_seed0_20260626T095525Z_summary.md`
-  - raw results: `results/raw/Cora/DSR_GCL_SMOKE/dsr_smoke_Cora_seed0_20260626T095525Z/`
-  - logs: `logs/dsr_smoke/dsr_smoke_Cora_seed0_20260626T095525Z/`
-- A9 / DSR-full firewall diagnostic passed mechanically (`negative_gradient_leakage=0.0`), while A5 / no-firewall showed semantic negative-gradient leakage (`1.2867` at final logged epoch).
-- Mechanism advantage was not supported in this smoke: A9 concat `77.08` test@best was below A2 semantic-only `78.27`, A5 no-firewall `81.13`, A4 same-parameter single-head `83.63`, and A0 GRACE `84.78`.
-- This triggers `REVISE/PIVOT_REQUIRED` at smoke level. Do not proceed to formal experiments or performance claims.
+- No smoke, pilot, development, or formal result exists.
+- Tracker is a plan only.
 - Formal remains blocked until reviewer and experiment-audit gates pass.

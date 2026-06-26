@@ -61,3 +61,17 @@
 | 2026-06-26 09:24 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | latest DSR-GCL tracker |
 | 2026-06-26 09:24 | /research-wiki | research-wiki/ideas/dsr_gcl.md | wiki | revised DSR-GCL idea page, decision REVISE_IDEA |
 | 2026-06-26 09:30 | /render-html | idea-stage/IDEA_REPORT.html | idea-discovery | rendered HTML view of latest DSR-GCL idea report |
+| 2026-06-26 09:40 | /research-refine | refine-logs/DSR_MECHANISM_SPEC_20260626_094055.md | refinement | timestamped DSR-GCL mechanism spec with math, pseudocode, diagnostics, and ablation matrix |
+| 2026-06-26 09:40 | /research-refine | refine-logs/DSR_MECHANISM_SPEC.md | refinement | latest DSR-GCL mechanism spec |
+| 2026-06-26 09:40 | /research-refine | refine-logs/FINAL_PROPOSAL_20260626_094055.md | refinement | timestamped mechanism-refined DSR-GCL proposal |
+| 2026-06-26 09:40 | /research-refine | refine-logs/FINAL_PROPOSAL.md | refinement | latest mechanism-refined DSR-GCL proposal |
+| 2026-06-26 09:40 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260626_094055.md | experiment-planning | timestamped DSR-GCL smoke/pilot plan with A0-A11 ablations |
+| 2026-06-26 09:40 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | experiment-planning | latest DSR-GCL smoke/pilot plan with A0-A11 ablations |
+| 2026-06-26 09:40 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260626_094055.md | experiment-planning | timestamped DSR-GCL tracker with A0-A11 variants |
+| 2026-06-26 09:40 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | experiment-planning | latest DSR-GCL tracker with A0-A11 variants |
+| 2026-06-26 09:40 | /research-wiki | research-wiki/ideas/dsr_gcl.md | wiki | updated DSR-GCL idea page with parameter-isolated firewall definition |
+| 2026-06-26 10:02 | manual-smoke | configs/dsr_smoke.yaml | smoke | DSR-GCL minimal smoke config for Cora seed 0 |
+| 2026-06-26 10:02 | manual-smoke | scripts/run_dsr_smoke.py | smoke | DSR-GCL smoke runner reusing GRACE split/evaluator helpers |
+| 2026-06-26 10:02 | manual-smoke | results/raw/Cora/DSR_GCL_SMOKE/dsr_smoke_Cora_seed0_20260626T095525Z/ | smoke | raw JSON results for A0/A2/A3/A4/A5/A9 |
+| 2026-06-26 10:02 | manual-smoke | logs/dsr_smoke/dsr_smoke_Cora_seed0_20260626T095525Z/ | smoke | training JSONL logs for DSR-GCL smoke |
+| 2026-06-26 10:02 | manual-smoke | results/summary/dsr_smoke_Cora_seed0_20260626T095525Z_summary.md | smoke | DSR-GCL smoke result and mechanism diagnostic table |
